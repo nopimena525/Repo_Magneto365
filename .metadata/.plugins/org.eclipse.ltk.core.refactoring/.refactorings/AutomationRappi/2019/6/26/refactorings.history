@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;pages.RappiWebCheckOut.getDetailPriceinSummaryPrice(...)&apos; to &apos;getDetailPriceInSummaryPrice&apos;&#x0A;- Original project: &apos;AutomationRappi&apos;&#x0A;- Original element: &apos;pages.RappiWebCheckOut.getDetailPriceinSummaryPrice(...)&apos;&#x0A;- Renamed element: &apos;pages.RappiWebCheckOut.getDetailPriceInSummaryPrice(...)&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="true" description="Rename method &apos;getDetailPriceinSummaryPrice&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src\/main\/java&lt;pages{RappiWebCheckOut.java[RappiWebCheckOut~getDetailPriceinSummaryPrice~QString;" name="getDetailPriceInSummaryPrice" references="true" stamp="1561674818962" version="1.0"/>
+</session>

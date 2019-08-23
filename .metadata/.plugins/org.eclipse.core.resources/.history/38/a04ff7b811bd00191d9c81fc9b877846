@@ -1,0 +1,1804 @@
+package tests;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import base.TestBase;
+import pages.RappiWebAddToCar;
+import pages.RappiWebBasket;
+import pages.RappiWebCheckOut;
+import pages.RappiWebHomePage;
+import pages.RappiWebLogin;
+import pages.RappiWebMarkets;
+import pages.RappiWebPromotions;
+import pages.RappiWebRestaurants;
+//import utilitiesRappi.ExcelUtils;
+
+public class AutomationWebTest extends TestBase{
+	
+	static RappiWebHomePage objHomePage;
+	static RappiWebLogin objLogin;
+	static RappiWebPromotions objPromo;
+	static RappiWebRestaurants objRest;
+	static RappiWebMarkets objMarket;
+	static RappiWebAddToCar objAddToCar;
+	static RappiWebBasket objBasket;
+	static RappiWebCheckOut objCheckout;
+	int pos = -1;
+	Boolean pass;
+	
+	@BeforeClass
+	public static void initTest()throws Exception{
+		System.out.println("initTest");
+		initReadData();
+		
+		objHomePage = new RappiWebHomePage();
+		objLogin = new RappiWebLogin();
+		objPromo = new RappiWebPromotions();
+		objRest = new RappiWebRestaurants();
+		objMarket = new RappiWebMarkets();
+		objAddToCar = new RappiWebAddToCar();
+		objBasket = new RappiWebBasket();
+		objCheckout = new RappiWebCheckOut();
+	}
+	
+	/**
+	 * This test case will Validate Drop-Down Options In User Profile
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_0487() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAllDropDownOptInProfile();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a New Address
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_0763() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.addNewAddress();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Edit an Actual Address
+	 * Note: Just works for Chrome & Firefox. In Safari doesn't recognize the "Edit" element
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_0767() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.editAddress();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Delete an Random Address
+	 * Note: Just works for Chrome & Firefox. In Safari doesn't recognize the "Delete" element
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_0770() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.deleteAddress();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Do Login with E-mail or Facebook 
+	 * depends the conditions in 'TextData.xlsx' file
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1473() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Close Session For User Logged
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1476() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnCloseSesion();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Choose a Product in a Restaurant (random) 
+	 * With Login from Restaurant Option (Left Menu)
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1477() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objRest.selectProdInRest(0);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product in a Restaurant 
+	 * With Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1478() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.searchOption(0, sProdToSearchInRest); //pan
+			objRest.selectProdInRest(1);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product Random in Market Option 
+	 * (Left Menu) With Login
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1484() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseACategoryRandomFromMainListMarket();
+			objMarket.addAProdFromMarketCategoryToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Redeem a Coupon from User Account
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1510() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnAddCouponInProfile();
+			objCheckout.redimirACuponFromProfile(sCupon);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Redeem a Expired Coupon from User Account
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1512() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnAddCouponInProfile();
+			objCheckout.redimirACuponFromProfile(sCupon);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Redeem a Coupon from a Restaurant Random 
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1520() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objRest.selectProdInRest(0);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.redimirACuponInCheckout(sCupon);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+		
+	/**
+	 * This test case will Navigate for Home Page in Rappi
+	 * Without Login
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1522() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.verifyHomePageContentWithoutLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			driver.navigate().back();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			driver.navigate().back();
+			objHomePage.clickOnPromotions();
+			objPromo.verifyTitlePromo();
+			driver.navigate().back();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Navigate for Home Page in Rappi
+	 * With Login
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1523() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			driver.navigate().back();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			driver.navigate().back();
+			objHomePage.clickOnPromotions();
+			objPromo.verifyTitlePromo();
+			driver.navigate().back();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search 2 Products In Purchase List
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1533() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("agua", "tomate", 0);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Put 2 Products In Shopping List And Then Delete
+	 * Each Product with the Delete Button
+	 * Note: Just works for Chrome & Firefox. In Safari doesn't recognize the element "Delete"
+	 * 
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1534() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("agua", "tomate", 3);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search 2 Products In Shopping List And Then Clean Shopping
+	 * List
+	 * 
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1535() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("agua", "tomate", 1);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Put 2 Products In Shopping List And Then Search for
+	 * Each Product with the Magnifying Glass Button
+	 * Note: Just works for Chrome & Firefox. In Safari doesn't recognize the element "Lupa"
+	 * 
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1536() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("agua", "tomate", 2);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Product 'Not Found' since Shopping List
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1537() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("rewrw", "hthry", 2);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add to Car a Product since Shopping List
+	 * and Go To Checkout
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1541() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnListaCompras();
+			objHomePage.addProdToListaCompras("agua", "tomate", 0);
+			objMarket.selectAndAddProdInSearchList();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Click on 'RappiCreditos' from User Profile
+	 * And Validate the Page Content for this Option 
+	 * 
+	 * @throws Exception
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1561() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnRappiCreditosInProfile();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Product since Sharks 
+	 * In Checkout
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1575() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseAStoreFromMainListMarket(sMarketWithShark);
+			objMarket.addAProdFromMarketCategoryToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(true);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Change Country with User Logged
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1583() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.changeCountryLogged();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Change Country without User Logged
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1584() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.changeCountryWithoutLogged();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Product of Market since Promotions
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1585() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectMarketOrRestaurantInPromo(1);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Product of Restaurant since Promotions
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1587() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectMarketOrRestaurantInPromo(0);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Product of Market since Promotions
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1588() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectMarketOrRestaurantInPromo(1);
+			objPromo.addProdMarketInPromoToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Make a Programmed Market Order
+	 * from the Promotions
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1589() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectMarketOrRestaurantInPromo(1);
+			objPromo.addProdMarketInPromoToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Do an Order from Product of Restaurant 
+	 * since Promotions
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1590() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectMarketOrRestaurantInPromo(0);
+			objPromo.addProdRestInPromoToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Enter to TC 'Colpatria' since Promotions
+	 * Note: Just is enabled for Colombia
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1591() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.clickOnPromotions();
+			objPromo.selectColpatriaInPromo();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product in a Market
+	 * Without Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1597() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.searchOption(1, sProdToSearchInMarket); //pan
+			objMarket.selectProdInMarket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product in a Restaurant
+	 * Without Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1598() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.searchOption(0, sProdToSearchInRest); //pan
+			objRest.selectProdInRest(1);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Restaurant in Restaurant Option 
+	 * (Left Menu) With Login from Search Box inside Restaurant Option
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1605() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objHomePage.searchOption(0, sProdToSearchInRest); //pan
+			objRest.selectProdInRest(1);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			//ExcelUtils.updateExcelFile(sNameProdSelected, "AgregarProducto", posicionTestActual, 10);
+			driver.quit();
+		}
+	}
+
+	/**
+	 * This test case will Search a Product in Market Option 
+	 * (Left Menu) With Login from Search Box inside Market Option
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1606() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseACategoryRandomFromMainListMarket();
+			objHomePage.searchOption(1, sProdToSearchInMarket); //agua
+			objMarket.selectProdInMarket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Order by Major or Minor in Restaurants
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1608() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objRest.searchRestaurantAndOrderBy(sRestToSort, sSortBy);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add to Market a Product Not Found 
+	 * With Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1612() throws Exception {
+		
+		while (pos < totalTestsCases) {
+			
+			pass = false;
+			pos++;
+			
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+			
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.searchOption(1, "kjhrtrt");
+			objHomePage.chooseMarketToAddProdNotFound();
+			objHomePage.addProdNotFound();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Validate Rappi Prime for Invited User
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1635() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.verifyHomePageContentWithoutLogin();
+			objHomePage.clickOnRappiPrime();
+			objHomePage.selectSubscriptionInRappiPrime();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Get Rappi Prime for Logged in User
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1638() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnRappiPrime();
+			objHomePage.selectSubscriptionInRappiPrime();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product since Other Stores 
+	 * With Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1648() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.searchOption(2, sProdToSearchInMarket); //agua
+			objMarket.selectProdInMarket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will a Discount to RappiPrime User In Checkout
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1678() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnMarket();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseACategoryRandomFromMainListMarket();
+			objMarket.addAProdFromMarketCategoryToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.verifyDiscountPrimeInCheckout();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Print a Voucher about Last Purchase (random) 
+	 * From User Account
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1688() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAjusteCuentaInProfile();
+			objLogin.clickOnLastOrdersFromUserAccount();
+			objLogin.chooseAndPrintALastOrderFromUserAccount();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Credit Card From Profile User 
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1706() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAddCreditCardInProfile();
+			objLogin.clickOnBeneficiosCreditCard();
+			objLogin.setAndAddCreditCard("PRUEBA", "AUTOMATION", "5555555555554444", "2021", "11", "312");
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Credit Card From Checkout 
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1707() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objRest.selectProdInRest(0);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.selectAPayMethodInCheckout(0);
+			objCheckout.addACreditCardFromCheckout();
+			objLogin.setAndAddCreditCard("PRUEBA", "AUTOMATION", "5555555555554444", "2021", "11", "312");
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Delete a Credit Card Since User Account
+	 * Note: Just works for Chrome & Firefox. In Safari doesn't recognize the "delete" element
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1709() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAjusteCuentaInProfile();
+			objLogin.clickOnCreditCardFromUserAccount();
+			objLogin.deleteCreditCardFromUserAccount();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Add a Credit Card Since User Account
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1710() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAjusteCuentaInProfile();
+			objLogin.clickOnCreditCardFromUserAccount();
+			objLogin.addACreditCardFromUserAccount();
+			objLogin.setAndAddCreditCard("PRUEBA", "AUTOMATION", "5555555555554444", "2021", "11", "312");
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Validate a Credit Card From Checkout 
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1711() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnRestaurants();
+			objRest.verifyMainPageObjInRest();
+			objRest.selectProdInRest(0);
+			objAddToCar.verifyInfoProduct();
+			objAddToCar.verifyAndSetToppings();
+			objAddToCar.clickOnAddProduct();
+			objHomePage.clickOnCanasta();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.selectAPayMethodInCheckout(0);
+			objCheckout.chooseACreditCardInCheckOut();
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+		
+	/**
+	 * This test case will Edit User Account
+	 * 
+	 * @throws Exception 
+	 */
+	@Ignore
+	@Test
+	public void test_Web_1752() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAjusteCuentaInProfile();
+			objLogin.editUserAccount("Test", "Autom");
+			pass = true;
+			
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Click On 'Referidos' From User Account 
+	 * and Validate all Content on it
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1758() throws Exception {
+
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHeaderInHomePageWithLogin();
+			objHomePage.clickOnAjusteCuentaInProfile();
+			objLogin.clickOnReferidosFromUserAccount();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product in a Market
+	 * With Login from Search Box in Home Page
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_1768() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.searchOption(1, sProdToSearchInMarket);//agua
+			objMarket.selectProdInMarket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product since Other Stores 
+	 * With Login & will Select "Credit Card" in Pay Method
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_2636() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnOtherStore();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseACategoryRandomFromMainListMarket();
+			objMarket.addAProdFromMarketCategoryToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.selectAPayMethodInCheckout(0);
+			objCheckout.addACreditCardFromCheckout();
+			objLogin.setAndAddCreditCard("PRUEBA", "AUTOMATION", "5555555555554444", "2021", "11", "312");
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	/**
+	 * This test case will Search a Product since Other Stores 
+	 * With Login & will Select "Cash" in Pay Method
+	 * 
+	 * @throws Exception 
+	 */
+	//@Ignore
+	@Test
+	public void test_Web_2639() throws Exception {
+		
+		while (pos < totalTestsCases) {
+
+			pass = false;
+			pos++;
+
+			tempDatoTest = datosTest.get(pos);
+			//int posicionTestActual = tempDatoTest.getPosicion();
+
+			initialization();
+
+			objHomePage.clickOnIniciarSesion();
+			objLogin.autenticacion();
+			objHomePage.verifyHomePageContentWithLogin();
+			objHomePage.clickOnOtherStore();
+			objMarket.verifyMainPageObjInMarket();
+			objMarket.chooseACategoryRandomFromMainListMarket();
+			objMarket.addAProdFromMarketCategoryToBasket();
+			objHomePage.clickOnCanasta();
+			objBasket.verifMainInfoBasket();
+			objBasket.clickOnGoToChekout();
+			objCheckout.verifyMainInfoCheckout2(false);
+			objCheckout.selectAPayMethodInCheckout(1);
+			pass = true;
+
+			//ExcelUtils.updateExcelFile("Pass", "AgregarProducto", posicionTestActual, 9);
+			driver.quit();
+		}
+	}
+	
+	
+	@After
+	public void finish() throws Exception {
+		
+		if(pass) {
+			System.out.println("Paso Todo");
+		}else {
+			System.out.println("Fallo Algo");
+			//ExcelUtils.updateExcelFile("Fail-" +sTestCaseName, "AgregarProducto", tempDatoTest.getPosicion(), 9);
+		}
+
+		// Close all Browsers
+		driver.quit();
+	}
+	
+	@AfterClass
+	public static void finalAll()throws Exception{
+		System.out.println("finalAll");
+		
+		// Close all Browsers
+		driver.quit();
+	}
+
+}

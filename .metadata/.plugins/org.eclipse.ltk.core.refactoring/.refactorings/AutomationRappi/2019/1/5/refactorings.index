@@ -1,0 +1,13 @@
+1548717925928	Convert local variable 'workbook' to field
+1548720359402	Convert local variable 'workbook2' to field
+1548774134579	Delete element
+1548774143994	Delete element
+1548774597240	Delete element
+1548774959700	Delete element
+1548774964660	Delete element
+1548789233007	Rename field 'nameProdSelected'
+1548789244636	Rename field 'priceProdSelected'
+1548789259211	Rename field 'idProdSelected'
+1548949475393	Rename method 'verifyFlagsLogin'
+1548950026935	Rename method 'verifyBienvenidaLogin'
+1548952933091	Rename field 'preLogin'

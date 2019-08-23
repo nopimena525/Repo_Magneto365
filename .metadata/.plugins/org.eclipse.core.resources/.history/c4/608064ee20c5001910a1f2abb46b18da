@@ -1,0 +1,137 @@
+package pages;
+
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebLoginFacebook extends TestBase{
+	
+	// Object Repository for RappiWebLoginFacebook
+	By pageFace = By.id("facebook");
+	By userCorreoFace = By.id("email");
+	By userPassFace = By.id("pass");
+	By submitFace = By.id("loginbutton");
+	By btnOlvidoPassFace = By.id("forgot-password-link");
+	By btnCrearCtaFace = By.xpath("//*[@class='_42ft _4jy0 _4jy3 _4jy2 selected _51sy']");
+	By btnProfileEnabled = By.xpath("//*[@class='dropwdown-user-logged hidden-tablet ng-star-inserted']");
+	By msgeErrorLoginFace = By.id("error_box");
+	
+	RappiWebLogin objLogin;
+	
+	/**
+	 * Initializing the Page Objects Method RappiWebLoginFacebook
+	 */
+//	public RappiWebLoginFacebook(WebDriver driver) {
+//		this.driver = driver;
+//	}
+
+	
+	/**
+	 * This POM method will Set Credentials for Facebook Login
+	 * 
+	 * @return TRUE only if Login is Successful
+	 */
+	public Boolean loginWithFacebook(String strUsername, String strPassword) {
+		objLogin = new RappiWebLogin();
+		String mainWinHandle = driver.getWindowHandle();
+		// System.out.println("Main window: " + mainWinHandle);
+
+		try {
+			System.out.println("LoginWithFacebook");
+
+			if (objLogin.clickOnLoginFacebook(mainWinHandle)) {
+				// Fill user name
+				setCorreoEmail(strUsername);
+				// Fill password
+				setPasswordEmail(strPassword);
+
+				if (driver.findElement(submitFace).isEnabled()) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_SetUserData_Facebook");
+					return clickOnSubmitFacebook(mainWinHandle);
+				} else {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SubmitBtnDisabled_Facebook");
+					throw new IOException("ERROR: Click in 'Login Facebook Btn' isn't Enabled!");
+				}
+			} else {
+				throw new IOException("ERROR FACEBOOK: Login Facebook Failed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_loginWithFacebook_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Set User in user text box
+	 * 
+	 * @param strUsername	String Parameter User E-mail
+	 */
+	public void setCorreoEmail(String strUsername) {
+		driver.findElement(userCorreoFace).clear();
+		RappiUtility.highLightElement(driver.findElement(userCorreoFace), true);
+		driver.findElement(userCorreoFace).sendKeys(strUsername);
+	}
+
+	/**
+	 * This POM method will Set Password in password text box
+	 * 
+	 * @param strPassword	String Parameter User Password
+	 */
+	public void setPasswordEmail(String strPassword) {
+		driver.findElement(userPassFace).clear();
+		RappiUtility.highLightElement(driver.findElement(userPassFace), true);
+		driver.findElement(userPassFace).sendKeys(strPassword);
+	}
+	
+	/**
+	 * This POM method will click on 'Iniciar Sesion' Button for Facebook
+	 * 
+	 * @return TRUE if login with Facebook is correct
+	 */
+	public Boolean clickOnSubmitFacebook(String mainWindow) {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("ClickOnSubmitFacebook");
+			if (RappiUtility.clickOnElement(driver.findElement(submitFace))) {
+				driver.switchTo().window(mainWindow);
+				// System.out.println("Parent URL: " + driver.getCurrentUrl());
+
+//				if(sBrowserName.equalsIgnoreCase("safari")) {
+//					Thread.sleep(5000);
+//				}
+				try {
+					driver.findElement(btnProfileEnabled);
+					wait.until(ExpectedConditions.visibilityOfElementLocated(btnProfileEnabled));
+					// RappiUtility.highLightElement(driver.findElement(btnProfileEnabled), false);
+					flagLogged = true;
+				} catch (Exception e) {
+					driver.findElement(msgeErrorLoginFace);
+					if (driver.findElement(msgeErrorLoginFace).isDisplayed()) {
+						RappiUtility.verifyAnElement(true, driver.findElement(msgeErrorLoginFace));
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/MessageErrorLogin_Facebook");
+						throw new Exception("ERROR LOGIN: Wrong Credentials!");
+					}
+				}
+			} else {
+				throw new IOException("ERROR SUBMIT FACEBOOK: Click On 'Submit Facebook' Btn Failed!");
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnSubmitFacebook_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+}

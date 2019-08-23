@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;pages.RappiWebCheckOut.redimirCuponIngresado(...)&apos; to &apos;verifyCuponIngresado&apos;&#x0A;- Original project: &apos;AutomationRappi&apos;&#x0A;- Original element: &apos;pages.RappiWebCheckOut.redimirCuponIngresado(...)&apos;&#x0A;- Renamed element: &apos;pages.RappiWebCheckOut.verifyCuponIngresado(...)&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="true" description="Rename method &apos;redimirCuponIngresado&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src\/main\/java&lt;pages{RappiWebCheckOut.java[RappiWebCheckOut~redimirCuponIngresado~QString;" name="verifyCuponIngresado" references="true" stamp="1556136405023" version="1.0"/>
+</session>

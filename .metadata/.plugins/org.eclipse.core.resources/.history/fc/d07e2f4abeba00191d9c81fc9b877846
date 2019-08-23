@@ -1,0 +1,727 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebRestaurants extends TestBase {
+
+	// Object Repository for RappiWebRestaurants
+	// By mainTitleRest = By.id("by-stores-title"); //Se actualizo elemento 21Feb19
+	By mainTitleRest = By.xpath("//*[@class='by-stores-breadcrumbs ng-star-inserted']");
+	By mainRestBox = By.xpath("//*[@class='store-list-boxes']");
+	By idRestInList = By.xpath("//*[starts-with(@id,'store-')]");
+	By nameRestInList = By.cssSelector("span[class^='store-name']");
+	By subMenuCategorias = By.xpath("//*[@class='title-order-categories ng-star-inserted']");
+
+	By mainRestList = By.xpath("//*[@class='store-item-box']");
+	By infoGralRestSelect = By.xpath("//*[@class='store-detail-section']");
+	By restSelectName = By.id("store-name");
+	By restSelectLogo = By.xpath("//*[@class='store-logo']");
+	By tagInfoRestCerrado = By.xpath("//*[@class='info-delivery']//*[@class='restaurant-closed']");
+	By listRestShowToSelect = By.xpath("//*[@class='products-list show-products']");
+	
+
+	By mainCatShowRestList = By.xpath("//*[@class='products-list show-products']/child::div/child::div");
+	By infoGralCatSelect = By.xpath("//div[starts-with(@id,'category-products-')]");
+	By catSelectName = By.cssSelector("h2[id^='corridor-name-']");
+	By listProdInCatWithImage = By.xpath("//div[starts-with(@id,'product-image-')]");
+	By listProdInCatWithoutImage = By.xpath("//div[starts-with(@id,'product-no-image-')]");
+
+	By listProdWithImg = By.cssSelector("div[id^='product-image-']");
+	By listProdWithoutImg = By.cssSelector("div[id^='product-no-image-']");
+	By mainProdShowInCat = By.xpath("//div[starts-with(@id,'category-products-')]/child::div/child::div");
+	By infoGralProdSelect = By.xpath("//a[starts-with(@id,'product-')]");
+	By prodSelectName = By.id("store-product-title");
+	By idProdInList = By.xpath("//app-store-product//a[starts-with(@id,'product-')]");
+	By prodSelecPrice = By.xpath("//*[@class='store-product-price']");
+	By indicadorProdAddToBasket = By.cssSelector("small[class^='ng-star-inserted']");
+	//By prodSelecPrice = By.xpath("//*[starts-with(@id,'product-')]//*[@class='store-product-price']");
+	//*[@id="product-2090214904"]/span/span[1]/span[3]
+	///*[class='store-product-price']
+
+	By searchRestList = By.xpath("//*[@class='by-stores-search ng-star-inserted']/child::ul/child::li");
+	By subSearchRestList = By.cssSelector("li");
+	By infoProduct = By.xpath("//*[@class='cont-view-product']");
+	By msjeConfirmAddress = By.xpath("//*[@id='addresses-modal']/div/div/div[1]/div[2]/div[2]/div");
+	By modalAlertas = By.cssSelector("div[class^='modal-box']");
+	By btnCloseModalAlertas = By.cssSelector("button[class^='close-modal']");
+	By btnYesModalAlertaEdad = By.cssSelector("button[class^='btn-confirmation']");
+	By btnMsjeYes = By.xpath("//button[@class='red-shadow']");
+	By nameAddressToConfirm = By.xpath("//*[@class='address-confirmation-name']");
+	By alertaLoginRest = By.xpath("//app-alert-login//*[@class='cont-alert-login']");
+	By btnEntrarLogin = By.xpath("//app-alert-login//button");
+	By boxSearch = By.xpath("//app-input-debounce//input[@type='text']");
+	By btnSearch = By.xpath("//button[@type='submit']");
+	By sectionFiltrosSearch = By.xpath("//*[@class='cont-filters']");
+	By lisTiposSearch = By.xpath("//*[@class='cont-filters']/child::div");
+	By titleSearchContent = By.xpath("//*[@class='head-search-page ng-star-inserted']");
+	By nameRestSearched = By.xpath("//div[@class='logo-restaurant']//p");
+	By listSearchProdInRest = By.xpath("//li[starts-with(@class,'carousel-restaurant-search')]//child::li");
+	By precioProdInSearchRest = By.cssSelector("p[class^='prices']");
+	By carruselProdInSearchRest = By.xpath("//li[starts-with(@class,'carousel-restaurant-search')]//div[starts-with(@id,'carousel-')]");
+	
+	RappiWebHomePage objHomePage;
+	RappiWebLogin objLogin;
+	
+	/**
+	 * This POM method will validate title On Restaurant
+	 * 
+	 * @return TRUE only if Main Title is Displayed
+	 */
+	public Boolean verifyTitleRest() {
+		return RappiUtility.verifyAnElement(true, driver.findElement(mainTitleRest));
+	}
+
+	/**
+	 * This POM method will validate Main Restaurants
+	 * 
+	 * @return TRUE only if Main Restaurants are Displayed
+	 */
+	public Boolean verifyMainRestBox() {
+		return RappiUtility.verifyAnElement(true, driver.findElement(mainRestBox));
+	}
+
+	/**
+	 * This POM method will validate actual Name from Categories
+	 * 
+	 * @return TRUE only if actual Title On Categories is Displayed
+	 */
+	public Boolean verifyCategoriesOnRest() {
+		return RappiUtility.verifyAnElement(true, driver.findElement(subMenuCategorias));
+	}
+	
+	/**
+	 * This POM method will validate Main Page Objects On Restaurants
+	 */
+	public void verifyMainPageObjInRest() {
+
+		try {
+			System.out.println("Try_verifyMainPageObjInRest");
+			if (verifyCategoriesOnRest() && verifyTitleRest() && verifyMainRestBox()) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_Restaurants_" + sCountry);
+			} else {
+				throw new IOException("ERROR HOME RESTAURANT: Main Page Objects On Restaurants aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifyMainPageObjInRest");
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/HomeRestaurantsFailed");
+			flagModalAlerta = true;
+			System.out.println("ERROR verifyMainPageObjInRest:" + e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will choose A Product From Category Selected
+	 * 
+	 * @return TRUE only if click on Product is Correct
+	 */
+	public Boolean chooseAProdInCategory(WebElement idCatSelect) {
+		int randomNumProdInCat = 0;
+		wait = new WebDriverWait(driver, 1);
+		int totalProdShow = 0;
+
+		try {
+			System.out.println("Try_chooseAProdInCategory");
+			List<WebElement> elemProdShowInCat = idCatSelect.findElements(listProdWithImg);
+			List<WebElement> elemProdSinImageShowInCat = idCatSelect.findElements(listProdWithoutImg);
+
+			int numProdInCats = elemProdShowInCat.size();
+			int numProdSinImageInCats = elemProdSinImageShowInCat.size();
+
+			if ((numProdInCats > 0) || (numProdSinImageInCats > 0)) {
+				totalProdShow = numProdInCats + numProdSinImageInCats;
+				randomNumProdInCat = objGenerator.nextInt(totalProdShow);
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/RestCategory_Empty");
+				throw new IOException("ERROR #PROD=0: There aren't products in category selected!");
+			}
+			// System.out.println("Total Prod en Categ:" + totalProdShow + "\nProd Selec
+			// Random:" + randomNumProdInCat);
+
+			if ((numProdInCats > 0) && (randomNumProdInCat < numProdInCats)) {
+				WebElement elemProdSelWithImag = elemProdShowInCat.get(randomNumProdInCat);
+
+				try {
+					System.out.println("TRY_ScrollProdInRest");
+					RappiUtility.scrollToElement(elemProdSelWithImag);
+					RappiUtility.scrollUp();
+					wait.until(ExpectedConditions.visibilityOf(elemProdSelWithImag));
+				} catch (Exception e1) {
+					System.out.println("CATCH_ScrollProdInRest");
+					RappiUtility.scrollUp();
+				}
+
+				if (elemProdSelWithImag.getAttribute("id").contains("product-image-")) {
+					String nameProdTemp = elemProdSelWithImag.findElement(prodSelectName).getAttribute("title").trim();
+					// sNameProdSelected = nameProdTemp.replaceAll("[^\\dA-Za-z]", "");
+					sNameProdSelected = nameProdTemp;
+					System.out.println("NameProdImg[" + randomNumProdInCat + "]:" + sNameProdSelected);
+
+					if (elemProdSelWithImag.getText().trim().toLowerCase().contains("no disponible")
+							|| elemProdSelWithImag.getText().trim().toLowerCase().contains("não disponível")) {
+						System.out.println("Product_" + sNameProdSelected + "_Disabled!");
+						RappiUtility.highLightElement(elemProdSelWithImag, false);
+						RappiUtility.takeScreen(
+								"Img_Error_" + sTestCaseName + "/RestProduct_" + sNameProdSelected + "_Disabled");
+						// throw new IOException("ERROR NO DISPONIBLE: Product " + sNameProdSelected + "
+						// not Available!");
+						flagModalAlerta = true;
+					} else {
+						wait.until(ExpectedConditions.visibilityOf(elemProdSelWithImag));
+
+						if (RappiUtility.verifyAnElement(false, elemProdSelWithImag)) {
+							sIdProdSelected = elemProdSelWithImag.findElement(By.cssSelector("a[id^='product-']"))
+									.getAttribute("id");
+							sPriceProdSelected = elemProdSelWithImag
+									.findElement(By.cssSelector("span[class^='store-product-price']")).getText().trim();
+							// System.out.println("ID:" + sIdProdSelected + "\nPrecio:" +
+							// sPriceProdSelected);
+							return RappiUtility.clickOnElement(elemProdSelWithImag);
+						} else {
+							throw new IOException(
+									"ERROR CLICK PROD: Click Product " + sNameProdSelected + " isn't Enabled!");
+						}
+					}
+					return true;
+				} else {
+					throw new IOException("ERROR PRODUCT ID: Product ID With Image not Available!");
+				}
+			} else if ((numProdSinImageInCats > 0) && (randomNumProdInCat >= numProdInCats)) {
+
+				int randTempoProdSinImag = objGenerator.nextInt(numProdSinImageInCats);
+				WebElement elemProdSelWithoutImag = elemProdSinImageShowInCat.get(randTempoProdSinImag);
+				RappiUtility.scrollToElement(elemProdSelWithoutImag);
+				RappiUtility.scrollUp();
+
+				if (elemProdSelWithoutImag.getAttribute("id").contains("product-no-image-")) {
+					String nameProdTempo2 = elemProdSelWithoutImag.findElement(prodSelectName).getAttribute("title")
+							.trim();
+					// sNameProdSelected = nameProdTempo2.replaceAll("[^\\dA-Za-z]", "");
+					sNameProdSelected = nameProdTempo2;
+					System.out.println("NameProdSinImg[" + randTempoProdSinImag + "]:" + sNameProdSelected);
+
+					if (elemProdSelWithoutImag.getText().trim().toLowerCase().contains("no disponible")
+							|| elemProdSelWithoutImag.getText().trim().toLowerCase().contains("não disponível")) {
+						System.out.println("Product_" + sNameProdSelected + "_Disabled!");
+						RappiUtility.highLightElement(elemProdSelWithoutImag, false);
+						RappiUtility.takeScreen(
+								"Img_Error_" + sTestCaseName + "/RestProduct_" + sNameProdSelected + "_Disabled");
+						// throw new IOException("ERROR NO DISPONIBLE: Product " + sNameProdSelected + "
+						// not Available!");
+						flagModalAlerta = true;
+					} else {
+						wait.until(ExpectedConditions.visibilityOf(elemProdSelWithoutImag));
+
+						if (RappiUtility.verifyAnElement(false, elemProdSelWithoutImag)) {
+							sIdProdSelected = elemProdSelWithoutImag.findElement(By.cssSelector("a[id^='product-']"))
+									.getAttribute("id");
+							sPriceProdSelected = elemProdSelWithoutImag
+									.findElement(By.cssSelector("span[class^='store-product-price']")).getText().trim();
+							// System.out.println("IDNoImg:" + sIdProdSelected + "\nPrecioSinImg:" +
+							// sPriceProdSelected);
+							return RappiUtility.clickOnElement(elemProdSelWithoutImag);
+						} else {
+							throw new IOException(
+									"ERROR PROD REST: Validate Product " + sNameProdSelected + " Failed!");
+						}
+					}
+					return true;
+				} else {
+					throw new IOException("ERROR PRODUCT ID: Product ID Without Image not Available!");
+				}
+			} else {
+				throw new IOException("ERROR #PRODUCT: Product Number isn't Exists!");
+			}
+
+		} catch (Exception e) {
+			System.out.println("Catch_chooseAProdInCategory");
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	/**
+	 * This POM method will choose A Category From Selected Restaurant
+	 * 
+	 * @return TRUE only if click on Product is Correct
+	 */
+	public Boolean chooseACategoryFromRest() {
+		int randomNumCatRest = 0;
+		objGenerator = new Random();
+		String strNameCatSel = "";
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_chooseACategoryFromRest");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(mainCatShowRestList));
+			List<WebElement> elemCatRestShow = driver.findElements(mainCatShowRestList);
+
+			int numCatRests = elemCatRestShow.size();
+			randomNumCatRest = objGenerator.nextInt(numCatRests);
+			// System.out.println("Total Cat en Rest:" + numCatRests + "\nCat Selec Random:" + randomNumCatRest);
+			
+			WebElement idCatSelect = elemCatRestShow.get(randomNumCatRest);
+
+			strNameCatSel = idCatSelect.findElement(catSelectName).getText().trim();
+			System.out.println("NameCat[" + randomNumCatRest + "]:" + strNameCatSel);
+
+			String idCat = idCatSelect.getAttribute("id");
+			// System.out.println("IDCat:"+idCat); //ID-CatGeneral
+			String idCatCorridor = driver.findElements(catSelectName).get(randomNumCatRest).getAttribute("id");
+			// System.out.println("IDCatCorridor:"+idCatCorridor); //ID-CatCorridor
+
+			if (idCat.isEmpty() || idCatCorridor.isEmpty()) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Category_" + strNameCatSel + "_Empty");
+				throw new IOException("ERROR CATEGORY ID: Category ID " + strNameCatSel + " is Empty!");
+			} else {
+				RappiUtility.scrollToElement(idCatSelect.findElement(catSelectName));
+				RappiUtility.scrollUp();
+				//wait.until(ExpectedConditions
+				//		.visibilityOfAllElements(idCatSelect.findElements(infoGralCatSelect).get(randomNumCatRest)));
+
+				if (RappiUtility.verifyAnElement(false,
+						idCatSelect.findElements(infoGralCatSelect).get(randomNumCatRest))
+						&& RappiUtility.verifyAnElement(false, idCatSelect.findElement(catSelectName))) {
+
+					RappiUtility.highLightElement(idCatSelect.findElement(catSelectName), true);
+					RappiUtility.takeScreen(sTestCaseName + "/Img_Cat_Selected_" + strNameCatSel);
+
+					return chooseAProdInCategory(idCatSelect);
+
+				} else {
+					throw new IOException("ERROR CAT: Category " + strNameCatSel + " isn't Displayed!");
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseACategoryFromRest");
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Rest_Category_" + strNameCatSel + "_Empty");
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	/**
+	 * This POM method will choose A Restaurant from Restaurants list
+	 * 
+	 * @return TRUE only if click on Restaurant is Correct
+	 */
+	public Boolean chooseARestFromMainList() {
+		int randomNumRest = 0;
+		objGenerator = new Random();
+		String strNameRestSel = "";
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_chooseARestFromMainList");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(mainRestList));
+			List<WebElement> elemRestList = driver.findElements(mainRestList);
+
+			int numRests = elemRestList.size();
+			randomNumRest = objGenerator.nextInt(numRests);
+			// System.out.println("Total Lista Rest:" + numRests + "\nRest Selec Random:" + randomNumRest);
+
+			strNameRestSel = elemRestList.get(randomNumRest).findElement(nameRestInList).getText().trim();
+			System.out.println("NameRest[" + randomNumRest + "]:" + strNameRestSel);
+
+			try {
+				RappiUtility.scrollToElement(elemRestList.get(randomNumRest));
+				RappiUtility.scrollUp();
+				wait.until(ExpectedConditions.visibilityOf(elemRestList.get(randomNumRest)));
+			} catch (Exception e) {
+				RappiUtility.scrollUp();
+			}
+
+			String strInfGralRest = elemRestList.get(randomNumRest).getText().trim().toLowerCase();
+			// System.out.println("Name2:" +strInfGralRest);
+
+			if (strInfGralRest.contains("cerrado") || strInfGralRest.contains("fechado")) {
+				System.out.println("Restaurant_" + strNameRestSel + "_Closed!");
+				RappiUtility.highLightElement(elemRestList.get(randomNumRest), false);
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Rest_" + strNameRestSel + "_Closed");
+				// throw new IOException("ERROR CLOSE REST: Restaurant " + strNameRestSel + " Cerrado - not Available!");
+				flagModalAlerta = true;
+			} else {
+				if (RappiUtility.clickOnElement(elemRestList.get(randomNumRest))) {
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralRestSelect));
+						if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralRestSelect))
+								&& RappiUtility.verifyAnElement(false, driver.findElement(restSelectLogo))
+								&& RappiUtility.verifyAnElement(false, driver.findElement(restSelectName))) {
+
+							String temp = driver.findElement(tagInfoRestCerrado).getText().trim().toLowerCase();
+							// System.out.println("RestInterno:" + temp);
+							if((!temp.isEmpty()) && (temp.contains("no") || temp.contains("não")
+									|| temp.contains("cerrado") || temp.contains("fechado"))) {
+								System.out.println("Restaurant_" + strNameRestSel + "_NoDisponile!");
+								RappiUtility.highLightElement(driver.findElement(restSelectName), false);
+								RappiUtility.highLightElement(driver.findElement(tagInfoRestCerrado), false);
+								RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Rest_" + strNameRestSel + "_NoDisponible");
+								flagModalAlerta = true;
+							}else {
+								try {
+									wait.until(ExpectedConditions.visibilityOfElementLocated(listRestShowToSelect));
+									if (RappiUtility.verifyAnElement(false, driver.findElement(listRestShowToSelect))) {
+										RappiUtility.takeScreen(sTestCaseName + "/Img_Rest_Selected_" + strNameRestSel);
+
+										return chooseACategoryFromRest();
+									} else {
+										throw new IOException("ERROR LIST CAT: Categories in Restaurants aren't Displayed!");
+									}
+								} catch (Exception e2) {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Rest_CategoriesList_Not_Displayed");
+									System.out.println(e2.getMessage());
+									return false;
+								}
+							}
+						} else {
+							throw new IOException(
+									"ERROR INFO REST: Info On Restaurant " + strNameRestSel + " isn't Displayed!");
+						}
+					} catch (Exception e1) {
+						driver.findElement(mainRestList);
+						wait.until(ExpectedConditions.visibilityOfElementLocated(mainRestList));
+						List<WebElement> elemRestList2 = driver.findElements(mainRestList);
+						System.out.println("ERROR Restaurant " + strNameRestSel + " Disabled!");
+						RappiUtility.scrollToElement(elemRestList2.get(randomNumRest));
+						RappiUtility.scrollUp();
+						RappiUtility.highLightElement(elemRestList2.get(randomNumRest), false);
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Rest_" + strNameRestSel + "_Disabled");
+						flagModalAlerta = true;
+					}
+				} else {
+					throw new IOException("ERROR CLICK REST: Click On Restaurant " + strNameRestSel + " Failed!");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseARestFromMainList_" + sBrowserName);
+			System.out.println("ERROR chooseARestFromMainList:" + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * This POM method will choose A Rest from search Restaurant list
+	 */
+	public Boolean chooseARestFromSearchList() {
+		objGenerator = new Random();
+		String strRestSelect, strnameProdTemp;
+		wait = new WebDriverWait(driver, 1);
+		WebElement elemRestSelected, elemProdSelected;
+		objHomePage = new RappiWebHomePage();
+
+		try {
+			System.out.println("Try_chooseARestFromSearchList_" + sBrowserName);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(searchRestList));
+
+			List<WebElement> elemSearchRestList = driver.findElements(searchRestList);
+			int numSearchRest = elemSearchRestList.size();
+
+			int randomNumSearchRest = objGenerator.nextInt(numSearchRest);
+			elemRestSelected = elemSearchRestList.get(randomNumSearchRest);
+			strRestSelect = elemRestSelected.findElement(By.cssSelector("p")).getText().trim();
+			System.out.println("Name Rest:" + strRestSelect);
+			// System.out.println("TAM1:" +numSearchRest +"\nRandom:" +randomNumSearchRest);
+			// System.out.println("ID:"
+			// +restSelected.findElement(By.cssSelector("a[id^='product-']")).getAttribute("id"));
+
+			RappiUtility.scrollToElement(elemRestSelected);
+			RappiUtility.scrollUp();
+			RappiUtility.verifyAnElement(true, elemRestSelected);
+			RappiUtility.takeScreen(sTestCaseName + "/Img_Rest_Selected_" + strRestSelect);
+
+			List<WebElement> elemSubList = elemRestSelected.findElements(subSearchRestList);
+			int numSubRest = elemSubList.size();
+
+			int randonNumSubRest = objGenerator.nextInt(numSubRest);
+			elemProdSelected = elemSubList.get(randonNumSubRest);
+			strnameProdTemp = elemProdSelected.findElement(By.cssSelector("p")).getText();
+			// sNameProdSelected = strnameProdTemp.replaceAll("[^\\dA-Za-z]", "");
+			sNameProdSelected = strnameProdTemp;
+			System.out.println("Name Prod:" + sNameProdSelected);
+			// System.out.println("TAM Sub1:" +numSubRest +"\nSub-Random:" +randonNumSubRest);
+
+			assertTrue("ERROR CREDIT CARD: Credit Card isn't Displayed!",
+					RappiUtility.verifyAnElement(true, elemProdSelected));
+
+			if (RappiUtility.clickOnElement(elemProdSelected)) {
+				try {
+					driver.findElement(infoProduct);
+				} catch (Exception e2) {
+					try {
+						driver.findElement(modalAlertas);
+						if (driver.findElement(modalAlertas).isDisplayed()) {
+							System.out.println("Entro Modal");
+							if (driver.findElement(modalAlertas).getText().contains("edad")
+									|| driver.findElement(modalAlertas).getText().contains("idade")) {
+								System.out.println("Modal Edad");
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaEdad");
+								driver.findElement(btnYesModalAlertaEdad).click();
+								Thread.sleep(500);
+								//return true;
+							} else if (driver.findElement(modalAlertas).getText().contains("dirección")
+									|| driver.findElement(modalAlertas).getText().contains("endereço")) {
+								System.out.println("Modal Direccion");
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaDireccion");
+								driver.findElement(btnCloseModalAlertas).click();
+								Thread.sleep(500);
+							}
+							if(objHomePage.verifyHeaderInHomePageWithLogin()) {
+								try {
+									driver.findElement(indicadorProdAddToBasket);
+									if (driver.findElement(indicadorProdAddToBasket).isDisplayed()){
+										RappiUtility.highLightElement(driver.findElement(indicadorProdAddToBasket), true);
+										// return true;
+									}
+								} catch (Exception e3) {
+									flagModalAlerta = true;
+								}
+							}
+							return true;
+						}
+					} catch (Exception e3) {
+						driver.findElement(alertaLoginRest);
+						if (RappiUtility.verifyAnElement(true, driver.findElement(alertaLoginRest))) {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_Login_Required");
+							return loginForSelectProduct();
+						}
+					}
+				}
+			} else {
+				throw new IOException("ERROR CLICK PROD: Click On 'Product' in Rest isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseARestFromSearchList_" + sBrowserName);
+			System.out.println("ERROR-chooseARestFromSearchList:" + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * This POM method will Login to user if it Select a Product from Rest
+	 * but doesn't Logued before
+	 * 
+	 * @return TRUE only if Login is Correct
+	 */
+	public Boolean loginForSelectProduct() {
+		objLogin = new RappiWebLogin();
+		
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnEntrarLogin))) {
+				if (objLogin.verifyContentInLogin() /*&& objLogin.loginWith(sTipoLogin, sUserName, sPassword)*/) {
+					return true;
+				}else {
+					throw new IOException("ERROR LOGIN REST: Login failed!");
+				}
+			}else {
+				throw new IOException("ERROR CLICK LOGIN: Click On 'Login Btn' in Message isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		
+	}
+
+	/**
+	 * This POM method will select a Product from Restaurants List
+	 * 
+	 * @param tipoBusqueda "0":Select Prod Random - "1":Search a Prod
+	 */
+	public void selectProdInRest(int tipoBusqueda) {
+
+		switch (tipoBusqueda) {
+
+		case 0:
+			// System.out.println("Case 0");
+			if (!flagModalAlerta) {
+				assertTrue("ERROR selectProdInRest: Restautant-Categoty-Product Invalid!", chooseARestFromMainList());
+			}
+			break;
+
+		case 1:
+			// System.out.println("Case 1");
+			if (!flagModalAlerta) {
+				assertTrue("ERROR selectProdInRest: Search Restautant-Product Invalid!", chooseARestFromSearchList());
+			}
+			break;
+
+		default:
+			throw new IllegalArgumentException("Invalid Search Type Rest: " + tipoBusqueda);
+		}
+	}
+	
+	/**
+	 * This POM method will Search a Restaurant from Search Button
+	 * 
+	 * @param strNameRestToSearch	Restaurant Name to Search
+	 * 
+	 * @param strOrderBy			Order Type, "Mayor" or "Menor"
+	 */
+	public void searchRestaurantAndOrderBy(String strNameRestToSearch, String strOrderBy) {
+		wait = new WebDriverWait(driver, 1);
+		objHomePage = new RappiWebHomePage();
+
+		try {
+			System.out.println("Try_searchRestaurant_" + strNameRestToSearch);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(boxSearch));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(boxSearch))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnSearch))) {
+				try {
+					driver.findElement(boxSearch).clear();
+					driver.findElement(boxSearch).sendKeys(strNameRestToSearch);
+				} catch (Exception e2) {
+					driver.findElement(boxSearch).sendKeys(strNameRestToSearch);
+				}
+
+				assertTrue("ERROR HOME PAGE: Click On 'Search Button' Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnSearch)));
+
+				if (!objHomePage.clickOnSearchOpt(strOrderBy)) {
+					throw new IOException("ERROR SEARCH: Click On '" + strOrderBy + "' Option Failed!");
+				} else {
+					if (verifyOrderSearchInRestaurant(strNameRestToSearch, strOrderBy)
+							&& RappiUtility.verifyAnElement(true, driver.findElement(carruselProdInSearchRest))) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_OrderBy_" + strOrderBy + "_Selected");
+					} else {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Order_Prices_Failed");
+						throw new IOException("ERROR ORDER PRICES: Sorted Prices in Restaurants Failed!");
+					}
+				}
+			} else {
+				throw new IOException("ERROR SEARCH REST: Search Web Elements aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_searchRestaurant_" + sBrowserName);
+			flagModalAlerta = true;
+			System.out.println(e.getMessage());
+		}
+	}	
+	
+	/**
+	 * This POM method will order the Search in Restaurants
+	 * 
+	 * @param strTipoOrden	Enter order type 'Major' or 'Minor'
+	 */
+	public Boolean verifyOrderSearchInRestaurant(String strNameRest, String strTipoOrden) {
+		wait = new WebDriverWait(driver, 1);
+		ArrayList<Float> floatPriceList = new ArrayList<Float>();
+		String tipoOrden = "";
+		String strNameRestSearched = "";
+		String strIdRest = "";
+
+		try {
+			System.out.println("Try_verifyOrderSearchInRestaurant");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(titleSearchContent));
+			
+			strNameRestSearched = driver.findElement(nameRestSearched).getText();
+			System.out.println("Rest:" + strNameRestSearched);
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(sectionFiltrosSearch))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(titleSearchContent))
+					&& strNameRest.equalsIgnoreCase(strNameRestSearched)) {
+
+				strIdRest = driver.findElement(carruselProdInSearchRest).getAttribute("id");
+				System.out.println("ID:" + strIdRest);
+				
+				RappiUtility.verifyAnElement(true, driver.findElement(nameRestSearched));
+				List<WebElement> elemSearch = driver.findElements(listSearchProdInRest);
+				int numProdToOrder = elemSearch.size();
+				System.out.println("NumPrices:" + numProdToOrder);
+
+				String[] textPrices = new String[numProdToOrder];
+				int i = 0;
+				for (WebElement elem : elemSearch) {
+					RappiUtility.scrollToElement(elem);
+					RappiUtility.scrollUp();
+					RappiUtility.verifyAnElement(false, elem);
+					textPrices[i] = elem.findElement(precioProdInSearchRest).getText().replace("$", "").replace("U", "")
+							.replace("S/.", "").replace("R", "").replace(",", ".");
+					System.out.println("String Price:" + textPrices[i]);
+
+					if (!sBrowserName.equalsIgnoreCase("safari")) {
+						floatPriceList.add(Float.parseFloat(textPrices[i]));
+						// System.out.println("Float Price:" + floatPriceList);
+					}
+				}
+
+				if (!sBrowserName.equalsIgnoreCase("safari")) {
+					System.out.println("Prices list is:" + floatPriceList);
+				}
+
+				if (strTipoOrden.equalsIgnoreCase("mayor")) {
+					tipoOrden = "Descending";
+				} else {
+					tipoOrden = "Ascending";
+				}
+
+				assertTrue("ERROR ORDER ASC-DES: The Prices aren't in " + tipoOrden + " Order",
+						ascendingOrDescendingCheck(floatPriceList, strTipoOrden));
+
+			} else {
+				throw new IOException("ERROR SEARCH REST: Main Page Objects In Restaurants aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifyOrderSearchInRestaurant_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * This POM method will validate ascending order prices in Search in Rest
+	 * 
+	 * @param ArrayList<Float> data		ArrayList with the data to Order
+	 * 
+	 * @param strTipoOrden				Order Type "Ascending" or "Descending"
+	 */
+	Boolean ascendingOrDescendingCheck(ArrayList<Float> data, String strTipoOrden) {
+		int tamData = data.size() - 1;
+
+		for (int i = 0; i < tamData; i++) {
+			// System.out.println("\ni:" + i + "->num:" + data.get(i));
+			// System.out.println("ii:" + (i + 1) + "->num2:" + data.get(i + 1));
+
+			if (strTipoOrden.equalsIgnoreCase("menor")) {
+				if (data.get(i) > data.get(i + 1)) {
+					System.out.println("Precio " + data.get(i) + " es Mayor que " + data.get(i + 1));
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/OrderBy_" + strTipoOrden + "_Failed");
+					return false;
+				}
+			} else if (strTipoOrden.equalsIgnoreCase("mayor")) {
+				if (data.get(i) < data.get(i + 1)) {
+					System.out.println("Precio " + data.get(i) + " es Menor que " + data.get(i + 1));
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/OrderBy_" + strTipoOrden + "_Failed");
+					return false;
+				}
+			}
+		}
+		System.out.println("Prices list sorted!");
+		return true;
+	}
+
+}
+
+

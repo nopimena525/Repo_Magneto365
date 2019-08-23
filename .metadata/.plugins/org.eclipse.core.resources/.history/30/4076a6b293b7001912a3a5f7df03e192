@@ -1,0 +1,1177 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebCheckOut extends TestBase {
+
+	// Object Repository for RappiWebCheckOut
+	By namePestanaCompra = By.xpath("//*[@class='cont-tabs-basket ng-star-inserted']/child::ul");
+	By infoGralEntrega = By.xpath("//*[@class='checkout-step-one shadow']");
+	By contentSharks = By.xpath("//app-sharks//*[@class='cont-sharks shadow2']");
+	By btnCloseSharks = By.xpath("//app-sharks//*[@class='iconf-cancel']");
+	By nameMapa = By.xpath("//*[@class='checkout-step-one shadow']//label");
+	By imgMapa = By.xpath("//*[@class='map-address']");
+	By addressMapa = By.xpath("//app-address-map//*[@class='radio']");
+	By infoGralProdSelected = By.xpath("//*[@class='item-basket hover-calculator']");
+	By nameProdSelected = By.xpath("//app-product-basket//*[@class='cont-info-item ng-star-inserted']//strong");
+	By cantProdsSelected = By.xpath("//app-counter-product//*[@class='calculator']");
+	By priceProdSelected = By.xpath("//*[@class='price-item']");
+	By prodCheckoutList = By.xpath("//*[@class='list-product-basket']/child::li");
+
+	By infoGralPayMethod = By.xpath("//*[@class='checkout-step-two shadow']");
+	By namePayMethod = By.xpath("//*[@class='space-form']//label");
+	By typePaysCheckoutList = By.xpath("//app-payment-method//*[@class='cont-radio-payment']/child::div");
+	By idTipoDePago = By.cssSelector("input");
+	By infoGralPayTarjCredit = By.xpath("//app-card-list//*[@class='card-list']");
+	By cantidadTarjCreditList = By.xpath("//*[@class='scroll-cards ng-star-inserted']/child::fieldset");
+	By btnAddCredCardInCheckout = By.xpath("//*[@class='new-card']//button");
+	By infoGralTotalCheckout = By.xpath("//*[@class='check-out-summary']");
+	By infoGralVerifyTarjCred = By.xpath("//*[@class='cc-container']");
+	By pricesSummaryList = By.xpath("//*[@class='prices']/child::p");
+	
+	By btnIngresarCuponCkeckout = By.xpath("//*[@class='coupon-section']//button");
+	By infoGralModalCupon = By.xpath("//*[@class='coupon-modal']");
+	By boxIngresarCupon = By.id("coupon-input");
+	By btnRedimirCupon = By.xpath("//*[@class='btn ng-star-inserted']");
+	By imgRedencionCorrecta = By.xpath("//*[@class='cont-image ng-star-inserted']");
+	By infoRedencionCorrecta = By.xpath("//app-modal//p[@class='ng-star-inserted']");
+	By btnAplicarRedencion = By.xpath("//*[@class='coupon-modal']//button");
+	By btnCuponRedimido = By.xpath("//*[@class='coupon-section']//span");
+	By msjeCuponInvalid = By.xpath("//*[@id='toast-container']//*[@class='toast-title ng-star-inserted']");
+	
+	//NUEVO CHECKOUT
+	By btnSeguirComprando = By.cssSelector("button[class^='btn-close-checkout']");
+	By infoGralStepsCheckout = By.xpath("//*[@class='container-steps']");
+	By infoGralResumenCheckout = By.xpath("//*[@class='container-resume']");
+	By imgNumOne = By.xpath("//*[@id='address']//*[@class='number']");
+	By titleDirEntrega = By.xpath("//*[@id='address']//*[@class='title']");
+	By btnCambiarDirEntrega = By.cssSelector("span[class^='arrow']");
+	By infoDirEntrega = By.id("addresses");
+	By btnContinuarStepOne = By.xpath("//*[@id='address']//button");
+	By imgNumTwo = By.xpath("//*[@id='schedule']//*[@class='number']");
+	By titleFechaEntrega = By.xpath("//*[@id='schedule']//*[@class='title']");
+	By textFechaEntrega = By.id("dates");
+	By textHoraEntrega = By.id("times");
+	By listHorasEntrega = By.xpath("//*[@id='times']/child::ul/child::li");
+	By btnContinuarStepTwo = By.xpath("//*[@id='schedule']//button");
+	By imgNumThree = By.xpath("//*[@id='paymentMethods']//*[@class='number']");
+	By titleMetodoPago = By.xpath("//*[@id='paymentMethods']//*[@class='title']");
+	By infoGralPayMethodsStep3 = By.xpath("//*[@id='paymentMethods']//*[@class='payment-methods']");
+	By listMetodosPagoStep3 = By.xpath("//*[@id='paymentMethods']//*[@class='payment-methods']/child::ul/child::li");
+	By infoGralIngresarCuponStep3 = By.xpath("//*[@id='paymentMethods']//*[@class='coupon-section isCheckout']");
+	By btnIngresarCuponStep3 = By.xpath("//*[@id='paymentMethods']//*[@class='coupon-section isCheckout']//button");
+	By btnCuponRedimidoStep3 = By.xpath("//*[@class='coupon-section isCheckout']//span");
+	By infoGralPropinaStep3 = By.xpath("//*[@id='paymentMethods']//*[@class='tip']");
+	By infoGralPayTarjCreditStep3 = By.xpath("//app-card-list//*[@class='card-list checkout']");
+	By listTotalTarjCreditStep3 = By.xpath("//*[@class='scroll-cards ng-star-inserted']/child::fieldset");
+	By btnAddCredCardInCheckoutStep3 = By.xpath("//*[@class='no-credit-card ng-star-inserted']//a");
+	By btnContinuarStepThree = By.xpath("//app-payment-methods//*[@class='payment-methods']/button");
+	By btnHacerPedido = By.xpath("//*[@class='summary-prices']//button");
+	By infoGralPreciosCheckout = By.xpath("//*[@class='summary-prices']");
+	By listDescripcionPrecios = By.xpath("//*[@class='summary-prices']/child::ul/child::li");
+	By textPrecioTotal = By.xpath("//*[@class='summary-prices']/h5");
+	By titleSummaryCheckout = By.xpath("//*[@class='container-resume']//*[@class='summary-products active']");
+	By infoGralProdInCheckout = By.xpath("//app-product-basket//*[@class='item-basket hover-calculator isCheckout']");
+	By infoGralProdInCheckoutSecond = By.xpath("//app-summary-products//*[@class='products-resume']");
+	By btnVerListaProducts = By.cssSelector("div[class^='head']");
+	By listProdEnCheckout = By.xpath("//*[@class='width-img']/child::img");
+	By imgNumFour = By.xpath("//*[@id='captcha']//*[@class='number']");
+	By infoGralCaptcha = By.xpath("//*[@id='captcha']//*[@class='step active can-activate']");
+	By titleSharks = By.xpath("//app-sharks//*[@class='cont-sharks shadow2']//h6");
+	By infoGralProdInSharks = By.cssSelector("div[id^='carousel-']");
+	By btnPreviousSharks = By.xpath("//app-carousel//*[@class='prev not-show']");
+	By btnNextSharks = By.xpath("//app-carousel//*[@class='next not-show']");
+	By listProdInSharks = By.xpath("//app-carousel//*[@class='carousel']/child::ul/child::li");
+	By btnAddProdInSharks = By.cssSelector("div[class='btn-add ng-star-inserted']");
+	By avisoPrimeUser = By.xpath("//div[@class='prime-advice ng-star-inserted']");
+	By priceProdInCheckout = By.cssSelector("span[class='price']");
+	
+
+	/**
+	 * Initializing the Page Objects Method RappiWebCheckOut
+	 */
+//	public RappiWebCheckOut(WebDriver driver) {
+//		this.driver = driver;
+//	}
+	
+	/**
+	 * This POM method will validate main Info from New CheckOut
+	 * @throws InterruptedException 
+	 */
+	public void verifyMainInfoCheckout2(boolean getInSharks) throws InterruptedException {
+		wait = new WebDriverWait(driver, 1);
+
+		if (!flagModalAlerta) {
+			try {
+				driver.findElement(contentSharks);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(contentSharks));
+				if (RappiUtility.verifyAnElement(true, driver.findElement(contentSharks))) {
+					Thread.sleep(3000);
+					System.out.println("Exiten Sharks");
+					if (getInSharks) {
+						addAProdInSharks();
+					} else {
+						RappiUtility.verifyAnElement(true, driver.findElement(btnCloseSharks));
+						driver.findElement(btnCloseSharks).click();
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("No Hay Sharks Disponibles");
+				RappiUtility.scrollUp();
+			}
+
+			try {
+				driver.findElement(imgNumFour);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(imgNumFour));
+				if (RappiUtility.verifyAnElement(true, driver.findElement(imgNumFour))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(infoGralCaptcha))) {
+					System.out.println("Captcha Habilitado En Checkout");
+					flagModalAlerta = true;
+					RappiUtility.takeScreen(sTestCaseName + "/Img_Captcha_Enabled_Checkout");
+				}
+			} catch (Exception e1) {
+				if (verifyTotalPricesInCheckout2() && pasoUnoCheckout() && pasoDosCheckout() && pasoTresCheckout()
+						&& verifySummaryProdInCheckout2Second()) {
+					Thread.sleep(100);
+				} else {
+					System.out.println("ERROR BODY CHECKOUT: Some Content in Checkout isn't Displayed!");
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will validate First Step In CheckOut
+	 * 
+	 * @return TRUE only if All Information in Step 1 is Displayed 
+	 */
+	public Boolean pasoUnoCheckout() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_pasoUnoCheckout");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(titleDirEntrega));
+			RappiUtility.scrollToElement(driver.findElement(titleDirEntrega));
+			RappiUtility.scrollUp();
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(btnSeguirComprando))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(imgNumOne))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleDirEntrega))
+					/*&& RappiUtility.verifyAnElement(false, driver.findElement(btnCambiarDirEntrega))*/
+					&& RappiUtility.verifyAnElement(true, driver.findElement(infoDirEntrega))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnContinuarStepOne))) {
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_Step1_Checkout");
+				return RappiUtility.clickOnElement(driver.findElement(btnContinuarStepOne));
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Step1_incomplete");
+				throw new IOException("ERROR STEP1 CHECKOUT: Some Content in Step1 Checkout isn't Displayed!!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_pasoUnoCheckout_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Second Step In CheckOut
+	 * 
+	 * @return TRUE only if All Information in Step 2 is Displayed 
+	 */
+	public Boolean pasoDosCheckout() {
+		objGenerator = new Random();
+		List<WebElement> elemHorasEntrega;
+
+		try {
+			System.out.println("Try_pasoDosCheckout");
+			if (RappiUtility.verifyAnElement(false, driver.findElement(imgNumTwo))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleFechaEntrega))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(textFechaEntrega))) {
+
+				try {
+					driver.findElement(textHoraEntrega);
+					if (RappiUtility.verifyAnElement(false, driver.findElement(textHoraEntrega))
+							&& RappiUtility.clickOnElement(driver.findElement(textHoraEntrega))) {
+
+						elemHorasEntrega = driver.findElements(listHorasEntrega);
+						int numHorasEntrega = elemHorasEntrega.size();
+
+						if (numHorasEntrega < 1) {
+							throw new IOException("ERROR DELIVERY TIME: Delivery Time Invalid < 1!");
+						} else {
+							int randTime = objGenerator.nextInt(numHorasEntrega);
+							// System.out.println("Num:" + numHorasEntrega + "\nRand:" + randTime);
+
+							RappiUtility.scrollToElement(elemHorasEntrega.get(randTime));
+							RappiUtility.scrollUp();
+							RappiUtility.clickOnElement(elemHorasEntrega.get(randTime));
+							RappiUtility.verifyAnElement(false, driver.findElement(btnContinuarStepTwo));
+						}
+					}
+				} catch (Exception e) {
+					driver.findElement(btnContinuarStepTwo);
+					RappiUtility.verifyAnElement(false, driver.findElement(btnContinuarStepTwo));
+				}
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_Step2_Checkout");
+				return RappiUtility.clickOnElement(driver.findElement(btnContinuarStepTwo));
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Step2_incomplete");
+				throw new IOException("ERROR STEP2 CHECKOUT: Some Content in Step2 Checkout isn't Displayed!!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_pasoDosCheckout_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Third Step In CheckOut
+	 * 
+	 * @return TRUE only if All Information in Step 3 is Displayed 
+	 */
+	public Boolean pasoTresCheckout() {
+
+		try {
+			System.out.println("Try_pasoTresCheckout");
+			if (RappiUtility.verifyAnElement(false, driver.findElement(imgNumThree))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleMetodoPago))
+					&& verifyPayMethodsStep3InCheckout()
+					&& RappiUtility.verifyAnElement(false, driver.findElement(infoGralIngresarCuponStep3))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnIngresarCuponStep3))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(infoGralPropinaStep3))) {
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_Step3_Checkout");
+				return true;
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Step3_incomplete");
+				throw new IOException("ERROR STEP3 CHECKOUT: Some Content in Step3 Checkout isn't Displayed!!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_pasoTresCheckout_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Pay Methods in Checkout
+	 * 
+	 * @return TRUE only if some Pay Method is Displayed
+	 */
+	public Boolean verifyPayMethodsStep3InCheckout() {
+		wait = new WebDriverWait(driver, 1);
+		List<WebElement> elemPayMethods;
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayMethodsStep3));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralPayMethodsStep3))) {
+				elemPayMethods = driver.findElements(listMetodosPagoStep3);
+				int numPaysInCheckTypes = elemPayMethods.size();
+
+				if (numPaysInCheckTypes < 1) {
+					throw new IOException("ERROR PAY TYPES: Pay Types Invalid < 1!");
+				} else {
+					for (WebElement e : elemPayMethods) {
+						RappiUtility.verifyAnElement(true, e);
+					}
+					return true;
+				}
+			} else {
+				throw new IOException("ERROR PAY NAME: Pay Method Name In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate summary Product in New Checkout - 1 Version
+	 * 
+	 * @return TRUE only if summary Product is Displayed
+	 */
+	public Boolean verifySummaryProdInCheckout2First() {
+		String strNameProd = "";
+
+		try {
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralProdInCheckout))) {
+				strNameProd = driver.findElement(nameProdSelected).getText().trim();
+				System.out.println("NameCheckout:" + strNameProd);
+
+				if (!strNameProd.isEmpty()) {
+					return true;
+				} else {
+					throw new IOException("ERROR PROD NAME: Product Name in Checkout is Empty!");
+				}
+			} else {
+				throw new IOException("ERROR PROD CHECKOUT: Product Information In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This POM method will validate summary Product in New Checkout - 2 Version
+	 * 
+	 * @return TRUE only if summary Product is Displayed
+	 */
+	public Boolean verifySummaryProdInCheckout2Second() {
+		List<WebElement> elemProdInCheckout;
+
+		try {
+			System.out.println("Try_verifySummaryProdInCheckout2Second");
+			RappiUtility.scrollToElement(driver.findElement(btnVerListaProducts));
+			//RappiUtility.scrollUp();
+			
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralProdInCheckoutSecond))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnVerListaProducts))) {
+
+				elemProdInCheckout = driver.findElements(listProdEnCheckout);
+				int numProducts = elemProdInCheckout.size();
+				// System.out.println("ProdChekout:" + numProducts);
+				
+				if (numProducts < 1) {
+					throw new IOException("ERROR PROD CHECKOUT: Products List Invalid < 1!");
+				} else {
+					for (WebElement e : elemProdInCheckout) {
+						RappiUtility.scrollToElement(e);
+						RappiUtility.verifyAnElement(true, e);
+					}
+
+					RappiUtility.takeScreen(sTestCaseName + "/Img_Summary_Products_Checkout");
+					return true;
+				}
+			} else {
+				throw new IOException("ERROR PROD CHECKOUT: Product Information In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifySummaryProdInCheckout2Second_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Total prices summary in New Checkout
+	 * 
+	 * @return TRUE only if Total prices summary is Displayed
+	 */
+	public Boolean verifyTotalPricesInCheckout2() {
+
+		try {
+			System.out.println("Try_verifyTotalPricesInCheckout2");
+			RappiUtility.scrollToElement(driver.findElement(infoGralPreciosCheckout));
+			RappiUtility.scrollUp();
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralPreciosCheckout))) {
+				List<WebElement> elemNamePrices = driver.findElements(listDescripcionPrecios);
+				int numPricesInCheck = elemNamePrices.size();
+
+				if (numPricesInCheck < 1) {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SummaryPrices_Empty");
+					throw new IOException("ERROR PRICES: Total Prices in Checkout Invalid < 1!");
+				} else {
+					for (WebElement e : elemNamePrices) {
+						RappiUtility.verifyAnElement(false, e);
+					}
+					if (RappiUtility.verifyAnElement(false, driver.findElement(textPrecioTotal))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(btnHacerPedido))) {
+						return true;
+					} else {
+						throw new IOException("ERROR PRICES: Total Or HacerPedido Button aren't Displayed!");
+					}
+				}
+			} else {
+				throw new IOException("ERROR PRICES: Prices In Checkout aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifyTotalPricesInCheckout2_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate main Info from CheckOut
+	 */
+	public void verifyMainInfoCheckout() {
+		wait = new WebDriverWait(driver, 1);
+
+		if (!flagModalAlerta) {
+			try {
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralEntrega));
+				RappiUtility.scrollToElement(driver.findElement(infoGralEntrega));
+				RappiUtility.scrollUp();
+
+				try {
+					if (driver.findElement(contentSharks).isDisplayed()) {
+						RappiUtility.clickOnElement(driver.findElement(btnCloseSharks));
+					}
+				} catch (Exception e) {
+					RappiUtility.scrollUp();
+				}
+
+				if (verifyInfoGralEntrega() && verifyInfoGralPayMethod()) {
+					if (getNamePestanaCompraInCheckout() && verifyMapInCheckout() && verifySummaryProdInCheckout()
+							&& verifyHeadPayMethodInCheckout() && verifyTotalPricesInCheckout()) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_Checkout");
+					} else {
+						throw new IOException("ERROR BODY CHECKOUT: Some Content in Checkout isn't Displayed!");
+					}
+				} else {
+					throw new IOException("ERROR MAIN CHECKOUT: Delivery-Purchase aren't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * This POM method will validate General Information to Delivery
+	 * 
+	 * @return TRUE only if General Information is Displayed
+	 */
+	public Boolean verifyInfoGralEntrega() {
+		return RappiUtility.verifyAnElement(false, driver.findElement(infoGralEntrega));
+	}
+
+	/**
+	 * This POM method will validate Map in Checkout
+	 * 
+	 * @return TRUE only if Map is Displayed
+	 */
+	public Boolean verifyMapInCheckout() {
+
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(imgMapa));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(nameMapa))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(imgMapa))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(addressMapa))) {
+				return true;
+			} else {
+				throw new IOException("ERROR MAP CHECKOUT: Map in Checkout isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	/**
+	 * This POM method will validate General Information to Pay Method
+	 * 
+	 * @return TRUE only if General Information is Displayed
+	 */
+	public Boolean verifyInfoGralPayMethod() {
+		return RappiUtility.verifyAnElement(false, driver.findElement(infoGralPayMethod));
+	}
+
+	/**
+	 * This POM method will get Pestanas de Compra in Checkout
+	 * 
+	 * @return Name with Nombre de Pestana only if it exists
+	 */
+	public Boolean getNamePestanaCompraInCheckout() {
+		wait = new WebDriverWait(driver, 1);
+		String nameTipoCompra = "";
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(namePestanaCompra));
+
+			nameTipoCompra = driver.findElement(namePestanaCompra).getText();
+
+			if (nameTipoCompra != null) {
+				return true;
+			} else {
+				throw new IOException("ERROR STORE NAME: Store Name In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will validate summary Product in Checkout
+	 * 
+	 * @return TRUE only if summary Product is Displayed
+	 */
+	public Boolean verifySummaryProdInCheckout() {
+
+		String strNameProd = "";
+
+		try {
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralProdSelected))) {
+				String strNameTem = driver.findElement(nameProdSelected).getText().trim();
+				strNameProd = strNameTem.replaceAll("[^\\dA-Za-z]", "");
+				// System.out.println("NameChekout:" + strNameProd);
+
+				if (strNameProd != null) {
+					return true;
+				} else {
+					throw new IOException("ERROR NAME PROD: Product Name in Checkout is Empty!");
+				}
+			} else {
+				throw new IOException("ERROR PROD CHECKOUT: Inform Prod In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	/**
+	 * This POM method will validate head summary in Checkout
+	 * 
+	 * @return TRUE only if head summary is Displayed
+	 */
+	public Boolean verifyHeadPayMethodInCheckout() {
+		wait = new WebDriverWait(driver, 1);
+		
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayMethod));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(namePayMethod))) {
+				List<WebElement> elemNamePayMet = driver.findElements(typePaysCheckoutList);
+				int numTypePaysInCheck = elemNamePayMet.size();
+
+				if (numTypePaysInCheck < 1) {
+					throw new IOException("ERROR PAY TYPE: Pay Types Invalid < 1!");
+				} else {
+					for (WebElement e : elemNamePayMet) {
+						RappiUtility.verifyAnElement(true, e);
+					}
+					return true;
+				}
+			} else {
+				throw new IOException("ERROR PAY NAME: Pay Method Name In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will validate Total prices summary in Checkout
+	 * 
+	 * @return TRUE only if Total prices summary is Displayed
+	 */
+	public Boolean verifyTotalPricesInCheckout() {
+
+		try {
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralTotalCheckout))) {
+				List<WebElement> elemNamePrices = driver.findElements(pricesSummaryList);
+				int numPricesInCheck = elemNamePrices.size();
+
+				if (numPricesInCheck < 1) {
+					throw new IOException("ERROR PRICES: Total Prices in Checkout Invalid < 1!");
+				} else {
+					String[] textTypePays = new String[numPricesInCheck];
+
+					int i = 0;
+					for (WebElement e : elemNamePrices) {
+						textTypePays[i] = e.getText();
+						// System.out.println("Text2[" + i + "]:" + e.getText());
+						i++;
+					}
+					return true;
+				}
+
+			} else {
+				throw new IOException("ERROR PAY NAME: Pay Method Name In Checkout isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Redeem a Coupon Available in Checkout
+	 * 
+	 * @param strCupon    Set "cupon" to redeem
+	 */
+	public void redimirACuponInCheckout(String strCupon) {
+
+		if (!flagModalAlerta) {
+			try {
+				System.out.println("Try_redimirACuponInCheckout");
+
+				RappiUtility.scrollToElement(driver.findElement(btnIngresarCuponStep3));
+
+				assertTrue("ERROR BTN CUPON: Button 'Ingresar Cupon' isn't Displayed!",
+						RappiUtility.verifyAnElement(false, driver.findElement(btnIngresarCuponStep3)));
+
+				assertTrue("ERROR CLICK CUPON: Click On 'Ingresar Cupon' Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnIngresarCuponStep3)));
+
+				if (setCupon(strCupon)) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_AddedCoupon");
+				} else {
+					throw new IOException("ERROR ADD CUPON: Some Content in 'Agregar Cupon' isn't Displayed!");
+				}
+
+				assertTrue("ERROR REDIMIR CUPON: Click On 'Redimir' Button Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnRedimirCupon)));
+
+				assertTrue("ERROR REDIMIR CUPON: Click On 'Redimir' Button Failed!", verifyCuponIngresado(strCupon));
+
+			} catch (Exception e) {
+				System.out.println("Catch_redimirACuponInCheckout_" + sBrowserName);
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Set a Coupon Available
+	 * 
+	 * @param strCupon    Set "cupon" to redeem
+	 */
+	public Boolean setCupon(String sCupon) {
+		wait = new WebDriverWait(driver, 1);
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralModalCupon));
+
+		if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralModalCupon))
+				&& RappiUtility.verifyAnElement(false, driver.findElement(boxIngresarCupon))) {
+
+			driver.findElement(boxIngresarCupon).clear();
+			RappiUtility.highLightElement(driver.findElement(boxIngresarCupon), true);
+			driver.findElement(boxIngresarCupon).sendKeys(sCupon);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Validate a Coupon redeemed
+	 * 
+	 * @param strCupon    String "cupon" to verify
+	 * @throws IOException 
+	 * @throws InterruptedException 
+	 */
+	public Boolean verifyCuponIngresado(String sCupon) throws IOException, InterruptedException {
+		wait = new WebDriverWait(driver, 1);
+		String strCuponTemp = "";
+
+		try {
+			System.out.println("Try_redimirCuponIngresado");
+			driver.findElement(msjeCuponInvalid);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(msjeCuponInvalid));
+			if (RappiUtility.verifyAnElement(true, driver.findElement(msjeCuponInvalid))) {
+				System.out.println("Cupon Expirado o Invalido");
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Cupon_Invalid");
+				return true;
+			} else {
+				throw new IOException("ERROR CUPON REDIMIDO: Message 'Cupon Invalid' isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_redimirCuponIngresado");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoRedencionCorrecta));
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoRedencionCorrecta))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(imgRedencionCorrecta))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnAplicarRedencion))) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_CuponRedimido");
+
+				if (RappiUtility.clickOnElement(driver.findElement(btnAplicarRedencion))) {
+					Thread.sleep(2500);
+					try {
+						driver.findElement(btnCuponRedimidoStep3);
+						wait.until(ExpectedConditions.visibilityOfElementLocated(btnCuponRedimidoStep3));
+						RappiUtility.verifyAnElement(true, driver.findElement(btnCuponRedimidoStep3));
+						strCuponTemp = driver.findElement(btnCuponRedimidoStep3).getText();
+					} catch (Exception e2) {
+						try {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(btnContinuarStepOne));
+							RappiUtility.clickOnElement(driver.findElement(btnContinuarStepOne));
+							wait.until(ExpectedConditions.visibilityOfElementLocated(btnContinuarStepTwo));
+							RappiUtility.clickOnElement(driver.findElement(btnContinuarStepTwo));
+							wait.until(ExpectedConditions.visibilityOfElementLocated(btnCuponRedimidoStep3));
+							RappiUtility.verifyAnElement(true, driver.findElement(btnCuponRedimidoStep3));
+							strCuponTemp = driver.findElement(btnCuponRedimidoStep3).getText();
+						} catch (Exception e3) {
+							driver.findElement(imgNumFour);
+							if (RappiUtility.verifyAnElement(true, driver.findElement(imgNumFour))
+									&& RappiUtility.verifyAnElement(true, driver.findElement(infoGralCaptcha))) {
+								System.out.println("Captcha Habilitado En Checkout");
+								flagModalAlerta = true;
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Captcha_Enabled_Checkout");
+							}
+						}
+					}
+
+					if (strCuponTemp.equalsIgnoreCase(sCupon)) {
+						System.out.println("Cupon Redimido Exitosamente!");
+						RappiUtility.takeScreen(sTestCaseName + "/Img_CuponRedimidoInCheckout");
+					} else {
+						throw new IOException("ERROR CUPON REDIMIDO: Cupon '" + sCupon + "' Doesn't Match!");
+					}
+				}
+				return true;
+			} else {
+				System.out.println("ERROR redimirCuponIngresado:" + e.getMessage());
+				return false;
+			}
+		}
+	}
+
+	/**
+	 * This POM method will Redeem a Coupon Available From User Profile
+	 * 
+	 * @param strCupon    Set "cupon" to redeem
+	 */
+	public void redimirACuponFromProfile(String strCupon) {
+
+		try {
+			System.out.println("Try_redimirACuponFromProfile");
+			if (setCupon(strCupon)) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_AddedCoupon");
+			} else {
+				throw new IOException("ERROR ADD CUPON: Some Content in 'Agregar Cupon' isn't Displayed!");
+			}
+
+			assertTrue("ERROR REDIMIR CUPON: Click On 'Redimir' Button Failed!",
+					RappiUtility.clickOnElement(driver.findElement(btnRedimirCupon)));
+
+			assertTrue("ERROR REDIMIR CUPON: Click On 'Redimir' Button Failed!", verifyCuponIngresado(strCupon));
+
+		} catch (Exception e) {
+			System.out.println("Catch_redimirACuponFromProfile");
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Select a Pay Method In Checkout
+	 * 
+	 * @param PayMethod "0":Credit Card - "1":cash - "2":POS Terminal - "3":RappiPay
+	 */
+	public void selectAPayMethodInCheckout(int PayMethod) {
+		wait = new WebDriverWait(driver, 1);
+		List<WebElement> elemNamePayMetList;
+
+		if (!flagModalAlerta) {
+
+			try {
+				elemNamePayMetList = driver.findElements(listMetodosPagoStep3);
+				// elemNamePayMetList = driver.findElements(typePaysCheckoutList); // Old Checkout
+
+				int numTypePays = elemNamePayMetList.size();
+				String[] textTypePays = new String[numTypePays];
+
+				int i = 0;
+				for (WebElement e : elemNamePayMetList) {
+					textTypePays[i] = e.findElement(idTipoDePago).getAttribute("id").toString();
+					// System.out.println("ID[" + i + "]:" + textTypePays[i]);
+
+					if (PayMethod == 0) {
+						if (textTypePays[i].equalsIgnoreCase("cc")) {
+							RappiUtility.scrollToElement(e);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, e);
+							e.findElement(By.id(textTypePays[i])).click();
+							// RappiUtility.verifyAnElement(true, e); // Old Checkout
+							// elemNamePayMetList.get(i).click(); // Old Checkout
+							break;
+						} else {
+							i++;
+						}
+					} else if (PayMethod == 1) {
+						if (textTypePays[i].equalsIgnoreCase("cash")) {
+							RappiUtility.scrollToElement(e);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, e);
+							e.findElement(By.id(textTypePays[i])).click();
+							// RappiUtility.verifyAnElement(true, e); // Old Checkout
+							// elemNamePayMetList.get(i).click(); // Old Checkout
+							break;
+						} else {
+							i++;
+						}
+					} else if (PayMethod == 2) {
+						if (textTypePays[i].equalsIgnoreCase("pos_terminal")) {
+							RappiUtility.scrollToElement(e);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, e);
+							e.findElement(By.id(textTypePays[i])).click();
+							// RappiUtility.verifyAnElement(true, e); // Old Checkout
+							// elemNamePayMetList.get(i).click(); // Old Checkout
+							break;
+						} else {
+							i++;
+						}
+					} else if (PayMethod == 3) {
+						if (textTypePays[i].equalsIgnoreCase("rappi_pay")) {
+							RappiUtility.scrollToElement(e);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, e);
+							e.findElement(By.id(textTypePays[i])).click();
+							// RappiUtility.verifyAnElement(true, e);  // Old Checkout
+							// elemNamePayMetList.get(i).click(); // Old Checkout
+							break;
+						} else {
+							i++;
+						}
+					} else {
+						throw new IOException("ERROR PAY METHOD: Invalid Pay Method Type: " + PayMethod);
+					}
+				}
+
+				try {
+					driver.findElement(imgNumFour);
+					if (RappiUtility.verifyAnElement(true, driver.findElement(imgNumFour))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(infoGralCaptcha))) {
+						System.out.println("Captcha Habilitado En Checkout");
+						flagModalAlerta = true;
+						RappiUtility.takeScreen(sTestCaseName + "/Img_Captcha_Enabled_Checkout");
+					}
+				} catch (Exception e2) {
+					if (driver.findElement(By.id(textTypePays[i])).isSelected()) {
+						RappiUtility.scrollToElement(driver.findElement(btnHacerPedido));
+						assertTrue("ERROR HACER PEDIDO: Button 'Hacer Pedido' isn't Displayed!",
+								RappiUtility.verifyAnElement(true, driver.findElement(btnHacerPedido)));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_HacerPedido_Checkout");
+					}
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Select a Credit Card From List In Checkout
+	 */
+	public void chooseACreditCardInCheckOut() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		
+		if(!flagModalAlerta) {
+			try {
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayTarjCredit));
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralPayTarjCredit))) {
+
+					List<WebElement> elemCreditCardList = driver.findElements(cantidadTarjCreditList);
+					int numtarjCred = elemCreditCardList.size();
+
+					if (numtarjCred < 1) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_CreditCards_InCheckout_Empty");
+						throw new IOException("ERROR #CREDIT-CARD: Credit Cards Number Invalid < 1!");
+					} else {
+						int randTarjCred = objGenerator.nextInt(numtarjCred);
+
+						assertTrue("ERROR CREDIT-CARD: Credit Card Selected isn't Displayed!",
+								RappiUtility.verifyAnElement(true, elemCreditCardList.get(randTarjCred)));
+
+						String infoTarj = elemCreditCardList.get(randTarjCred)
+								.findElement(By.cssSelector("div[class^='cont-']")).getAttribute("class").toString();
+						// System.out.println("Text:" + infoTarj);
+						elemCreditCardList.get(randTarjCred).click();
+
+						if (infoTarj.contains("verification")) {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralVerifyTarjCred));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralVerifyTarjCred))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_NeedVerify_CreditCard");
+							}
+						} else {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_CreditCard_Select");
+						}
+					}
+				} else {
+					throw new IOException("ERROR INFO CREDIT-CARD: Main Content in 'Credit Card' isn't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}	
+		}
+	}
+	
+	/**
+	 * This POM method will Add a Credit Card In Checkout
+	 */
+	public void addACreditCardFromCheckout() {
+		wait = new WebDriverWait(driver, 1);
+
+		if (!flagModalAlerta) {
+
+			try {
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayTarjCreditStep3));
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralPayTarjCreditStep3))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(btnAddCredCardInCheckoutStep3))) {
+
+					driver.findElement(btnAddCredCardInCheckoutStep3).click();
+				} else {
+					throw new IOException("ERROR INFO CREDIT-CARD: Some Content in 'Credit Card' isn't Displayed!");
+				}
+
+				// Old Checkout
+//				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayTarjCredit));
+//				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralPayTarjCredit))
+//						&& RappiUtility.verifyAnElement(true, driver.findElement(btnAddCredCardInCheckout))) {
+//					driver.findElement(btnAddCredCardInCheckout).click();
+//				} else {
+//					throw new IOException("ERROR INFO CREDIT-CARD: Some Content in 'Credit Card' isn't Displayed!");
+//				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Add a Product From Sharks In Checkout
+	 */
+	public void addAProdInSharks() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+
+		if (!flagModalAlerta) {
+
+			try {
+				if (RappiUtility.verifyAnElement(true, driver.findElement(titleSharks))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(infoGralProdInSharks))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(btnCloseSharks))
+						/*&& RappiUtility.verifyAnElement(false, driver.findElement(btnPreviousSharks))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(btnNextSharks))*/) {
+
+					List<WebElement> elemInSharks = driver.findElements(listProdInSharks);
+					int numProdSharks = elemInSharks.size();
+					// System.out.println("Num Prod Sharks: " +numProdSharks);
+							
+					if (numProdSharks < 1) {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ProductsInSharks_Empty");
+						throw new IOException("ERROR #PRODUCTS SHARKS: Products Number In Sharks Invalid < 1!");
+					} else {
+						int randProdSharks = objGenerator.nextInt(numProdSharks);
+						// System.out.println("Num Rand Sharks: " +randProdSharks);
+						
+						RappiUtility.scrollToElement(elemInSharks.get(randProdSharks));
+						assertTrue("ERROR PRODUCT SHARKS: Product Selected In Sharks isn't Displayed!",
+								RappiUtility.verifyAnElement(true, elemInSharks.get(randProdSharks)));
+
+						RappiUtility.takeScreen(sTestCaseName + "/Img_ProductSelected_InSharks");
+
+						String strNameProdSharks = elemInSharks.get(randProdSharks).findElement(By.cssSelector("p"))
+								.getAttribute("title").toString();
+						System.out.println("Name Prod Sharks:" + strNameProdSharks);
+
+						elemInSharks.get(randProdSharks).findElement(btnAddProdInSharks).click();
+						RappiUtility.verifyAnElement(true, driver.findElement(btnCloseSharks));
+						driver.findElement(btnCloseSharks).click();
+					}
+
+				} else {
+					throw new IOException("ERROR CONTENT SHARKS: Some Content in 'Sharks' isn't Displayed!");
+				}
+				// Old Checkout
+//					wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralPayTarjCredit));
+//					if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralPayTarjCredit))
+//							&& RappiUtility.verifyAnElement(true, driver.findElement(btnAddCredCardInCheckout))) {
+//
+//						driver.findElement(btnAddCredCardInCheckout).click();
+//					} else {
+//						throw new IOException("ERROR INFO CREDIT-CARD: Some Content in 'Credit Card' isn't Displayed!");
+//					}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will validate Discount for Prime User in New Checkout
+	 */
+	public void verifyDiscountPrimeInCheckout() {
+		String conditionPrime = "";
+		int intConditionPrime = 0;
+
+		if (!flagModalAlerta) {
+			try {
+				driver.findElement(avisoPrimeUser);
+				wait.until(ExpectedConditions.visibilityOfElementLocated(avisoPrimeUser));
+				if (RappiUtility.verifyAnElement(true, driver.findElement(avisoPrimeUser))) {
+					System.out.println("Usuario Prime");
+
+					conditionPrime = driver.findElement(avisoPrimeUser).getText().replaceAll("[^\\d]", "");
+					intConditionPrime = Integer.parseInt(conditionPrime);
+					System.out.println("Cond Prime:" + conditionPrime);
+
+					if (checkPricesForPrime(intConditionPrime)) {
+						if (selectCreditCardAndApplyPrime()) {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_PrimeDiscountApplied_Correct");
+						} else {
+							RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/PrimeDiscount_Failed");
+							System.out.println("No es posible aplicar Prime");
+						}
+					} else {
+						System.out.println("Precio Prod no cumple condicion Prime");
+						RappiUtility.takeScreen(sTestCaseName + "/Img_CheckPricesForApplyPrime_Invalid");
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("Usuario no es Prime");
+				RappiUtility.takeScreen(sTestCaseName + "/Img_IsNotPrimeUser");
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Check Prices In Checkout for Prime User
+	 * 
+	 * @return TRUE only if Prices for Prime User are Corrects
+	 */
+	public Boolean checkPricesForPrime(int conditPrime) {
+		String strPriceProd = "";
+		int intPriceProd = 0;
+
+		try {
+			System.out.println("Try_checkPricesForPrime");
+			
+			strPriceProd = getDetailPriceInSummaryPrice("Products");
+			// System.out.println("Str Price Prod: " + strPriceProd);
+			intPriceProd = Integer.parseInt(strPriceProd);
+			// System.out.println("int Price Prod: " + intPriceProd);
+
+			if (intPriceProd >= conditPrime) {
+				System.out.println("Precio Prod cumple condicion Prime");
+				return true;
+			} else {
+				throw new IOException("ERROR PRICES: Product Price Minor to Condition Prime!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_checkPricesForPrime_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Select Credit Card Option and 
+	 * Check Condition Prime In Checkout for Prime User
+	 * 
+	 * @return TRUE only if Check for Prime User is Correct
+	 */
+	public Boolean selectCreditCardAndApplyPrime() {
+		String strTotalPrice, strDeliveryPrice, strDeliveryPriceAfter = "";
+		int intTotalPrice, intDeliveryPrice = 0;
+
+		try {
+			System.out.println("Try_selectCreditCardAndApplyPrime");
+
+			strTotalPrice = driver.findElement(textPrecioTotal).getText().replaceAll("[^\\d]", "");
+			intTotalPrice = Integer.parseInt(strTotalPrice);
+			System.out.println("int Total Price: " + intTotalPrice);
+
+			strDeliveryPrice = getDetailPriceInSummaryPrice("Delivery");
+			// System.out.println("Str Delivery: " + strDeliveryPrice);
+			int tamStr = strDeliveryPrice.length();
+			// System.out.println("Tam Str Delivery: " + tamStr);
+
+			if (!strDeliveryPrice.isEmpty()) {
+				intDeliveryPrice = Integer.parseInt(strDeliveryPrice);
+				System.out.println("Int Delivery: " + intDeliveryPrice);
+				selectAPayMethodInCheckout(0);
+
+				strDeliveryPriceAfter = getDetailPriceInSummaryPrice("Delivery");
+				// System.out.println("Str Delivery2: " + strDeliveryPriceAfter);
+				String strDeliveryNew = strDeliveryPriceAfter.substring(tamStr);
+				// System.out.println("New Delivery: " + strDeliveryNew);
+
+				int intNewTotalPrices = intTotalPrice - intDeliveryPrice;
+				// System.out.println("New Total: " + intNewTotalPrices);
+
+				String strTotalPriceAfter = driver.findElement(textPrecioTotal).getText().replaceAll("[^\\d]", "");
+				int intTotalPriceAfter = Integer.parseInt(strTotalPriceAfter);
+				// System.out.println("New Total After: " + intTotalPriceAfter);
+
+				if (strDeliveryNew.contentEquals("0") && (intNewTotalPrices == intTotalPriceAfter)) {
+					System.out.println("Prime Aplicado Exitoso");
+					RappiUtility.highLightElement(driver.findElement(infoGralPreciosCheckout), true);			
+					return true;
+				} else {
+					System.out.println("Valor de Domicilio no es 0");
+					throw new IOException("ERROR PRIME DELIVERY: Delivery Price isn't 0!");
+				}
+			} else {
+				System.out.println("Lista Precios No contiene Valor de Domicilio");
+				throw new IOException("ERROR DELIVERY PRICES: Delivery Price isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_selectCreditCardAndApplyPrime_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Get the Detail Price since Summary Prices
+	 * 
+	 * @param tipoPrecio String with Detail Price to Get
+	 * 
+	 * @return String with the Detail price found
+	 */
+	String getDetailPriceInSummaryPrice(String tipoPrecio) {
+		List<WebElement> elemPrices;
+		String strPriceFound = "";
+
+		try {
+			elemPrices = driver.findElements(listDescripcionPrecios);
+
+			for (WebElement e : elemPrices) {
+				// RappiUtility.highLightElement(e, true);
+				if (e.getText().contains(tipoPrecio)) {
+					strPriceFound = e.findElement(priceProdInCheckout).getText().replaceAll("[^\\d]", "");
+					// System.out.println("Price Found: " + strPriceFound);
+					break;
+				}
+			}
+
+			if (!strPriceFound.isEmpty()) {
+				return strPriceFound;
+			} else {
+				System.out.println("No Existe Valor para '" + tipoPrecio + "'");
+				throw new IOException("ERROR SUMMARY PRICES: " + tipoPrecio + " Price isn't Displayed!");
+			}
+
+		} catch (Exception e) {
+			System.out.println("Catch_searchDetailPrice_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	
+}

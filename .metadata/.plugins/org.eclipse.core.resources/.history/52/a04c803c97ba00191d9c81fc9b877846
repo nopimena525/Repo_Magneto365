@@ -1,0 +1,232 @@
+package utilitiesRappi;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import base.TestBase;
+import testData.DataExcel;
+
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class ExcelUtils extends TestBase{
+	
+	private static Workbook workbook;
+	private static Sheet sheet;
+	private static File ExcelFile;
+
+	private static XSSFWorkbook excelWBook;
+	private static FileInputStream fileInput;
+	private static FileOutputStream fileOut;
+	
+	
+	/**
+	 * This method is to read all the test data from the Excel file
+	 * 
+	 * @param sNameSheetExcel   Name Sheet Excel
+	 * 
+	 */
+	public static ArrayList<DataExcel> readExcelData(String sNameSheetExcel) throws Exception {
+
+		ArrayList<DataExcel> DE = new ArrayList<DataExcel>();
+		int CantNumTests = 0;
+
+		List<String> columnas = null;
+		
+		if (sNameSheetExcel.equals("AgregarProducto")) {
+			columnas = Arrays.asList("Test Case Name", "Run Test?", "Browser", "Country", "Tipo Login", "Username",
+					"Password", "ProdToSearchInRest", "ProdToSearchInMarket", "MarketWithShark", "Cupon",
+					"RestToSort", "SortBy" /*, "Results", "Prod Selec"*/);
+		} else {
+			throw new RuntimeException("ERROR SHEET-EXCEL: Invalid Sheet Name!");
+		}
+
+		Map<String, Integer> mapNombresColumnas = new HashMap<>();
+
+		try {
+			if(os.contains("mac")) {
+				// Path from Excel file to process in MAC
+				ExcelFile = new File("./src/main/java/testData/TestData.xlsx");
+			}else {
+				// Path from Excel file to process in Windows
+				ExcelFile = new File(".\\src\\main\\java\\testData\\TestData.xlsx");
+			}
+
+			// Open the Excel file with POI
+			workbook = WorkbookFactory.create(ExcelFile);
+			
+			// Access the required name from sheet in excel
+			sheet = workbook.getSheet(sNameSheetExcel);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error File: " + e.getMessage());
+		}
+		
+		final int filaNombresColumnas = 0;
+
+		Row filaNombresColumna = sheet.getRow(filaNombresColumnas);
+		
+		filaNombresColumna.cellIterator().forEachRemaining(cell -> {
+
+			String valorCelda = cell.getStringCellValue().trim();
+			if (!valorCelda.isEmpty()) {
+				mapNombresColumnas.put(valorCelda, cell.getColumnIndex());
+				// System.out.println("vacio:" + valorCelda.toString());
+			}
+
+		});
+
+		int indiceDatos = 1;
+
+		Row filaDatos = sheet.getRow(indiceDatos);
+
+		while ((filaDatos = sheet.getRow(indiceDatos)) != null) {
+
+			/*
+			System.out.println("\nMAP:" + mapNombresColumnas.size());
+			System.out.println("\nTC:" + filaDatos.getCell(mapNombresColumnas.get("Test Case Name")).toString().trim());
+			System.out.println("\nRT:" + filaDatos.getCell(mapNombresColumnas.get("Run Test?")).toString().trim());
+			System.out.println("\nBrow:" + filaDatos.getCell(mapNombresColumnas.get("Browser")).toString().trim());
+			System.out.println("\nRes:" + filaDatos.getCell(mapNombresColumnas.get("Results")).toString().trim());
+			 */
+			
+			if (filaDatos.getCell(mapNombresColumnas.get("Run Test?")).toString().equalsIgnoreCase("Yes")) {
+
+				int u = 0;
+				while (u < mapNombresColumnas.size()) {
+					if (filaDatos.getCell(u) == null) {
+						Cell cel = filaDatos.createCell(u);
+						// System.out.println("vacio " + filaDatos.getCell(u));
+						cel.setCellValue("");
+					}
+					u++;
+				}
+				
+				DataExcel de = new DataExcel();
+
+				try {
+					de.setTestCaseName(filaDatos.getCell(mapNombresColumnas.get("Test Case Name")).toString());
+					de.setRunTest(filaDatos.getCell(mapNombresColumnas.get("Run Test?")).toString());
+					de.setBrowser(filaDatos.getCell(mapNombresColumnas.get("Browser")).toString());
+					de.setCountry(filaDatos.getCell(mapNombresColumnas.get("Country")).toString());
+					de.setTipoLogin(filaDatos.getCell(mapNombresColumnas.get("Tipo Login")).toString());
+					de.setUsername(filaDatos.getCell(mapNombresColumnas.get("Username")).toString());
+					de.setPassword(filaDatos.getCell(mapNombresColumnas.get("Password")).toString());
+					de.setProdToSearchInRest(filaDatos.getCell(mapNombresColumnas.get("ProdToSearchInRest")).toString());
+					de.setProdToSearchInMarket(filaDatos.getCell(mapNombresColumnas.get("ProdToSearchInMarket")).toString());
+					de.setMarketWithShark(filaDatos.getCell(mapNombresColumnas.get("MarketWithShark")).toString());
+					de.setCupon(filaDatos.getCell(mapNombresColumnas.get("Cupon")).toString());
+					/*de.setResults(filaDatos.getCell(mapNombresColumnas.get("Results")).toString());*/
+					de.setPosicion(indiceDatos);
+				} catch (Exception e) {
+					throw new RuntimeException("ERROR COLUMN-EXCEL: Some Column-Cell Name is Invalid!");
+				}
+
+				DE.add(CantNumTests, de);
+
+				totalTestsCases = CantNumTests;
+				
+				CantNumTests++;
+
+				// System.out.println("Cant Datos:" + CantNumTests);
+				/*
+				 * System.out.println("\nTC>>:" + DE.get(CantNumTests).getTestCaseName());
+				 * System.out.println("\nRT>>:" + DE.get(CantNumTests).getRunTest());
+				 * System.out.println("\nBrow>>:" + DE.get(CantNumTests).getBrowser());
+				 */
+			}
+			
+			indiceDatos++;
+			
+			filaDatos = sheet.getRow(indiceDatos);
+		}
+		
+		return DE;
+	}
+
+	
+	/**
+	 * This method is to write in the Excel cell
+	 * 
+	 * @param strResult         String to write in the Cell
+	 * 
+	 * @param sNameSheetExcel Name Sheet Excel
+	 * 
+	 * @param indiceDatoTestCase     Test Case Number (in Excel, First TestCase = 0)
+	 */
+	public static void updateExcelFile(String strResult, String sNameSheetExcel, int indiceDatoTestCase, int numCelda)
+			throws Exception {
+
+		if (os.contains("mac")) {
+			// Path from Excel file to process in MAC
+			ExcelFile = new File("./src/main/java/testData/TestData.xlsx");
+		} else {
+			// Path from Excel file to process in Windows
+			ExcelFile = new File(".\\src\\main\\java\\testData\\TestData.xlsx");
+		}
+
+		fileInput = new FileInputStream(ExcelFile);
+		excelWBook = new XSSFWorkbook(fileInput);
+		
+		XSSFSheet excelWSheet = null;
+		excelWSheet = excelWBook.getSheet(sNameSheetExcel);
+
+		XSSFRow rowTem = excelWSheet.getRow(indiceDatoTestCase);
+
+		XSSFCell cell1 = rowTem.getCell(numCelda);
+
+		cell1 = rowTem.createCell(numCelda);
+		cell1.setCellValue(strResult);
+
+//		rowTem.cellIterator().forEachRemaining(cell -> {
+//			String valorCelda = cell.getStringCellValue().trim();
+//			int numCelda = 0;
+//
+//			if (valorCelda.equalsIgnoreCase("Results")) {
+//				numCelda = cell.getColumnIndex();
+//				tempDatoTest.setResults(strResult);
+//
+//				// se asume que los valores a procesar estan en la fila siguiente
+//				// a la fila de los nombres de las columnas, por eso se suma 1
+//				XSSFRow row1 = excelWSheet.getRow(indiceDatoTestCase + 1);
+//				XSSFCell cell1 = row1.getCell(numCelda);
+//				
+//				if(cell1 == null) {
+//					cell1 = row1.createCell(numCelda);
+//					cell1.setCellValue(strResult);
+//				}else {
+//					cell1.setCellValue(strResult);
+//				}
+//				
+//			}
+//		});
+		fileInput.close();
+
+		
+		fileOut = new FileOutputStream(ExcelFile);
+		excelWBook.write(fileOut);
+		fileOut.flush();
+		fileOut.close();
+
+	}
+	
+}

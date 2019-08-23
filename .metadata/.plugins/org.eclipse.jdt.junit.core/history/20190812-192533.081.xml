@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="AutomationWebTest" project="AutomationRappi" tests="51" started="51" failures="0" errors="0" ignored="49">
+  <testsuite name="tests.AutomationWebTest" time="466.941">
+    <testcase name="test_Web_0487" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_0763" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_0767" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_0770" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1473" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1476" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1477" classname="tests.AutomationWebTest" time="0.001" ignored="true"/>
+    <testcase name="test_Web_1478" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1484" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1510" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1512" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1520" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1522" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1523" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1533" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1534" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1535" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1536" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1537" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1541" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1561" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1575" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1583" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1584" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1585" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1587" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1588" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1589" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1590" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1591" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1597" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1598" classname="tests.AutomationWebTest" time="88.488"/>
+    <testcase name="test_Web_1605" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1606" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1608" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1612" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1635" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1638" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1648" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1678" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1688" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1706" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1707" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1709" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1710" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1711" classname="tests.AutomationWebTest" time="378.452"/>
+    <testcase name="test_Web_1752" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1758" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_1768" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_2636" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+    <testcase name="test_Web_2639" classname="tests.AutomationWebTest" time="0.0" ignored="true"/>
+  </testsuite>
+</testrun>

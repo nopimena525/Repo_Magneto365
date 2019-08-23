@@ -1,0 +1,790 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebMarkets extends TestBase {
+
+	// Object Repository for RappiWebMarkets
+	By optMarketHome = By.xpath("//*[@class='sub-stores ng-star-inserted']//*[@href='/aliados/tipo/market']");
+	By mainStores = By.xpath("//*[@class='store-summary ng-star-inserted']");
+	By btnProfile = By.cssSelector("div[class^='dropwdown-user-logged hidden-tablet ng-star-inserted']");
+	By btnCanastaInMarket = By.xpath("//app-header-basket//button[@class='basket-icon']");
+	By listMainCatInMarket = By.xpath("//*[@class='store-summary ng-star-inserted']/child::ul/child::li");
+	By listStoresInsideMarket = By.cssSelector("li");
+	By listMainStoresInMarket = By.xpath("//*[@class='store-summary-stores']/child::ul/child::li");
+	By contentBodyMarketSel = By.xpath("//app-store-home//div[@class='cont-store-home']");
+	By contentMenuLatMarketSel = By.xpath("//app-store-categories//div[starts-with(@class,'store-categories')]");
+	By contentProdMarketSel = By.xpath("//app-product-data//div[@class='info-product']");
+	By nameProdMarkSelectPromo = By.xpath("//app-product-data//h1[@class='product-name']");
+	
+	By infoGralContSearchMarket = By.xpath("//app-shopping-list//div[@class='cont-shopping-list']");
+	By subMenuLatSearchMarket = By.xpath("//app-shopping-list-filters//div[starts-with(@class,'shopping-list-filters')]");
+	By infoContentSearch = By.xpath("//app-shopping-list//div[@class='cont-shopping-info'] ");
+	By listSearchFound = By.xpath("//app-shopping-list//div[@class='cont-shopping-info']/child::app-carousel");
+	By nameCatFound = By.cssSelector("span[class^='title']");
+	By idCatFound = By.cssSelector("div[id^='carousel-']");
+	By listProdFoundInCat = By.cssSelector("li");
+	By nameProdSel = By.cssSelector("p[class^='product-name']");
+	By idProdSel = By.cssSelector("div[id^='product-']");
+	By btnAddProdEscondido = By.xpath("//*[@class='product-operator ng-star-inserted']//button");
+	By btnAddProdEscondido2 = By.cssSelector("div[class^='product-operator']");
+	By infoContProdSel = By.xpath("//app-product-data//*[@class='cont-info-product']");
+	By btnAddProdInsideDescriptProd = By.xpath("//app-detail-operator//div[@class='buttons-product']//button");
+	By indicadorProdAddToBasket = By.cssSelector("small[class^='ng-star-inserted']");
+
+	By infoGralMarkSearch = By.xpath("//*[@class='by-categories-results ng-star-inserted']");
+	By mainNameMarkSearch = By.xpath("//*[@class='head-by-categories-results']");
+	By listProdFoundInMarkSearch = By.xpath("//*[@class='by-categories-results ng-star-inserted']/child::ul/child::li");
+	By alertaLoginMark = By.xpath("//app-alert-login//*[@class='cont-alert-login']");
+	By btnEntrarLogin = By.xpath("//app-alert-login//button");
+	By modalAlertas = By.cssSelector("div[class^='modal-box']");
+	By btnCloseModalAlertas = By.cssSelector("button[class^='close-modal']");
+	By btnYesModalAlertaEdad = By.cssSelector("button[class^='btn-confirmation']");
+
+	By listMainMarkets = By.xpath("//div[@class='cont-store-home']/child::div");
+	By btnAddProdMarket = By.cssSelector("div[class^='product-operator']");
+	By nameProdInCatMarket = By.cssSelector("p[class^='product-name']");
+
+	RappiWebHomePage objHomePage;
+	RappiWebLogin objLogin;
+
+	/**
+	 * This POM method will validate Main Stores On Markets
+	 * 
+	 * @return TRUE only if Main Stores are Displayed
+	 */
+	public Boolean verifyMainStores() {
+		return RappiUtility.verifyAnElement(true, driver.findElement(mainStores));
+	}
+
+	/**
+	 * This POM method will get the Stores list On Markets
+	 */
+	public void listMainStores() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			List<WebElement> elemStoresList = driver.findElements(listMainCatInMarket);
+			int numStores = elemStoresList.size();
+
+			if (numStores < 1) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/MainStoresInMarket_Empty");
+				throw new IOException("ERROR #MAIN STORES: Main Stores In Market Invalid < 1!");
+			} else {
+				for (WebElement e : elemStoresList) {
+					RappiUtility.scrollToElement(e);
+					wait.until(ExpectedConditions.visibilityOfAllElements(e));
+					RappiUtility.scrollUp();
+					RappiUtility.verifyAnElement(false, e);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will validate Main Page Objects On Markets
+	 */
+	public void verifyMainPageObjInMarket() {
+		action = new Actions(driver);
+
+		try {
+			System.out.println("Try_verifyMainPageObjInMarket");
+			if (sBrowserName.equalsIgnoreCase("Safari") || sBrowserName.equalsIgnoreCase("Firefox")) {
+				try {
+					driver.findElement(By.xpath("//*[@class='substore-container']"));
+					action.moveToElement(driver.findElement(optMarketHome)).release().perform();
+					driver.findElement(optMarketHome).click();
+				} catch (Exception e) {
+					Thread.sleep(10);
+				}
+			}
+			
+			try {
+				System.out.println("Try_mainStores");
+				driver.findElement(mainStores);
+				if (verifyMainStores()) {
+					listMainStores();
+					RappiUtility.takeScreen(sTestCaseName + "/Img_Stores_" + sCountry);
+				} else {
+					throw new IOException("ERROR MAIN STORES: Main Stores aren't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println("Catch_mainStores");
+				driver.findElement(contentBodyMarketSel);
+				if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_StoreSelected");
+					Thread.sleep(100);
+				} else {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ContentInStoreSelected_Empty");
+					throw new Exception("ERROR STORE SELECTED: Content In Store Selected isn't Displayed!");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifyMainPageObjInMarket");
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/HomeMarketsFailed");
+			System.out.println("ERROR verifyMainPageObjInMarket" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Choose a Market Category From Main List In Market
+	 */
+	public void chooseACategoryRandomFromMainListMarket() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		WebElement elemCategorySelMarket = null;
+
+		try {
+			System.out.println("Try_chooseACategoryRandomFromMainListMarket");
+
+			try {
+				driver.findElement(mainStores);
+				List<WebElement> elemMainStoresList = driver.findElements(listMainCatInMarket);
+				int numCatStores = elemMainStoresList.size();
+				int randStore = objGenerator.nextInt(numCatStores);
+				// System.out.println("NumStores:" + numCatStores + "\nRandStore:" + randStore);
+				elemCategorySelMarket = elemMainStoresList.get(randStore);
+
+				RappiUtility.scrollToElement(elemCategorySelMarket);
+				RappiUtility.scrollUp();
+				wait.until(ExpectedConditions.visibilityOf(elemCategorySelMarket));
+				
+				if (RappiUtility.verifyAnElement(true, elemCategorySelMarket)) {
+					List<WebElement> elemInCatSelected = elemCategorySelMarket.findElements(listStoresInsideMarket);
+
+					int numStoreInsideCat = elemInCatSelected.size();
+					int randStoreInsideCat = objGenerator.nextInt(numStoreInsideCat);
+					// System.out.println("Num:" + numStoreInsideCat + "\nRand:" +
+					// randStoreInsideCat);
+					WebElement elemStoreInCatSelMarket = elemInCatSelected.get(randStoreInsideCat);
+
+					assertTrue("ERROR STORE IN MARKET: Store Selected Inside Market isn't Displayed!",
+							RappiUtility.verifyAnElement(false, elemStoreInCatSelMarket));
+
+					String strStoreSel = elemStoreInCatSelMarket.findElement(By.cssSelector("img")).getAttribute("alt")
+							.trim();
+					System.out.println("NameStore[" + randStoreInsideCat + "]:" + strStoreSel);
+
+					assertTrue("ERROR CLICK STORE: Click on Store '" + strStoreSel + "' Selected In Market Failed!",
+							RappiUtility.clickOnElement(elemStoreInCatSelMarket));
+
+					wait.until(ExpectedConditions.visibilityOf(driver.findElement(contentMenuLatMarketSel)));
+					if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_StoreSelected_" + strStoreSel);
+						Thread.sleep(100);
+					} else {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ContentStoreSelected_Empty");
+						throw new Exception("ERROR STORE SELECTED: Content In Store Selected isn't Displayed!");
+					}
+				} else {
+					throw new IOException("ERROR CATEGORY MARKET: Category Selected In Market isn't Displayed!");
+				}
+			} catch (Exception e1) {
+				wait.until(ExpectedConditions.visibilityOf(driver.findElement(contentMenuLatMarketSel)));
+				if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+					Thread.sleep(100);
+				} else {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ContentStoreSelected_Empty");
+					throw new Exception("ERROR STORE SELECTED: Content In Store Selected isn't Displayed!");
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Catch_chooseACategoryRandomFromMainListMarket_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Choose a Store From Main List In Market
+	 */
+	public void chooseAStoreFromMainListMarket(String nameStore) {
+		wait = new WebDriverWait(driver, 1);
+		Boolean flagFoundStore = false;
+		WebElement elemFoundStore = null;
+
+		try {
+			System.out.println("Try_chooseAStoreFromMainListMarket");
+
+			List<WebElement> elemMainStoresListInMarket = driver.findElements(listMainStoresInMarket);
+			int numMainStores = elemMainStoresListInMarket.size();
+			// System.out.println("NumStores:" + numMainStores);
+
+			if (numMainStores < 1) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/MainStoresInMarket_Empty");
+				throw new IOException("ERROR #STORES IN MARKET: Main Stores in Market Invalid < 1!");
+			} else {
+				for (WebElement elemStore : elemMainStoresListInMarket) {
+					String strNameStore = elemStore.findElement(By.cssSelector("img")).getAttribute("alt").toString();
+					if (strNameStore.equalsIgnoreCase(nameStore)) {
+						elemFoundStore = elemStore;
+						System.out.println("NameStore:" + strNameStore);
+						flagFoundStore = true;
+						break;
+					}
+				}
+
+				if (flagFoundStore) {
+					RappiUtility.scrollToElement(elemFoundStore);
+					RappiUtility.scrollUp();
+					wait.until(ExpectedConditions.visibilityOf(elemFoundStore));
+
+					assertTrue("ERROR STORE SELECTED: Main Store Selected In Market isn't Displayed!",
+							RappiUtility.verifyAnElement(true, elemFoundStore));
+					RappiUtility.takeScreen(sTestCaseName + "/Img_StoreSelected_" + nameStore);
+					elemFoundStore.click();
+				} else {
+					RappiUtility.scrollToElement(driver.findElement(mainStores));
+					flagModalAlerta = true;
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Store_" + nameStore + "_NotFound");
+					throw new IOException("ERROR STORE NAME: Store '" + nameStore + "' Doesn't Match in Markets!");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseAStoreFromMainListMarket_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Add a Product From Market Category Selected To Basket
+	 */
+	public void addAProdFromMarketCategoryToBasket() {
+
+		if (!flagModalAlerta) {
+			try {
+				if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+
+					assertTrue("ERROR CLICK ADD PROD: Click On 'Add Product' From Market Category Failed!",
+							chooseAProdInCategoryFromMarket());
+				} else {
+					throw new Exception("ERROR STORE SELECTED: Content In Store Selected isn't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * This POM method will validate Main List Categories In Markets
+	 * 
+	 * @return TRUE only if all content is Displayed
+	 */
+	public Boolean verifyContentSearchListMarket() {
+	
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralContSearchMarket))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(subMenuLatSearchMarket))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(infoContentSearch))) {
+				return true;
+			} else {
+				RappiUtility.takeScreen("ImgError_" + sTestCaseName + "/MarketContent_Invalid");
+				throw new IOException("ERROR SEARCH MARKET: Main Content isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will Select and Add a Product from Search list On Markets
+	 */
+	public void selectAndAddProdInSearchList() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		action = new Actions(driver);
+
+		try {
+			assertTrue("ERROR MARKET: Main Information In Search Market isn't Displayed!",
+					verifyContentSearchListMarket());
+
+			List<WebElement> elemListSearchFound = driver.findElements(listSearchFound);
+			int numMarkets = elemListSearchFound.size();
+			// System.out.println("Total:" + numMarkets);
+
+			if (numMarkets < 1) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SectionsFound_Invalid");
+				throw new IOException("ERROR MARKET: There aren't Markets To Choose!");
+			} else {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ActualMarkets_ListaCompras");
+			}
+			
+			for (WebElement elem : elemListSearchFound) {
+				
+				String strNameCatFoundMarket = elem.findElement(nameCatFound).getText();
+				System.out.println("NameCat:" + strNameCatFoundMarket);
+				String strIdCatFoundMarket = elem.findElement(idCatFound).getAttribute("id");
+				System.out.println("ID_Carrusel:" + strIdCatFoundMarket);
+				
+				if (!strNameCatFoundMarket.isEmpty() || !strIdCatFoundMarket.isEmpty()) {
+					
+					//RappiUtility.scrollToElement(elem.findElement(idCatFound));
+					//RappiUtility.scrollUp();
+					//RappiUtility.verifyAnElement(true, elem.findElement(idCatFound));
+					
+					RappiUtility.scrollToElement(elem);
+					RappiUtility.scrollUp();
+					assertTrue("ERROR NAME MARKET: Name Category Found in Market isn't Displayed!",
+							RappiUtility.verifyAnElement(true, elem.findElement(nameCatFound)));
+					
+					assertTrue("ERROR ID MARKET: ID Category Found in Market isn't Displayed!",
+							RappiUtility.verifyAnElement(true, elem.findElement(idCatFound)));
+					
+					List<WebElement> elemListFoundMark = elem.findElements(listProdFoundInCat);
+					int numProdFoundMark = elemListFoundMark.size();
+					int randomProdMark = objGenerator.nextInt(numProdFoundMark);
+					// System.out.println("Total:" + numProdFoundMark + "\nRand:" + randomProdMark);
+
+					if ((numProdFoundMark > 1) && (randomProdMark == (numProdFoundMark - 1))) {
+						randomProdMark--;
+					}
+					
+					WebElement elemProdSelInCat = elemListFoundMark.get(randomProdMark);
+
+					RappiUtility.scrollToElement(elemProdSelInCat);
+					RappiUtility.scrollUp();
+					
+					String nameProdSelected = elemProdSelInCat.findElement(nameProdSel).getText();
+					System.out.println("Name_Prod:" + nameProdSelected);
+					String idProdSelected = elemProdSelInCat.findElement(idProdSel).getAttribute("id");
+					System.out.println("ID_Prod:" + idProdSelected);
+					
+					if (idProdSelected.contains("product-")) {
+						/*wait.until(ExpectedConditions.visibilityOf(elemProdSelInCat.findElement(idProdSel)));
+						assertTrue("ERROR PROD MARKET: Product To Select isn't Displayed!",
+								RappiUtility.verifyAnElement(true, elemProdSelInCat.findElement(idProdSel)));*/
+						
+						assertTrue("ERROR PROD MARKET: Product To Select in Market isn't Displayed!",
+								RappiUtility.verifyAnElement(true, elemProdSelInCat));
+						
+//						try {
+//							action.moveToElement(elemProdSelInCat).release().perform();
+//							action.moveToElement(elemProdSelInCat).click().build().perform();
+//						} catch (Exception e0) {
+//							action.moveToElement(elemProdSelInCat).click().build().perform();
+//						}					
+						action.moveToElement(elemProdSelInCat).release().perform();
+						action.moveToElement(elemProdSelInCat.findElement(btnAddProdEscondido2)).release().perform();
+						action.moveToElement(elemProdSelInCat.findElement(btnAddProdEscondido2)).click().build().perform();
+						
+						try {
+							System.out.println("Try_selectAndAddProdInSearchList");
+							driver.findElement(infoContProdSel);
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoContProdSel))) {
+								
+								RappiUtility.scrollToElement(driver.findElement(btnAddProdInsideDescriptProd));
+								RappiUtility.scrollUp();
+
+								if(driver.findElement(btnAddProdInsideDescriptProd).isEnabled()) {
+									if(RappiUtility.clickOnElement(driver.findElement(btnAddProdInsideDescriptProd))) {
+										System.out.println("SE DEBE CERRAR MODAL PROD");
+									}
+								}else {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddProd_Button_Disabled");
+									throw new IOException("ERROR ADD PROD BUTTON: 'Agregar' Button isn't Enabled!");
+								}
+								//driver.navigate().back();
+							}
+						} catch (Exception e1) {
+							System.out.println("Catch_selectAndAddProdInSearchList");
+							try {
+								driver.findElement(modalAlertas);
+								if (driver.findElement(modalAlertas).isDisplayed()) {
+									if (driver.findElement(modalAlertas).getText().contains("edad")
+											|| driver.findElement(modalAlertas).getText().contains("idade")) {
+										System.out.println("Modal Edad");
+										RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaEdad");
+										driver.findElement(btnYesModalAlertaEdad).click();
+										Thread.sleep(100);
+									} else if (driver.findElement(modalAlertas).getText().contains("dirección")
+											|| driver.findElement(modalAlertas).getText().contains("endereço")) {
+										System.out.println("Modal Direccion");
+										RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaDireccion");
+										driver.findElement(btnCloseModalAlertas).click();
+										Thread.sleep(100);
+										break;
+									}
+								}
+							} catch (Exception e2) {
+								driver.findElement(indicadorProdAddToBasket);
+								if (RappiUtility.verifyAnElement(true, driver.findElement(btnCanastaInMarket))
+										&& driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+									System.out.println("Producto Agregado a la Canasta");
+									Thread.sleep(100);
+								}
+							}
+						}
+						
+					} else {
+						throw new IOException("ERROR ID PROD MARKET: Product Doesn't Contain ID!");
+					}
+					
+				} else {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/CategoryFound_IsEmpty");
+					throw new IOException("ERROR CAT MARKET: Section" /*No. + (i + 1) */+ " in Markets Is Empty!");
+				}
+				// Thread.sleep(2000);
+			}
+			
+			try {
+				System.out.println("Try_Final_Canasta");
+				driver.findElement(indicadorProdAddToBasket);
+				if (driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+					RappiUtility.highLightElement(driver.findElement(indicadorProdAddToBasket), true);
+				}
+			} catch (Exception e3) {
+				System.out.println("Producto No Fue Agregado a la Canasta\nFlag Modal Alerta en True");
+				flagModalAlerta = true;
+			}
+			RappiUtility.takeScreen(sTestCaseName + "/Img_ProdAddToBasket_ListaCompras");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Login to user if it Select a Product from Market but
+	 * doesn't Logued before
+	 * 
+	 * @return TRUE only if Login is Correct
+	 */
+	public Boolean loginForSelectProduct() {
+		objLogin = new RappiWebLogin();
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnEntrarLogin))) {
+				if (objLogin.verifyContentInLogin() /*&& objLogin.loginWith(sTipoLogin, sUserName, sPassword)*/) {
+					return true;
+				} else {
+					throw new IOException("ERROR LOGIN MARKET: Login failed!");
+				}
+			} else {
+				throw new IOException("ERROR CLICK LOGIN: Click On 'Login Btn' in Message isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+
+	/**
+	 * This POM method will choose A Market from search Restaurant list
+	 */
+	public Boolean chooseAProdFromSearchList() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		action = new Actions(driver);
+		WebElement elemMarkSelected;
+		objHomePage = new RappiWebHomePage();
+
+		try {
+			System.out.println("Try_chooseAProdFromSearchList");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralMarkSearch));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralMarkSearch))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(mainNameMarkSearch))) {
+
+				List<WebElement> elemFoundInMarkSearch = driver.findElements(listProdFoundInMarkSearch);
+				int numListFoundMark = elemFoundInMarkSearch.size();
+
+				int randomNumSearchMark = objGenerator.nextInt(numListFoundMark);
+				elemMarkSelected = elemFoundInMarkSearch.get(randomNumSearchMark);
+				// System.out.println("Name:" +
+				// elemMarkSelected.findElement(By.xpath("//*[@class='product-name']")).getText());
+				// System.out.println("IDProd:" +
+				// elemMarkSelected.findElement(idProdSel).getAttribute("id"));
+
+				RappiUtility.scrollToElement(elemMarkSelected);
+				RappiUtility.scrollUp();
+
+				if (RappiUtility.verifyAnElement(true, elemMarkSelected.findElement(idProdSel))) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_ProdFound_Market");
+
+					try {
+						action.moveToElement(elemMarkSelected).release().perform();
+						action.moveToElement(elemMarkSelected).click().build().perform();
+					} catch (Exception e1) {
+						action.moveToElement(elemMarkSelected).click().build().perform();
+					}
+
+//					try {
+//						driver.findElement(alertaLoginMark);
+//						System.out.println("Entro Login");
+//						if (RappiUtility.verifyAnElement(true, driver.findElement(alertaLoginMark))) {
+//							RappiUtility.takeScreen(sTestCaseName + "/Img_Login_Required");
+//							return loginForSelectProduct();
+//						}
+//					} catch (Exception e2) {
+					try {
+						driver.findElement(modalAlertas);
+						if (driver.findElement(modalAlertas).isDisplayed()) {
+							System.out.println("Entro Modal");
+							if (driver.findElement(modalAlertas).getText().contains("edad")
+									|| driver.findElement(modalAlertas).getText().contains("idade")) {
+								System.out.println("Modal Edad");
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaEdad");
+								driver.findElement(btnYesModalAlertaEdad).click();
+								Thread.sleep(500);
+								// return true;
+							} else if (driver.findElement(modalAlertas).getText().contains("dirección")
+									|| driver.findElement(modalAlertas).getText().contains("endereço")) {
+								System.out.println("Modal Direccion");
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaDireccion");
+								driver.findElement(btnCloseModalAlertas).click();
+								Thread.sleep(500);
+							}
+						}
+					} catch (Exception e3) {
+						try {
+							System.out.println("Catch_Try_Basket");
+							driver.findElement(indicadorProdAddToBasket);
+							if (RappiUtility.verifyAnElement(true, driver.findElement(btnCanastaInMarket))
+									&& driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+								System.out.println("Producto Agregado a la Canasta");
+								Thread.sleep(100);
+								return true;
+							}
+						} catch (Exception e4) {
+							System.out.println("Catch_Catch_Basket");
+							try {
+								if (driver.findElement(contentProdMarketSel).isDisplayed()) {
+									RappiUtility.verifyAnElement(true, driver.findElement(nameProdMarkSelectPromo));
+									sNameProdSelected = driver.findElement(nameProdMarkSelectPromo).getText().trim();
+									System.out.println("ProdMarketCatch:" + sNameProdSelected);
+
+									RappiUtility.scrollToElement(driver.findElement(btnAddProdInsideDescriptProd));
+									RappiUtility.scrollUp();
+									assertTrue("ERROR VERIFY BUTTON ADD PROD: 'Add Product' Button isn't Displayed",
+											RappiUtility.verifyAnElement(true,
+													driver.findElement(btnAddProdInsideDescriptProd)));
+									driver.findElement(btnAddProdInsideDescriptProd).click();
+									// return true;
+								}
+							} catch (Exception e5) {
+								Thread.sleep(100);
+							}
+						}
+					}
+//					}
+
+					if (objHomePage.verifyHeaderInHomePageWithLoginWithoutSearchOpt()) {
+						System.out.println("verifyHeaderInHomePageWithLogin");
+						try {
+							driver.findElement(indicadorProdAddToBasket);
+							if (driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+								RappiUtility.highLightElement(driver.findElement(indicadorProdAddToBasket), true);
+								System.out.println("Producto Agregado a Canasta");
+								// return true;
+							}
+						} catch (Exception e3) {
+							System.out.println("Producto No Fue Agregado a la Canasta\nFlag Modal Alerta en True");
+							flagModalAlerta = true;
+						}
+					}else {
+						throw new IOException("ERROR HEADER: Elements in Header In Home Page aren't Displayed!");
+					}
+					return true;
+
+				} else {
+					throw new IOException("ERROR PROD MARKET: Product To Select isn't Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR MARKET SEARCH: Main Content From Search isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseAProdFromSearchList_" + sBrowserName);
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddProdMarketFailed");
+			flagModalAlerta = true;
+			System.out.println(e.getMessage());
+			return false;
+		}
+		// return true;
+	}
+
+	/**
+	 * This POM method will choose A Category From Selected Market
+	 * 
+	 * @return TRUE only if click on Product is Correct
+	 */
+	public Boolean chooseAProdInCategoryFromMarket() {
+		int randomNumCatMark = 0;
+		int randomNumProdInCat = 0;
+		objGenerator = new Random();
+		String strNameCatSelMark = "";
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		objHomePage = new RappiWebHomePage();
+
+		try {
+			System.out.println("Try_chooseAProdInCategoryFromMarket");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(listMainMarkets));
+
+			List<WebElement> elemCatMarkShow = driver.findElements(listMainMarkets);
+			int numCatMark = elemCatMarkShow.size();
+			randomNumCatMark = objGenerator.nextInt(numCatMark);
+			// System.out.println("Total Cat:" + numCatMark + "\nCat Rand:" +
+			// randomNumCatMark);
+			WebElement elemCatSelMark = elemCatMarkShow.get(randomNumCatMark);
+
+			RappiUtility.scrollToElement(elemCatSelMark);
+			RappiUtility.scrollUp();
+			RappiUtility.highLightElement(elemCatSelMark, true);
+
+			strNameCatSelMark = elemCatSelMark.findElement(By.cssSelector("p")).getText();
+			System.out.println("NameCat[" + randomNumCatMark + "]:" + strNameCatSelMark);
+			RappiUtility.takeScreen(sTestCaseName + "/Img_Cat_Selected_" + strNameCatSelMark);
+
+			List<WebElement> elemProdInCatMark = elemCatSelMark.findElements(By.cssSelector("li"));
+			int numProdInCatMark = elemProdInCatMark.size();
+
+			if (numProdInCatMark > 1) {
+				randomNumProdInCat = objGenerator.nextInt(numProdInCatMark);
+				if (randomNumProdInCat == (numProdInCatMark - 1)) {
+					randomNumProdInCat--;
+				}
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/MarketCategory_Empty");
+				throw new IOException("ERROR #PROD=0: There aren't products in Market category selected!");
+			}
+			// System.out.println("NumProd:" + numProdInCatMark + "\nProdRand:" +
+			// randomNumProdInCat);
+			WebElement elemProdSelInCatMark = elemProdInCatMark.get(randomNumProdInCat);
+
+			RappiUtility.scrollToElement(elemProdSelInCatMark);
+			RappiUtility.scrollUp();
+			wait.until(ExpectedConditions.visibilityOf(elemProdSelInCatMark));
+
+			sNameProdSelected = elemProdSelInCatMark.findElement(nameProdInCatMarket).getText().trim();
+			System.out.println("NameProd[" + randomNumProdInCat + "]:" + sNameProdSelected);
+
+			if (RappiUtility.verifyAnElement(true, elemProdSelInCatMark)) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ProdInCategory_Market");
+
+				try {
+					RappiUtility.scrollToElement(elemProdSelInCatMark.findElement(btnAddProdMarket));
+					RappiUtility.scrollUp();
+					action.moveToElement(elemProdSelInCatMark.findElement(btnAddProdMarket)).release().perform();
+					action.moveToElement(elemProdSelInCatMark.findElement(btnAddProdMarket)).click().build().perform();
+				} catch (Exception e0) {
+					action.moveToElement(elemProdSelInCatMark.findElement(btnAddProdMarket)).click().build().perform();
+				}
+
+				try {
+					driver.findElement(modalAlertas);
+					if (driver.findElement(modalAlertas).isDisplayed()) {
+						System.out.println("Entro Modales");
+						if (driver.findElement(modalAlertas).getText().contains("edad")
+								|| driver.findElement(modalAlertas).getText().contains("idade")) {
+							System.out.println("Modal Edad");
+							RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaEdad");
+							// RappiUtility.clickOnElement(driver.findElement(btnYesModalAlertaEdad));
+							driver.findElement(btnYesModalAlertaEdad).click();
+							Thread.sleep(500);
+						} else if (driver.findElement(modalAlertas).getText().contains("dirección")
+								|| driver.findElement(modalAlertas).getText().contains("endereço")) {
+							System.out.println("Modal Direccion");
+							RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaDireccion");
+							// RappiUtility.clickOnElement(driver.findElement(btnCloseModalAlertas));
+							driver.findElement(btnCloseModalAlertas).click();
+							Thread.sleep(500);
+						}
+					}
+				} catch (Exception e1) {
+					System.out.println("Catch_Canasta_InfoProduct");
+					try {
+						System.out.println("Catch_Try_Basket");
+						driver.findElement(indicadorProdAddToBasket);
+						if (RappiUtility.verifyAnElement(false, driver.findElement(btnCanastaInMarket))
+								&& driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+							System.out.println("Producto Agregado a la Canasta");
+							Thread.sleep(100);
+							return true;
+						}
+					} catch (Exception e2) {
+						System.out.println("Catch_Catch_InfoProd");
+						try {
+							if (driver.findElement(contentProdMarketSel).isDisplayed()) {
+								RappiUtility.verifyAnElement(true, driver.findElement(nameProdMarkSelectPromo));
+								sNameProdSelected = driver.findElement(nameProdMarkSelectPromo).getText().trim();
+								System.out.println("ProdMarketCatch:" + sNameProdSelected);
+
+								RappiUtility.scrollToElement(driver.findElement(btnAddProdInsideDescriptProd));
+								RappiUtility.scrollUp();
+								if(driver.findElement(btnAddProdInsideDescriptProd).isEnabled()) {
+									driver.findElement(btnAddProdInsideDescriptProd).click();
+								}else {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddProd_Button_Disabled");
+									throw new IOException("ERROR ADD PROD BUTTON: 'Agregar' Button isn't Enabled!");
+								}
+								// return true;
+							}
+						} catch (Exception e4) {
+							Thread.sleep(100);
+						}
+					}
+				}
+
+				if (objHomePage.verifyHeaderInHomePageWithLoginWithoutSearchOpt()) {
+					System.out.println("verifyHeaderInHomePageWithLoginWithoutSearchOpt");
+					try {
+						driver.findElement(indicadorProdAddToBasket);
+						if (driver.findElement(indicadorProdAddToBasket).isDisplayed()) {
+							RappiUtility.highLightElement(driver.findElement(indicadorProdAddToBasket), true);
+							System.out.println("Producto Agregado a Canasta");
+						}
+					} catch (Exception e3) {
+						System.out.println("Producto No Fue Agregado a la Canasta\nFlag Modal Alerta en True");
+						flagModalAlerta = true;
+					}
+				}
+				return true;
+			} else {
+				throw new IOException("ERROR PROD MARKET: Product To Select isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Error chooseAProdInCategoryFromMarket:" + e.getMessage());
+			return false;
+		}
+		// return true;
+	}
+
+	/**
+	 * This POM method will select a Product from Markets List
+	 */
+	public void selectProdInMarket() {
+		
+		if (!flagModalAlerta) {
+			assertTrue("ERROR selectProdInMarket: Search Market-Product Invalid!", chooseAProdFromSearchList());
+		}
+	}
+	
+}
+
+
+

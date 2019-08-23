@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;pages.RappiWebRestaurants.searchRestaurant(...)&apos; to &apos;searchRestaurantAndOrderBy&apos;&#x0A;- Original project: &apos;AutomationRappi&apos;&#x0A;- Original element: &apos;pages.RappiWebRestaurants.searchRestaurant(...)&apos;&#x0A;- Renamed element: &apos;pages.RappiWebRestaurants.searchRestaurantAndOrderBy(...)&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="true" description="Rename method &apos;searchRestaurant&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src\/main\/java&lt;pages{RappiWebRestaurants.java[RappiWebRestaurants~searchRestaurant~QString;~QString;" name="searchRestaurantAndOrderBy" references="true" stamp="1561036242734" version="1.0"/>
+</session>

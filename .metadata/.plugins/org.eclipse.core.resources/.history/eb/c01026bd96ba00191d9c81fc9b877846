@@ -1,0 +1,116 @@
+/**
+ * 
+ */
+package testData;
+
+/**
+ * @author nohorameneses
+ *
+ */
+public class DataExcel {
+	
+	private String TestCaseName;
+	private String RunTest;
+	private String Browser;
+	private String Country;
+	private String TipoLogin;
+	private String Username;
+	private String Password;
+	private String ProdToSearchInRest;
+	private String ProdToSearchInMarket;
+	private String MarketWithShark;
+	private String Cupon;
+	private String RestToSort;
+	private String SortBy;
+	/*private String Results;
+	private String ProdSelec;*/
+	private int posicion;
+	
+	
+	
+	public String getTestCaseName() {
+		return TestCaseName;
+	}
+	public void setTestCaseName(String TestCaseName) {
+		this.TestCaseName = TestCaseName;
+	}
+	public String getRunTest() {
+		return RunTest;
+	}
+	public void setRunTest(String RunTest) {
+		this.RunTest = RunTest;
+	}
+	public String getBrowser() {
+		return Browser;
+	}
+	public void setBrowser(String Browser) {
+		this.Browser = Browser;
+	}
+	public String getCountry() {
+		return Country;
+	}
+	public void setCountry(String Country) {
+		this.Country = Country;
+	}
+	public String getTipoLogin() {
+		return TipoLogin;
+	}
+	public void setTipoLogin(String TipoLogin) {
+		this.TipoLogin = TipoLogin;
+	}
+	public String getUsername() {
+		return Username;
+	}
+	public void setUsername(String Username) {
+		this.Username = Username;
+	}
+	public String getPassword() {
+		return Password;
+	}
+	public void setPassword(String Password) {
+		this.Password = Password;
+	}
+	public String getProdToSearchInRest() {
+		return ProdToSearchInRest;
+	}
+	public void setProdToSearchInRest(String ProdToSearchInRest) {
+		this.ProdToSearchInRest = ProdToSearchInRest;
+	}
+	public String getProdToSearchInMarket() {
+		return ProdToSearchInMarket;
+	}
+	public void setProdToSearchInMarket(String ProdToSearchInMarket) {
+		this.ProdToSearchInMarket = ProdToSearchInMarket;
+	}
+	public String getMarketWithShark() {
+		return MarketWithShark;
+	}
+	public void setMarketWithShark(String MarketWithShark) {
+		this.MarketWithShark = MarketWithShark;
+	}
+	public String getCupon() {
+		return Cupon;
+	}
+	public void setCupon(String Cupon) {
+		this.Cupon = Cupon;
+	}
+	/*public String getResults() {
+		return Results;
+	}
+	public void setResults(String Results) {
+		this.Results = Results;
+	}*/
+	/*public String getProdSelec() {
+		return ProdSelec;
+	}
+	public void setProdSelec(String prodSelec) {
+		this.ProdSelec = prodSelec;
+	}*/
+	public int getPosicion() {
+		return posicion;
+	}
+	public void setPosicion(int posicion) {
+		this.posicion = posicion;
+	}
+
+}

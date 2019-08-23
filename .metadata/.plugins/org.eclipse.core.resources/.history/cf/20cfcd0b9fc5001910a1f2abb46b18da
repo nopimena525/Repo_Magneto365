@@ -1,0 +1,198 @@
+package prueba.prueba;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+public class Prueba_Nohora {
+	
+	By boxSearch = By.name("q");
+	By generalResult = By.id("fprsl");
+	By listResultsFound = By.xpath("//*[@class='bkWMgd']");
+	
+	public static WebDriver driver;
+	public static String os = "";
+	
+	public Prueba_Nohora() {
+		os = System.getProperty("os.name").toLowerCase();
+	}
+
+	/**
+	 * This method will Init Browser, Driver & Launch URL
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		// String sDirectorioTrabajo = System.getProperty("user.dir");
+		// System.out.println("El directorio de trabajo es: " + sDirectorioTrabajo);
+
+		os = System.getProperty("os.name").toLowerCase();
+
+		driver = null;
+
+		if (os.contains("mac")) {
+			driver = new ChromeDriver();
+		} else {
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+			driver = new ChromeDriver();
+		}
+
+		driver.get("https://www.google.com.co");
+
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	}
+
+	/**
+	 * This method will Click On 'Cuadro de Busqueda' Option
+	 */
+	public Boolean enterWordToSearch() {
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+		
+		try {
+			wait.until(ExpectedConditions.visibilityOf(driver.findElement(boxSearch)));
+			
+			if(driver.findElement(boxSearch).isDisplayed()) {
+				driver.findElement(boxSearch).clear();
+				driver.findElement(boxSearch).sendKeys("pruebaz");
+				clickOnSearch();
+				return true;
+			}else {
+				throw new IOException("ERROR SEARCH: WebElement 'Cuadro Busqueda' isn't Display!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR CATCH_enterWordToSearch:" + e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This method will validate if the Correct word is presented
+	 * 
+	 * @return String
+	 */
+	public String verifyCorrectWord() {
+		String text = "";
+		
+		try {
+			driver.findElement(generalResult);
+			if(driver.findElement(generalResult).isDisplayed()) {
+				text = driver.findElement(generalResult).getText().toString().toLowerCase();
+				System.out.println("Text Found: " + text);
+				// Thread.sleep(2000);
+			}else {
+				throw new IOException("ERROR WORD TO SEARCH: Word To Search isn't Display!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR_verifyCorrectWord:" + e.getMessage());
+		}
+		return text;
+	}
+	
+	/**
+	 * This method will Click On 'Buscar' Option
+	 */
+	public void clickOnSearch() {
+		driver.findElement(boxSearch).sendKeys(Keys.ENTER);
+	}
+	
+	/**
+	 * This method will Click On 'Buscar' Option
+	 */
+	public void clickOnCorrectWord() {
+		driver.findElement(generalResult).click();
+	}
+	
+	/**
+	 * This method will set an Invalid Nit data
+	 * @throws InterruptedException 
+	 */
+	public int getResultsList() throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+		int results = 0;
+
+		try {
+			clickOnCorrectWord();
+
+			wait.until(ExpectedConditions.visibilityOfAllElements(driver.findElements(listResultsFound)));
+			List<WebElement> elemInSearch = driver.findElements(listResultsFound);
+			int totalElem = elemInSearch.size();
+			// System.out.println("Num:" + totalElem);
+
+			if (totalElem < 1) {
+				throw new IOException("ERROR #SEARCH: Search Number Invalid < 1!");
+			} else {
+				String[] textSearch = new String[totalElem];
+				int i = 0;
+				for (WebElement e : elemInSearch) {
+					textSearch[i] = e.getText();
+					// System.out.println("TextSearch: " + textSearch[i]);
+					if (textSearch[i].contains("Resultados de la Web")) {
+						List<WebElement> elemFound = e.findElements(By.cssSelector("div[class^='g']"));
+						int resultsTemp = elemFound.size();
+						System.out.println("ResTemp:" + resultsTemp);
+						results += resultsTemp;
+						System.out.println("RESULT:" + results);
+					} else {
+						i++;
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR getResultsList:" + e.getMessage());
+		}
+		System.out.println("Total:" + results);
+		return results;
+	}
+	
+	/**
+	 * This method will set an Invalid Nit data
+	 * @throws InterruptedException 
+	 */
+	public void sendEmptyNit() throws InterruptedException {
+		String alertMessage = "";
+		String titleIPS = driver.findElement(By.id("registrarUusario:j_idt34_header")).getText().toString();
+		// System.out.println("title:" + titleIPS);
+
+		try {
+			if (titleIPS.equalsIgnoreCase("Información IPS")) {
+				driver.findElement(By.name("registrarUusario:j_idt37")).clear();
+				driver.findElement(By.name("registrarUusario:j_idt37")).sendKeys("");
+				Thread.sleep(1000);
+
+				//clickOnConsultar();
+
+				//alertMessage = verifyAlertMessage().toLowerCase();
+				if (!alertMessage.isEmpty() && alertMessage.contains("favor diligenciar información")) {
+					System.out.println("Alert Message Shown Correctly!");
+				} else {
+					throw new IOException("Alert Message Doesn't Match!");
+				}
+			} else {
+				throw new IOException("'Información IPS' Title Doesn't Match!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR sendEmptyNit:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This method will Click On 'LogIn With Google' Option
+	 * @throws InterruptedException 
+	 */
+	public void clickOnLoginGoogle() throws InterruptedException {
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//button//*[@class='auth0-lock-social-button-text']")).click();
+		Thread.sleep(5000);
+	}
+
+}

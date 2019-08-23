@@ -1,0 +1,2401 @@
+package pages;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebHomePage extends TestBase {
+
+	// Object Repository for RappiWebHomePage
+	// Header Objects
+	By btnIniciarSesion = By.xpath("//*[@class='dropdown-anonymous ng-star-inserted']");
+	By btnProfile = By.xpath("//*[@class='dropwdown-user-logged hidden-tablet ng-star-inserted']");
+	By btnSalirProfile = By.xpath("//*[@class='bg-dropwdown-user ng-star-inserted']");
+	By listOptionsProfile = By.xpath("//*[@class='dropw-down-list hidden-mobile ng-star-inserted dropdown-open']/child::li");
+	//By ventEmergenteOpcDropDownProfile = By.xpath("//*[@class='modal-content']//*[@class='close-modal']");
+	By ventEmergenteOpcDropDownProfile = By.xpath("//*[starts-with(@class,'close-modal')]");
+	By userData = By.xpath("//*[@class='user-profile-greeting']");
+	By cities = By.xpath("//*[@class='cont-country cities hidden-mobile']//*[@class='active-country ng-star-inserted']");
+	By address = By.xpath("//app-address-select//div[@class='address ng-star-inserted']");
+	By headCountryHomePage = By.xpath("//app-country//*[@class='cont-country hidden-mobile']");
+	By namePaisHomePage = By.xpath("//*[@class='cont-country hidden-mobile']//*[@class='active-country ng-star-inserted']");
+	By listCountries = By.xpath("//*[@class='cont-country hidden-mobile']/child::ul/child::li");
+	By canastaPpal = By.xpath("//button[@class='basket-icon']");
+	By boxSearch = By.xpath("//app-search-bar//app-input-debounce//input[@type='text']");
+	By btnSearch = By.xpath("//button[@type='submit']");
+	By logoRappiHome = By.id("logo-header");
+	By indicadorProdAddToBasket = By.cssSelector("small[class^='ng-star-inserted']");
+
+	By infoGralAddress = By.xpath("//*[@class='address-list']");
+	By listAddress = By.xpath("//*[@class='address-list']/child::ul/child::li");
+	By btnEditAddress = By.cssSelector("i[class^='iconf-grid']");
+	By btnDeleteAddress = By.cssSelector("i[class^='iconf-bin2 ng-star-inserted']");
+	By infoGralAddressToEditToAdd = By.xpath("//app-address-input//*[@class='form-inputs']");
+	By infoBoxEditAddress = By.xpath("//app-address-input//*[@class='title']");
+	By listBoxEditInAddress = By.xpath("//*[@class='form-inputs']/child::fieldset");
+	By boxEditDescripAddress = By.id("address-description");
+	By boxEditInfoAddress = By.xpath("//app-address-input-search//*[@type='text']");
+	By listDescriptSaveAddress = By.xpath("//*[@class='radio-group']/child::div/child::div");
+	By btnSaveChangesInAddress = By.xpath("//*[@class='btn-save']");
+	By msjeAddressInvalid = By.xpath("//*[@id='toast-container']//*[@class='toast-title ng-star-inserted']");
+	By btnAddNewAddress = By.xpath("//*[@class='add-new-address']//*[@type='button']");
+	By infoGralBoxNewAddress = By.xpath("//*[@class='city-addresses-list']");
+	By nameCountryToAddAddress = By.xpath("//*[@class='country']");
+	By contentCitiesToAddAddress = By.xpath("//*[@class='cont-info-address-list']");
+	By listCityToAddAddress = By.xpath("//*[@class='cont-info-address-list']/child::ul/child::li");
+	By optAddress = By.xpath("//*[@class='address-content']//*[text()=' Catam ']");
+	
+	By sectionFiltrosSearch = By.xpath("//*[@class='cont-filters']");
+	By lisTiposSearch = By.xpath("//*[@class='cont-filters']/child::div");
+	By infoGralSearchContent = By.xpath("//*[@class='head-search-page ng-star-inserted']");
+	By infoSearchNotFound = By.xpath("//*[@class='no-results ng-star-inserted']");
+	By btnSearchListaCompra = By.xpath("//*[@class='button-side-nav ng-star-inserted']//button");
+	By btnDeleteListaCompra = By.xpath("//*[@class='clean-shopping-list ng-star-inserted']");
+	By btnLupaInProdListaCompra = By.cssSelector("i[class^='iconf-ico-buscar']");
+	By btnDeleteInProdListaCompra = By.cssSelector("i[class^='iconf-delete']");
+	By infoGralProductosInListaCompra = By.xpath("//app-item-list//*[@class='list-items']");
+	By listProductosShowInListaCompra = By.xpath("//app-item-list//*[@class='list-items']/child::ul/child::li");
+	By btnAddProdNotFound = By.xpath("//app-whim-by-store-launcher//button");
+	By infoGralAddInfoProdNotFound = By.xpath("//app-modal//*[@class='whim-body']");
+	By boxProdNameToAdd = By.id("product-name");
+	By boxProdDescriptionToAdd = By.id("product-description");
+	By btnAddInfoAddedProdNotFound = By.xpath("//app-product-detail-operator//*[@class='buttons-product']/button");
+	By infoGralMarkSearch = By.xpath("//*[@class='by-categories-results ng-star-inserted']");
+	By mainNameMarkSearch = By.xpath("//*[@class='head-by-categories-results']");
+
+	// Menu Objects
+	By subMenuHome = By.id("categories-sub-menu");
+	By listSubMenuHome = By.xpath("//*[@id='categories-sub-menu']/child::li");
+
+	// Body Objects
+	By infoGralContentHomePage = By.xpath("//app-home//*[@class='cont-home']");
+	By totalTxtRappiHome = By.xpath("//*[@class='value-propositions']");
+	By listTxtBodyHome = By.xpath("//*[@class='value-propositions']/child::li");
+	By sectionNearStoresHome = By.xpath("//*[@class='head-section']");
+	By carouselMarketsBodyHome = By.xpath("//*[starts-with(@id,'carousel-')]");
+	By listCarouselStores = By.xpath("//*[@class='carousel']/child::ul/child::li");
+
+	// Footer Objects
+	By infoGralFooter = By.id("footer");
+	By headerFooterHome = By.id("head-footer");
+	By listHeadFooter = By.xpath("//*[@id='head-footer']/child::div");
+	By bodyFooterHome = By.id("info-footer");
+	By listBodyFooter = By.xpath("//*[@id='info-footer']/child::div");
+	By firmFooterHome = By.id("firm-footer");
+	
+	By infoGralListaCompras = By.xpath("//*[@class='shopping-list-side-nav show']");
+	By tituloListaCompras = By.xpath("//*[@class='head-side-nav']");
+	By boxSearchListaCompra = By.xpath("//app-add-item-input//input[@type='text']");
+	By listProdSuggestListaCompra = By.xpath("//*[@class='suggested-list ng-star-inserted']/child::ul/child::li");
+	By btnSearchInternoListaCompra = By.xpath("//app-add-item-input//*[@class='bg-add-item-input']");
+	
+	By infoGralRappiPrime = By.xpath("//*[@class='content-prime']");
+	By titleRappiPrime = By.xpath("//*[@class='welcome-rappi-prime']");
+	By listProdRappiPrime = By.xpath("//*[@class='prime-products']/child::ul/child::li");
+	By nameOptRappiPrime = By.cssSelector("div[class^='title-plan']");
+	By modalConfRappiPrime = By.xpath("//*[@class='confirmation-dialog prime-confirmation']");
+	By titleModalConfRappiPrime = By.xpath("//*[@class='title-dialog']");
+	By listBtnModalConfRappiPrime = By.xpath("//*[@class='confirmation-dialog prime-confirmation']/child::button");
+	By btnCloseModalConfRappiPrime = By.xpath("//button[starts-with(@class,'close-modal')]");
+	By modalAlertaLoginInRappiPrime = By.xpath("//app-alert-login//*[@class='cont-alert-login']");
+	By btnEntrarLoginInRappiPrime = By.xpath("//app-alert-login//button");
+	By btnCloseLoginInRappiPrime = By.xpath("//app-alert-login//*[@class='iconf-cancel']");
+	By modalAlertas = By.cssSelector("div[class^='modal-box']");
+	By btnCloseModalAlertas = By.cssSelector("button[class^='close-modal']");
+	By btnYesModalAlertaEdad = By.cssSelector("button[class^='btn-confirmation']");
+	
+	By infoGralRappiCred = By.xpath("//*[@class='rappi-credits-container']");
+	By titleRappiCred = By.xpath("//*[@class='rappi-credits-total']");
+	By descriptionRappiCred = By.xpath("//*[@class='rappi-credits-info']");
+	By listRappiCred = By.xpath("//*[@class='rappi-credits-list ng-star-inserted']/child::ul/child::li");
+	
+	RappiWebLogin objLogin;
+	RappiWebRestaurants objRest;
+	
+	/**
+	 * Main POM method will validate All Home Page without Login
+	 * 
+	 * @return TRUE only if All Content in Home Page without Login is Displayed
+	 */
+	public Boolean verifyHomePageContentWithoutLogin() {
+
+		try {
+
+			if (verifyHeaderInHomePageWithoutLogin() && verifyBodyInHomePage() && verifyFooterInHomePage()) {
+
+				RappiUtility.scrollToElement(driver.findElement(infoGralContentHomePage));
+				RappiUtility.takeScreen(sTestCaseName + "/Img_HomePageWithoutLogin");
+				return true;
+
+			} else {
+				throw new IOException("ERROR CONTENT PRELOGIN: Content In Home Page Without Login isn'Displayed!");
+			}
+		} catch (Exception e) {
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/HomePageWithoutLogin_Failed");
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Main POM method will validate All Home Page with Login
+	 * 
+	 * @return TRUE only if All Content in Home Page is Displayed
+	 */
+	public Boolean verifyHomePageContentWithLogin() {
+
+		try {
+			if (flagLogged) {
+				if (verifyHeaderInHomePageWithLogin() && verifyBodyInHomePage() && verifyFooterInHomePage()) {
+
+					RappiUtility.scrollToElement(driver.findElement(infoGralContentHomePage));
+					RappiUtility.takeScreen(sTestCaseName + "/Img_HomePageWithLogin_" + sTipoLogin);
+					return true;
+				} else {
+					throw new IOException("ERROR HOME PAGE LOGIN: Content In Home Page With Login isn'Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR LOGIN: Previous Login with '" + sTipoLogin + "' failed!");
+			}
+		} catch (Exception e) {
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/HomePageWithLogin_Failed");
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * This POM method will validate the Header In Home Page without Login
+	 * 
+	 * @return TRUE only if All Header in Home Page without Login is Displayed
+	 */
+	public Boolean verifyHeaderInHomePageWithoutLogin() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(cities));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(logoRappiHome))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(cities))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(btnIniciarSesion))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(canastaPpal))
+					&& verifySearchOptionInHomePage() && verifyCountryNameFlagInHomePage()) {
+				return true;
+			} else {
+				throw new IOException("ERROR HEAD HOMEPAGE: Head In Home Page Without Login isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate the Header In Home Page with Login
+	 * 
+	 * @return TRUE only if All Header in Home Page is Displayed
+	 */
+	public Boolean verifyHeaderInHomePageWithLogin() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(address));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(logoRappiHome))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(address))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(btnProfile))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(canastaPpal))
+					&& verifySearchOptionInHomePage() && verifyCountryNameFlagInHomePage()) {
+				return true;
+			} else {
+				throw new IOException("ERROR HEAD HOMEPAGE: Head In Home Page With Login isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate the Header Without Search Option
+	 * 
+	 * @return TRUE only if Header in Home Page is Displayed
+	 */
+	public Boolean verifyHeaderInHomePageWithLoginWithoutSearchOpt() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(address));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(logoRappiHome))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(address))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnProfile))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(canastaPpal))) {
+				return true;
+			} else {
+				throw new IOException(
+						"ERROR HEADER HOMEPAGE: Header In Home Page With Login Without Search Option isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate actual Country Name in Home Page
+	 * 
+	 * @return TRUE only if actual Country Name is Displayed
+	 */
+	public Boolean verifyCountryNameFlagInHomePage() {
+		wait = new WebDriverWait(driver, 1);
+		String strCountryName = "";
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(namePaisHomePage));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(headCountryHomePage))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(namePaisHomePage))) {
+				strCountryName = driver.findElement(namePaisHomePage).getText().trim().toLowerCase();
+
+				if (strCountryName.contentEquals(sCountry.trim().toLowerCase())) {
+					return true;
+				} else {
+					throw new IOException("ERROR COUNTRY NAME: Country Name Flag doesn't Match!");
+				}
+			} else {
+				throw new IOException("ERROR COUNTRY: Element Country Name isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Search Option in Home Page
+	 * 
+	 * @return TRUE only if Search Option is Displayed
+	 */
+	public Boolean verifySearchOptionInHomePage() {
+		Boolean status = false;
+		
+		if(RappiUtility.verifyAnElement(false, driver.findElement(boxSearch))
+			&& RappiUtility.verifyAnElement(false, driver.findElement(btnSearch))) {
+			status = true;
+		}else {
+			status = false;
+		}
+		return status;
+	}
+	
+	/**
+	 * This POM method will click on Iniciar Sesion Button
+	 */
+	public void clickOnIniciarSesion() {
+		try {
+			if (!verifyHomePageContentWithoutLogin()
+					|| !RappiUtility.clickOnElement(driver.findElement(btnIniciarSesion))) {
+				throw new IOException("ERROR HOME PAGE: Click On 'Iniciar Sesion' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Main Rappi Logo
+	 */
+	public Boolean clickOnRappiLogo() {
+		return RappiUtility.clickOnElement(driver.findElement(logoRappiHome));
+	}
+	
+	/**
+	 * This POM method will click on Edit Account from User Profile
+	 */
+	public void clickOnAjusteCuentaInProfile() {
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+
+				List<WebElement> elemOptProfile = driver.findElements(listOptionsProfile);
+
+				int i = 0;
+				for (WebElement e : elemOptProfile) {
+					if(e.getText().contains("Ajustes") || e.getText().contains("Configurações")
+							|| e.getText().contains("cuenta") || e.getText().contains("conta")) {
+						RappiUtility.verifyAnElement(true, elemOptProfile.get(i));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_EditAccountFromProfile");
+						elemOptProfile.get(i).click();
+						break;
+					}else {
+						i++;
+					}
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Add a Credit Card from User Profile
+	 */
+	public void clickOnAddCreditCardInProfile() {
+		
+		try {
+			System.out.println("Try_clickOnAddCreditCardInProfile");
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+
+				List<WebElement> elemOptProfile = driver.findElements(listOptionsProfile);
+
+				int i = 0;
+				for (WebElement e : elemOptProfile) {
+					if(e.getText().contains("tarjeta") || e.getText().contains("cartão")) {
+						RappiUtility.verifyAnElement(true, elemOptProfile.get(i));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_AddCreditCardFromProfile");
+						elemOptProfile.get(i).click();
+						break;
+					}else {
+						i++;
+					}
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnAddCreditCardInProfile_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Add Coupon from User Profile
+	 */
+	public void clickOnAddCouponInProfile() {
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+				System.out.println("clickOnAddCouponInProfile_" + sBrowserName);
+
+				List<WebElement> elemOptProfile = driver.findElements(listOptionsProfile);
+
+				int i = 0;
+				for (WebElement e : elemOptProfile) {
+					if (e.getText().contains("cupón") || e.getText().contains("cupom")) {
+						RappiUtility.verifyAnElement(true, elemOptProfile.get(i));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_AddCouponFromProfile");
+						elemOptProfile.get(i).click();
+						break;
+					} else {
+						i++;
+					}
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnAddCouponInProfile_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on 'RappiCreditos' from User Profile
+	 */
+	public void clickOnRappiCreditosInProfile() {
+		Boolean flagRappiCreditos = false;
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+				System.out.println("clickOnRappiCreditosInProfile_" + sBrowserName);
+
+				List<WebElement> elemOptProfile = driver.findElements(listOptionsProfile);
+
+				int i = 0;
+				for (WebElement e : elemOptProfile) {
+					if (e.getText().toLowerCase().contains("rappicréditos")) {
+						RappiUtility.verifyAnElement(true, elemOptProfile.get(i));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_RappiCreditosFromProfile");
+						flagRappiCreditos = true;
+						elemOptProfile.get(i).click();
+						break;
+					} else {
+						i++;
+					}
+				}
+				if (flagRappiCreditos) {
+					verifyBodyInRappiCreditos();
+				} else {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_UserWithoutRappiCreditos");
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnRappiCreditosInProfile" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Close Sesion
+	 */
+	public void clickOnCloseSesion() {
+
+		try {
+			System.out.println("Try_clickOnCloseSesion" + sBrowserName);
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+
+				List<WebElement> elemOptProfile = driver.findElements(listOptionsProfile);
+				int numOptions = elemOptProfile.size();
+				// System.out.println("Options: " + numOptions);
+				assertTrue("ERROR CLOSE SESION: Click in 'Close Sesion Btn' Failed!",
+						RappiUtility.clickOnElement(elemOptProfile.get(numOptions - 1)));
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_CloseSession_" + sCountry);
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnCloseSesion" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Click on All Drop-Down Options In User Profile
+	 */
+	public void clickOnAllDropDownOptInProfile() {
+
+		try {
+			System.out.println("clickOnAllDropDownOptInProfile_" + sBrowserName);
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+
+				List<WebElement> elemDropDownOptProfile = driver.findElements(listOptionsProfile);
+				int numDropDownOpt = elemDropDownOptProfile.size();
+				// System.out.println("Options: " + numDropDownOpt);
+
+				String[] textDropDownOpt = new String[numDropDownOpt];
+				for (int i = 1; i < numDropDownOpt - 1; i++) {
+					RappiUtility.verifyAnElement(true, elemDropDownOptProfile.get(i));
+					textDropDownOpt[i] = elemDropDownOptProfile.get(i).getText().trim();
+					// System.out.println("Text: " + textDropDownOpt[i]);
+					RappiUtility.takeScreen(sTestCaseName + "/Img_OptionProfile_" + textDropDownOpt[i]);
+
+					elemDropDownOptProfile.get(i).click();
+					Thread.sleep(400);
+					RappiUtility.takeScreen(sTestCaseName + "/Img_ContentOption_" + textDropDownOpt[i]);
+
+					try {
+						RappiUtility.highLightElement(driver.findElement(ventEmergenteOpcDropDownProfile), true);
+						driver.findElement(ventEmergenteOpcDropDownProfile).click();
+						driver.findElement(btnProfile).click();
+					} catch (Exception e) {
+						driver.findElement(btnProfile).click();
+					}
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnAllDropDownOptInProfile_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will click on Profile Button
+	 * 
+	 * @return String with actual User Data
+	 */
+	public void clickOnProfile() {
+		String text = "";
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnProfile))) {
+
+				wait.until(ExpectedConditions.visibilityOfElementLocated(userData));
+				RappiUtility.highLightElement(driver.findElement(userData), true);
+				text = driver.findElement(userData).getText();
+				System.out.println("User Data: " + text);
+				assertNotNull("ERROR PROFILE: User Data are NULL!", text);
+				RappiUtility.takeScreen(sTestCaseName + "/Img_UserData_SuccessfulLogin");
+				driver.findElement(btnSalirProfile).click();
+			} else {
+				throw new IOException("ERROR: Click in 'Profile Button' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will validate the Body In Home Page
+	 * 
+	 * @return TRUE only if All Body in Home Page is Displayed
+	 */
+	public Boolean verifyBodyInHomePage() {
+		
+		try {
+			
+			if( RappiUtility.verifyAnElement(false, driver.findElement(infoGralContentHomePage))
+				&& verifyAllSubMenu() && verifyTextInBodyInHomePage() && verifyNearStoresBodyInHomePage()) {
+				return true;
+			}else {
+				throw new IOException("ERROR BODY HOMEPAGE: Body Content In Home Page isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Text In Home Page after Login
+	 * 
+	 * @return TRUE only if Text In Home Page is Displayed
+	 */
+	public Boolean verifyTextInBodyInHomePage() {
+
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(totalTxtRappiHome))) {
+
+				List<WebElement> elemTextBodyHome = driver.findElements(listTxtBodyHome);
+				// int numTextBody = elemTextBodyHome.size();
+
+				int i = 0;
+				for (WebElement e : elemTextBodyHome) {
+					if (e.getText().isEmpty()) {
+						throw new IOException(
+								"ERROR TEXT BODY: Text in Body in Home Page isn'Displayed!");
+					} else {
+						RappiUtility.verifyAnElement(false, elemTextBodyHome.get(i));
+						i++;
+					}
+				}
+				return true;
+			} else {
+				throw new IOException("ERROR TEXT BODY: Element in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This POM method will validate Near Stores In Home Page after Login
+	 * 
+	 * @return TRUE only if Near Stores In Home Page are Displayed
+	 */
+	public Boolean verifyNearStoresBodyInHomePage() {
+
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(sectionNearStoresHome))
+				&& RappiUtility.verifyAnElement(false, driver.findElement(carouselMarketsBodyHome))) {
+
+				List<WebElement> elemNearStoresBodyHome = driver.findElements(listCarouselStores);
+				int numStoresBody = elemNearStoresBodyHome.size();
+				// System.out.println("Num:" + numStoresBody);
+
+				if (numStoresBody < 1) {
+					throw new IOException("ERROR STORES BODY: Stores in Carousel aren't Displayed!");
+				} else {
+					return true;
+				}
+			} else {
+				throw new IOException("ERROR STORE BODY: Element in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate the Footer In Home Page
+	 * 
+	 * @return TRUE only if All Footer in Home Page is Displayed
+	 */
+	public Boolean verifyFooterInHomePage() {
+		
+		try {
+			
+			if( RappiUtility.verifyAnElement(false, driver.findElement(infoGralFooter))
+				&& verifyHeadFooterInHomePage() && verifyBodyFooterInHomePage()
+				&& RappiUtility.verifyAnElement(false, driver.findElement(firmFooterHome)) ) {
+				return true;
+			}else {
+				throw new IOException("ERROR HEAD HOME PAGE: Head Content In Home Page isn'Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will validate Text In Footer after Login
+	 * 
+	 * @return TRUE only if Text In Footer is Displayed
+	 */
+	public Boolean verifyHeadFooterInHomePage() {
+
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(headerFooterHome))) {
+				
+				RappiUtility.scrollToElement(driver.findElement(headerFooterHome));
+
+				List<WebElement> elemTextFooter = driver.findElements(listHeadFooter);
+				// int numTextFooter = elemTextFooter.size();
+
+				int i = 0;
+				for (WebElement e : elemTextFooter) {
+					if (e.getText().isEmpty()) {
+						throw new IOException(
+								"ERROR HEAD FOOTER: Text in Footer in Home Page isn'Displayed!");
+					} else {
+						RappiUtility.verifyAnElement(false, elemTextFooter.get(i));
+						i++;
+					}
+				}
+				return true;
+			} else {
+				throw new IOException("ERROR HEAD FOOTER: Element in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This POM method will validate Body In Footer after Login
+	 * 
+	 * @return TRUE only if All Body In Footer is Displayed
+	 */
+	public Boolean verifyBodyFooterInHomePage() {
+
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(bodyFooterHome))) {
+
+				List<WebElement> elemBodyFooter = driver.findElements(listBodyFooter);
+				// int numBodyFooter = elemBodyFooter.size();
+				
+				int i = 0;
+				for (WebElement e : elemBodyFooter) {
+					if (e.getText().isEmpty()) {
+						throw new IOException(
+								"ERROR TEXT BODY FOOTER: Text in Footer in Home Page isn'Displayed!");
+					} else {
+						RappiUtility.verifyAnElement(false, elemBodyFooter.get(i));
+						i++;
+					}
+				}
+				return true;
+			} else {
+				throw new IOException("ERROR TEXT BODY FOOTER: Element in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This POM method will validate the Sub Menu from Home Page
+	 * 
+	 * @return TRUE only if all categories of Sub Menu are Displayed
+	 */
+	public Boolean verifyAllSubMenu() {
+		action = new Actions(driver);
+
+		try {
+			if (RappiUtility.verifyAnElement(true, driver.findElement(subMenuHome))) {
+				
+				List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+				// int numSubMenus = elemSubMenu.size();
+				
+				int i = 0;
+				for (WebElement e : elemSubMenu) {
+					// System.out.println("class>>" + e.getAttribute("class"));
+					RappiUtility.highLightElement(e, true);
+					
+					if (e.getAttribute("class").contains("normal-stores")) {
+						RappiUtility.scrollToElement(e);
+						verifySubMarkets(elemSubMenu.get(i));
+						i++;
+					}else if(e.getAttribute("class").contains("special-links")) {
+						RappiUtility.scrollToElement(e);
+						verifySubSpecialsMarkets(elemSubMenu.get(i));
+						i++;
+					}else {
+						i++;
+					}
+				}
+				
+				if(flagLogged) {
+					action.moveToElement(driver.findElement(btnProfile)).release().perform();
+				}else {
+					action.moveToElement(driver.findElement(btnIniciarSesion)).release().perform();
+				}
+				
+				return true;
+				
+			} else {
+				throw new IOException("ERROR SUB MENU: Sub Menu in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This POM method will validate the Sub Markets
+	 */
+	public void verifySubMarkets(WebElement subMarkets) {
+
+		List<WebElement> elemSubMarkets = subMarkets.findElements(By.xpath("//child::div/child::span/child::li"));
+		int numMarkets = elemSubMarkets.size();
+		// System.out.println("tamSubMaekets>>" +numMarkets);
+		try {
+			if (numMarkets > 1 && subMarkets.findElement(By.xpath("//*[@class='view-more-stores ng-star-inserted']"))
+					.isEnabled()) {
+				subMarkets.findElement(By.xpath("//*[@class='view-more-stores ng-star-inserted']")).click();
+				for (WebElement elem : elemSubMarkets) {
+					RappiUtility.verifyAnElement(false, elem);
+				}
+			}
+		} catch (Exception e) {
+			for (WebElement elem : elemSubMarkets) {
+				RappiUtility.verifyAnElement(false, elem);
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will validate the Sub Specials Markets
+	 */
+	public void verifySubSpecialsMarkets(WebElement subSpecialsMarkets) {
+		
+		List<WebElement> elemSubSpecialsMarkets = subSpecialsMarkets.findElements(By.cssSelector("li"));
+		// int numSpecialMarkets = elemSubSpecialsMarkets.size();
+		// System.out.println("tamSubSpecials>>" +numSpecialMarkets);	
+		
+		for (WebElement e : elemSubSpecialsMarkets) {
+			RappiUtility.verifyAnElement(false, e);
+		}
+	}
+	
+	/**
+	 * This POM method will Click On RappiPrime Option in Home Page
+	 */
+	public void clickOnRappiPrime() {
+		wait = new WebDriverWait(driver, 1);
+		List<WebElement> elemSubSpecialsMarkets;
+
+		try {
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			int i = 0;
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("TextMain:" +e.getAttribute("class"));
+				if (e.getAttribute("class").contains("special-links")) {
+					elemSubSpecialsMarkets = elemSubMenu.get(i).findElements(By.cssSelector("li"));
+
+					for (WebElement elem : elemSubSpecialsMarkets) {
+						// System.out.println("Text:" +elem.getText());
+						if (elem.getText().contains("RappiPrime")) {
+							RappiUtility.scrollToElement(elem);
+							RappiUtility.scrollUp();
+							wait.until(ExpectedConditions.visibilityOf(elem));
+
+							assertTrue("ERROR CLICK: Click On 'RappiPrime Button' Invalid",
+									RappiUtility.clickOnElement(elem));
+							break;
+						}
+					}
+					break;
+				} else {
+					i++;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Select 1 Option for Subscription In RappiPrime
+	 */
+	public void selectSubscriptionInRappiPrime() {
+		wait = new WebDriverWait(driver, 1);
+		objLogin = new RappiWebLogin();
+
+		try {
+			System.out.println("Try_selectSubscriptionInRappiPrime_" + sBrowserName);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralRappiPrime));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralRappiPrime))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(titleRappiPrime))) {
+
+				List<WebElement> elemRappiPrime = driver.findElements(listProdRappiPrime);
+				int numOptRapppiPrime = elemRappiPrime.size();
+				
+				if(numOptRapppiPrime > 0) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_RappiPrime_" + sCountry);
+				}else {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/RappiPrime_Empty");
+					throw new IOException("ERROR PRIME: There aren't RappiPrime Options!");
+				}
+				
+				String[] strOptRappiPrime = new String[numOptRapppiPrime];
+				String[] strNameOptRappiPrime = new String[numOptRapppiPrime];
+				int i = 0;
+				for (WebElement e : elemRappiPrime) {
+
+					strOptRappiPrime[i] = e.findElement(By.cssSelector("div[class^='box-prime']"))
+							.getAttribute("class");
+					// System.out.println("opt:" + strOptRappiPrime[i]);
+					strNameOptRappiPrime[i] = e.findElement(nameOptRappiPrime).getText();
+					// System.out.println("name:" + strnameOptRappiPrime[i]);
+
+					if (strOptRappiPrime[i].contains("active")) {
+						RappiUtility.verifyAnElement(true, e);
+						i++;
+					} else {
+						assertTrue("ERROR CLICK: Click On '" + strNameOptRappiPrime[i] + " Option' Invalid",
+								RappiUtility.clickOnElement(e));
+						try {
+							driver.findElement(modalConfRappiPrime);
+							wait.until(ExpectedConditions.visibilityOfElementLocated(modalConfRappiPrime));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(modalConfRappiPrime))
+									&& RappiUtility.verifyAnElement(true,
+											driver.findElement(titleModalConfRappiPrime))) {
+
+								List<WebElement> elemConfirRappiPrime = driver.findElements(listBtnModalConfRappiPrime);
+
+								for (WebElement elem : elemConfirRappiPrime) {
+									RappiUtility.verifyAnElement(true, elem);
+								}
+								RappiUtility.takeScreen(
+										sTestCaseName + "/Img_ConfirmationRappiPrime_" + strNameOptRappiPrime[i]);
+
+								RappiUtility.clickOnElement(driver.findElement(btnCloseModalConfRappiPrime));
+								i++;
+							}
+						} catch (Exception e2) {
+							try {
+								driver.findElement(modalAlertaLoginInRappiPrime);
+								if (RappiUtility.verifyAnElement(true, driver.findElement(modalAlertaLoginInRappiPrime))
+										&& RappiUtility.verifyAnElement(true,
+												driver.findElement(btnEntrarLoginInRappiPrime))) {
+									RappiUtility.takeScreen(sTestCaseName + "/Img_Login_Required_RappiPrime");
+									RappiUtility.highLightElement(driver.findElement(btnCloseLoginInRappiPrime), true);
+									driver.findElement(btnCloseLoginInRappiPrime).click();
+								} else {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ConfirmRappiPrime_Failed");
+									System.out.println(e2.getMessage());
+								}
+							} catch (Exception e3) {
+								driver.findElement(modalAlertas);
+								if (driver.findElement(modalAlertas).isDisplayed()) {
+									if (driver.findElement(modalAlertas).getText().contains("edad")
+											|| driver.findElement(modalAlertas).getText().contains("idade")) {
+										System.out.println("Modal Edad");
+										RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaEdad");
+										driver.findElement(btnYesModalAlertaEdad).click();
+										Thread.sleep(100);
+									} else if (driver.findElement(modalAlertas).getText().contains("dirección")
+											|| driver.findElement(modalAlertas).getText().contains("endereço")) {
+										System.out.println("Modal Direccion");
+										RappiUtility.takeScreen(sTestCaseName + "/Img_Modal_AlertaDireccion");
+										driver.findElement(btnCloseModalAlertas).click();
+										Thread.sleep(100);
+									}
+								}
+							}
+						}
+					}
+				}
+			} else {
+				throw new IOException("ERROR RAPPIPRIME: Content in 'RappiPrime' isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_selectSubscriptionInRappiPrime_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Delete an Address on the Actual List
+	 */
+	public void deleteAddress() {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		objGenerator = new Random();
+		WebElement elemAddressSel;
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(address));
+
+			if (RappiUtility.clickOnElement(driver.findElement(address))) {
+
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralAddress))) {
+					List<WebElement> elemListAddressDel = driver.findElements(listAddress);
+					int numAddress = elemListAddressDel.size();
+					// System.out.println("tam:" + numAddress);
+
+					if (numAddress < 1) {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddressesNumInvalid");
+						throw new IOException("ERROR ADDRESS: There aren't Addresses to Delete!");
+					} else if (numAddress == 1) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_JustOneAddress");
+						addNewAddress();
+					} else {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_ActualAddresses");
+					}
+
+					List<WebElement> elemDeleteListAddress = driver.findElements(btnDeleteAddress);
+					int numDeleteBtn = elemDeleteListAddress.size();
+					// System.out.println("tamEdit:" + numDeleteBtn);
+					int randomAddressDel = objGenerator.nextInt(numDeleteBtn);
+					// System.out.println("Rand:" + randomAddressDel);
+
+					elemAddressSel = elemListAddressDel.get(randomAddressDel);
+					// System.out.println("elem:" + elemAddressSelected.getText());
+					RappiUtility.scrollToElement(elemAddressSel);
+					RappiUtility.scrollUp();
+					RappiUtility.verifyAnElement(true, elemAddressSel);
+
+					WebElement elemBtnDelete = elemDeleteListAddress.get(randomAddressDel);
+
+					if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+						try {
+							System.out.println("Try_deleteAddress_" + sBrowserName);
+							action.moveToElement(elemBtnDelete).release().perform();
+							RappiUtility.takeScreen(sTestCaseName + "/Img_AddressToDelete");
+							RappiUtility.clickOnElement(elemBtnDelete);
+							// action.moveToElement(elemBtnEdit).click().build().perform();
+						} catch (Exception e) {
+							action.moveToElement(elemBtnDelete).click().build().perform();
+						}
+					} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+						System.out.println("deleteAddress_" + sBrowserName);
+						RappiUtility.verifyAnElement(true, elemAddressSel);
+						RappiUtility.takeScreen(sTestCaseName + "/Img_AddressToDelete");
+						// action.moveToElement(elemBtnEdit).release().perform();
+					}
+					
+					RappiUtility.clickOnElement(driver.findElement(ventEmergenteOpcDropDownProfile));
+					action.moveToElement(driver.findElement(btnProfile)).release().perform();
+
+					if (verifyHeaderInHomePageWithLogin()) {
+						assertTrue("ERROR ADDRESS BUTTON: Address Button In Home Page isn't Displayed!",
+								RappiUtility.verifyAnElement(true, driver.findElement(address)));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_AddressDeleted_OK");
+					} else {
+						throw new IOException("ERROR DELETE ADDRESS: Validate Header Home Page Failed!");
+					}
+				} else {
+					throw new IOException("ERROR ADDRESS: Address Information isn't Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Address Option' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_deleteAddress_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Edit an Address on the Actual List
+	 */
+	public void editAddress() {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		objGenerator = new Random();
+		WebElement elemAddressSelected;
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(address));
+
+			if (RappiUtility.clickOnElement(driver.findElement(address))) {
+
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralAddress))) {
+					List<WebElement> elemListAddress = driver.findElements(listAddress);
+					int numAddress = elemListAddress.size();
+					// System.out.println("tamDir:" + numAddress);
+
+					if (numAddress < 1) {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddressesNumInvalid");
+						throw new IOException("ERROR ADDRESS: There aren't Addresses To Edit!");
+					} else {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_ActualAddresses");
+					}
+
+					int randomAddress = objGenerator.nextInt(numAddress);
+					// System.out.println("Rand:" + randomAddress);
+					if (randomAddress == 0) {
+						randomAddress++;
+					}
+
+					elemAddressSelected = elemListAddress.get(randomAddress);
+					// System.out.println("elem:" + elemAddressSelected.getText());
+					RappiUtility.scrollToElement(elemAddressSelected);
+					RappiUtility.scrollUp();
+					RappiUtility.verifyAnElement(true, elemAddressSelected);
+
+					List<WebElement> elemEditListAddress = driver.findElements(btnEditAddress);
+					// System.out.println("tamEdit:" + elemEditListAddress.size());
+
+					WebElement elemBtnEdit = elemEditListAddress.get(randomAddress);
+
+					if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+						try {
+							System.out.println("Try_editAddress_" + sBrowserName);
+							action.moveToElement(elemBtnEdit).release().perform();
+							RappiUtility.clickOnElement(elemBtnEdit);
+							// action.moveToElement(elemBtnEdit).click().build().perform();
+						} catch (Exception e) {
+							action.moveToElement(elemBtnEdit).click().build().perform();
+						}
+						getListToEditAndEditAddress("Edit");
+
+					} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+						System.out.println("Try_editAddress_" + sBrowserName);
+						RappiUtility.verifyAnElement(true, elemAddressSelected);
+						// action.moveToElement(elemBtnEdit).release().perform();
+					}
+				} else {
+					throw new IOException("ERROR ADDRESS: Address Information isn't Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Address Option' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_editAddress_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Get the Fiels to Update Address
+	 * And Edit "Descrption Address" Option to Test
+	 */
+	public void getListToEditAndEditAddress(String strTipoAccion) {
+		wait = new WebDriverWait(driver, 1);
+		String strFirstMainAddress = "";
+		objGenerator = new Random();
+		Boolean flagNoCovertura = false;
+
+		try {
+			Thread.sleep(500);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralAddressToEditToAdd));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralAddressToEditToAdd))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(infoBoxEditAddress))) {
+
+				strFirstMainAddress = driver.findElement(address).getText().trim();
+				// System.out.println("Address1:" + strFirstMainAddress);
+
+				List<WebElement> elemEditListAddress = driver.findElements(listBoxEditInAddress);
+				int numBoxEditAddress = elemEditListAddress.size();
+
+				if (numBoxEditAddress < 1) {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddressToEdit_Or_ToAdd_Invalid");
+					throw new IOException("ERROR ADDRESS: There aren't Addresses To Set!");
+				} else {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_AddressToEdit_Or_ToAdd");
+				}
+
+				for (WebElement e : elemEditListAddress) {
+					// System.out.println("Box:" + e.getText());
+					RappiUtility.highLightElement(e, true);
+
+					switch (strTipoAccion) {
+					case "Edit":
+						if (e.getText().contains("Apto") || e.getText().contains("Depto")) {
+							RappiUtility.highLightElement(driver.findElement(boxEditDescripAddress), true);
+							driver.findElement(boxEditDescripAddress).clear();
+							driver.findElement(boxEditDescripAddress).sendKeys("Prueba-Edit-Autom");
+							RappiUtility.takeScreen(sTestCaseName + "/Img_AddressToEdited");
+						}
+						break;
+
+					case "Add":
+						if (e.getText().contains("Dirección") || e.getText().contains("Endereço")) {
+							RappiUtility.highLightElement(driver.findElement(boxEditInfoAddress), true);
+							driver.findElement(boxEditInfoAddress).sendKeys("a");
+							setOptAddressFromGoogle();
+
+							try {
+								driver.findElement(msjeAddressInvalid);
+								//wait.until(ExpectedConditions.visibilityOfElementLocated(msjeAddressInvalid));
+								if (RappiUtility.verifyAnElement(true, driver.findElement(msjeAddressInvalid))) {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Address_Invalid");
+									flagNoCovertura = true;
+									throw new IOException(
+											"ERROR NO COVERTURA: 'Proximamente estaremos en tu zona' is Displayed!");
+								} else {
+									throw new IOException(
+											"ERROR ADDRESS TO ADD: Message 'Address Invalid' isn't Displayed!");
+								}
+							} catch (Exception e1) {
+								Thread.sleep(100);
+							}
+						}
+
+						if (e.getText().contains("Apto") || e.getText().contains("Depto")) {
+							RappiUtility.highLightElement(driver.findElement(boxEditDescripAddress), true);
+							driver.findElement(boxEditDescripAddress).clear();
+							driver.findElement(boxEditDescripAddress).sendKeys("Prueba-Add-Autom");
+
+							try {
+								List<WebElement> elemListDescriptionAddress = driver
+										.findElements(listDescriptSaveAddress);
+								int numDescritAddress = elemListDescriptionAddress.size();
+								int randomDescriptAddress = objGenerator.nextInt(numDescritAddress);
+
+								WebElement elemSelecDescript = elemListDescriptionAddress.get(randomDescriptAddress);
+								RappiUtility.scrollToElement(elemSelecDescript);
+								RappiUtility.scrollUp();
+
+								if (RappiUtility.clickOnElement(elemSelecDescript)) {
+									wait.until(ExpectedConditions.elementToBeClickable(btnSaveChangesInAddress));
+									
+									System.out.println("Add_Address_" + sBrowserName);
+									if (driver.findElement(btnSaveChangesInAddress).isEnabled()) {
+										RappiUtility.takeScreen(sTestCaseName + "/Img_AddressToAdd");
+									} else {
+										throw new IOException(
+												"ERROR SAVE ADDRESS: 'Save Address' Button isn't Enabled!");
+									}
+								}
+							} catch (Exception e2) {
+								RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SaveAddressButton_Disabled");
+								System.out.println("Save_AddressButton_Disabled_" + sBrowserName);
+								flagNoCovertura = true;
+								// System.out.println(e2.getMessage());
+							}
+						}
+						break;
+					default:
+						throw new IllegalArgumentException("Invalid Action On Address Type: " + strTipoAccion);
+					}
+				}
+
+				if (!flagNoCovertura) {
+					if (strTipoAccion.contains("Add")) {
+						if (RappiUtility.clickOnElement(driver.findElement(btnSaveChangesInAddress))) {
+							Thread.sleep(1000);
+							if (verifyHeaderInHomePageWithLogin()) {
+								String strTextMainAddressChanged = driver.findElement(address).getText().trim();
+								// System.out.println("Address2:" + strTextMainAddressChanged);
+								if (strFirstMainAddress.equalsIgnoreCase(strTextMainAddressChanged)) {
+									RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/NewAddressAdded_Failed");
+									throw new IOException(
+											"ERROR NEW ADDRESS: New Address Added Didn't Change In Home Page!");
+								} else {
+									RappiUtility.takeScreen(sTestCaseName + "/Img_NewAddressAdded_OK");
+								}
+							}
+						} else {
+							throw new IOException(
+									"ERROR DESCRIPTION ADDRESS: Click on 'Description Address' Or Click on 'Save Address' Failed!");
+						}
+					} else {
+						if (RappiUtility.clickOnElement(driver.findElement(btnSaveChangesInAddress))
+								&& verifyHeaderInHomePageWithLogin()) {
+							String strTextMainAddressEdited = driver.findElement(address).getText().trim();
+							// System.out.println("Address2:" + strTextMainAddressChanged);
+							if (strFirstMainAddress.equalsIgnoreCase(strTextMainAddressEdited)) {
+								RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/AddressEdited_Failed");
+								throw new IOException("ERROR EDIT ADDRESS: Address Edited Didn't Change In Home Page!");
+							} else {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_AddressEdited_OK");
+							}
+						} else {
+							throw new IOException("ERROR EDIT ADDRESS: Click on 'Save Address' Failed!");
+						}
+					}
+				}
+			} else {
+				throw new IOException("ERROR MODAL ADDRESS: Modal to Edit or Create Address isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_Add_Address_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Add a New Address
+	 */
+	public void addNewAddress() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(address));
+			if (RappiUtility.clickOnElement(driver.findElement(address))) {
+
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralAddress))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(btnAddNewAddress))) {
+
+					RappiUtility.scrollToElement(driver.findElement(btnAddNewAddress));
+					RappiUtility.scrollUp();
+					RappiUtility.clickOnElement(driver.findElement(btnAddNewAddress));
+
+					assertTrue("ERROR CLICK SELECT ADDRESS: On Click the City Select Failed!", setCityInNewAddress());
+
+					getListToEditAndEditAddress("Add");
+
+				} else {
+					throw new IOException("ERROR ADDRESS: Address Information isn't Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR: Click in 'Address Option' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Set a new City to Create an Address
+	 * 
+	 * @return TRUE only if a City is Selected Correctly
+	 */
+	public Boolean setCityInNewAddress() {
+		wait = new WebDriverWait(driver, 1);
+		WebElement elemCityToCreate;
+		objGenerator = new Random();
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(contentCitiesToAddAddress));
+			
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralBoxNewAddress))
+				&& RappiUtility.verifyAnElement(false, driver.findElement(nameCountryToAddAddress))
+				&& RappiUtility.verifyAnElement(true, driver.findElement(contentCitiesToAddAddress))) {
+
+				List<WebElement> elemListCityToAdd = driver.findElements(listCityToAddAddress);
+				int numCityToAdd = elemListCityToAdd.size();
+				// System.out.println("Tam:" + numCityToAdd);
+				
+				if(numCityToAdd < 1) {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Cities_ToAdd_Empty");
+					throw new IOException("ERROR ADDRESS: There aren't Cities to Add New Address!");
+				}else {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_CitiesToAddNewAddress");
+				}
+				
+				int randomCity = objGenerator.nextInt(numCityToAdd);
+				elemCityToCreate = elemListCityToAdd.get(randomCity);
+				// System.out.println("Rand:" + randomCity + "\nCity:" + elemCityToCreate.getText());
+
+				RappiUtility.scrollToElement(elemCityToCreate);
+				RappiUtility.scrollUp();
+				return RappiUtility.clickOnElement(elemCityToCreate);
+			}else {
+				throw new IOException("ERROR NEW ADDRESS: Element to Add New Address isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Get the Address Suggest for Google
+	 * And Set one random
+	 */
+	public void setOptAddressFromGoogle() {
+		objGenerator = new Random();
+		
+		try {
+			List<WebElement> elemGoogle = driver.findElements(By.className("pac-item"));
+			int numOpcAddress = elemGoogle.size();
+			// System.out.println("Opc:" + numOpcAddress);
+			
+			if(numOpcAddress < 1) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Options_AddressGoogle_Empty");
+				throw new IOException("ERROR ADDRESS: There aren't Addresses Suggest for Google!");
+			}else {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_AddressesSuggestGoogle");
+			}
+			
+			int randomAddrGoogle = objGenerator.nextInt(numOpcAddress);		
+			RappiUtility.clickOnElement(elemGoogle.get(randomAddrGoogle));
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Change Country after User Logged
+	 */
+	public void changeCountryLogged() {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		objGenerator = new Random();
+		WebElement elemCountrySel;
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(headCountryHomePage));
+
+			if (verifyHeaderInHomePageWithLogin()) {
+
+				System.out.println("changeCountryLogged_" + sBrowserName);
+				action.moveToElement(driver.findElement(namePaisHomePage)).click().build().perform();
+				wait.until(ExpectedConditions.visibilityOfElementLocated(listCountries));
+
+				List<WebElement> elemCountries = driver.findElements(listCountries);
+				int numCountries = elemCountries.size();
+				// System.out.println("tam:" + numCountries);
+
+				if (numCountries < 1) {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/CountriesEmpty");
+					throw new IOException("ERROR COUNTRIES: There aren't Countries to Selected!");
+				} else {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_ActualCountries");
+				}
+
+				int ranCountries = objGenerator.nextInt(numCountries);
+				elemCountrySel = elemCountries.get(ranCountries);
+				String strCountry = elemCountrySel.getText().trim();
+
+				elemCountrySel.click();
+				Thread.sleep(1000);
+
+				try {
+					// wait.until(ExpectedConditions.visibilityOfElementLocated(headCountryHomePage));
+					wait.until(ExpectedConditions.elementToBeClickable(namePaisHomePage));
+
+					if (RappiUtility.verifyAnElement(false, driver.findElement(logoRappiHome))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(cities))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(btnIniciarSesion))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(canastaPpal))
+							&& verifySearchOptionInHomePage()
+							&& RappiUtility.verifyAnElement(true, driver.findElement(headCountryHomePage))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(namePaisHomePage))) {
+
+						String strNewCountryName = driver.findElement(namePaisHomePage).getText().trim();
+						if (strCountry.contentEquals(strNewCountryName)) {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_CountrySelected_" + strCountry);
+						} else {
+							throw new IOException("ERROR COUNTRY NAME: Countries Names doesn't Match!");
+						}
+					} else {
+						throw new IOException("ERROR HEADER: Header in Home Page isn't Displayed!");
+					}
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+
+			} else {
+				throw new IOException("ERROR COUNTRY: Head Information in Home Page isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_changeCountryLogged_" + sBrowserName);
+			System.out.println("ERROR changeCountryLogged:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will get the Address In Home Page Loged
+	 * 
+	 * @return String with actual Address in Home Page
+	 */
+	public String getAddressHomePage() {
+
+		String tempAddress = "";
+		tempAddress = driver.findElement(address).getText().trim().toLowerCase();
+
+		try {
+			if (tempAddress != null) {
+				return tempAddress;
+			} else {
+				throw new RuntimeException("ERROR ADDRESS HOME PAGE: Address in Home is Empty!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+	
+	/**
+	 * This POM method will click on Basket Button
+	 */
+	public void clickOnCanasta() {
+
+		if (!flagModalAlerta) {
+			try {
+				if (!RappiUtility.clickOnElement(driver.findElement(canastaPpal))) {
+					flagModalAlerta = true;
+					throw new IOException("ERROR HOME PAGE: Click On 'Basket' Failed!");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * This POM method will click on Promotions option
+	 */
+	public void clickOnPromotions() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			// wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listSubMenuHome));
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("Text:" + e.getText());
+				if (e.getText().toLowerCase().contains("promociones")
+						|| e.getText().toLowerCase().contains("promoções")) {
+					RappiUtility.scrollToElement(e);
+					RappiUtility.scrollUp();
+					assertTrue("ERROR CLICK: Click On 'Promotions' Failed!", RappiUtility.clickOnElement(e));
+					break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will click on Restaurants option
+	 */
+	public void clickOnRestaurants() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			// wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listSubMenuHome));
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("Text:" + e.getText());
+				if (e.getText().toLowerCase().contains("restaurantes")) {
+					RappiUtility.scrollToElement(e);
+					RappiUtility.scrollUp();
+					assertTrue("ERROR CLICK: Click On 'Restaurantes' Failed!", RappiUtility.clickOnElement(e));
+					break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Markets option
+	 */
+	public void clickOnMarket() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			// wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listSubMenuHome));
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("Text:" + e.getText());
+				if (e.getText().toLowerCase().contains("mercado") || e.getText().toLowerCase().contains("súper")) {
+
+					List<WebElement> elemSubMarkets = e.findElements(By.xpath("//child::div/child::span/child::li"));
+
+					for (WebElement elem : elemSubMarkets) {
+						//System.out.println("Boton:" + elem.getText());
+						if (elem.getText().toLowerCase().contains("mercado")
+								|| elem.getText().toLowerCase().contains("súper")) {
+							RappiUtility.scrollToElement(elem);
+							RappiUtility.scrollUp();
+							assertTrue("ERROR CLICK: Click On 'Markets' Failed!", RappiUtility.clickOnElement(elem));
+							break;
+						}
+					}
+					break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Others Store option
+	 * Like Pharmacies, liquors, technology, other.
+	 */
+	public void clickOnOtherStore() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		WebElement elemStoreSelected = null;
+
+		try {
+			// wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listSubMenuHome));
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("Text:" + e.getText());
+				if (e.getText().toLowerCase().contains("mercado") || e.getText().toLowerCase().contains("súper")) {
+
+					List<WebElement> elemSubMarkets = e.findElements(By.xpath("//child::div/child::span/child::li"));
+					int numStores = elemSubMarkets.size();
+					// System.out.println("NumOpc:" + numStores);
+
+					if (numStores == 0) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_OtherStores_Empty");
+						throw new IOException("ERROR OTHER STORES: There aren't Other Stores In HomePage!");
+					} else {
+						int randOtherStore = objGenerator.nextInt(numStores);
+						// System.out.println("Rand:" + randOtherStore);
+
+						if (elemSubMarkets.get(randOtherStore).getText().trim().toLowerCase().contains("súper")
+								|| elemSubMarkets.get(randOtherStore).getText().trim().toLowerCase().contains("mercado")
+								|| elemSubMarkets.get(randOtherStore).getText().trim().toLowerCase()
+										.contains("restaurant")
+								|| elemSubMarkets.get(randOtherStore).getText().trim().toLowerCase().contains("hote")) {
+
+							int randListInternaElem = objGenerator.nextInt(elemSubMarkets.size());
+							// System.out.println("RandDos:" + randListInternaElem);
+							
+							if (elemSubMarkets.get(randListInternaElem).getText().trim().toLowerCase().contains("hote")) {
+								int randListInternaElemDos = objGenerator.nextInt(elemSubMarkets.size());
+								// System.out.println("RandTres:" + randListInternaElemDos);
+								elemStoreSelected = elemSubMarkets.get(randListInternaElemDos);
+							}else {
+								elemStoreSelected = elemSubMarkets.get(randListInternaElem);
+							}
+
+							RappiUtility.scrollToElement(elemStoreSelected);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, elemStoreSelected);
+							System.out.println("Second Store Selected:" + elemStoreSelected.getText());
+							assertTrue("ERROR CLICK: Click On 'Markets' Failed!",
+									RappiUtility.clickOnElement(elemStoreSelected));
+							break;
+						} else {
+							elemStoreSelected = elemSubMarkets.get(randOtherStore);
+							RappiUtility.scrollToElement(elemStoreSelected);
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, elemStoreSelected);
+							System.out.println("First Store Selected:" + elemStoreSelected.getText());
+							assertTrue("ERROR CLICK: Click On 'Markets' Failed!",
+									RappiUtility.clickOnElement(elemStoreSelected));
+							break;
+						}
+					}
+				}
+			}
+
+			if (sBrowserName.equalsIgnoreCase("Safari") || sBrowserName.equalsIgnoreCase("Firefox")) {
+				try {
+					driver.findElement(By.xpath("//*[@class='substore-container']"));
+					action.moveToElement(elemStoreSelected).release().perform();
+					elemStoreSelected.click();
+				} catch (Exception e) {
+					Thread.sleep(10);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Search a Rest from Restaurant List
+	 * 
+	 * @param categoryToSearch "0":Restaurant - "1":Market - "2":Random
+	 */
+	public void searchOption(int categoryToSearch, String strProdToSearch) {
+		wait = new WebDriverWait(driver, 1);
+		String strCategoryToSearch = "";
+
+		try {
+			if (categoryToSearch == 0) {
+				strCategoryToSearch = "Restaurant";
+			} else if (categoryToSearch == 1) {
+				strCategoryToSearch = "Market";
+			} else if (categoryToSearch == 2) {
+				strCategoryToSearch = "Random";
+			} else {
+				strCategoryToSearch = "";
+				throw new RuntimeException("Invalid Category To Search: " + categoryToSearch);
+			}
+
+			System.out.println("Try_searchOption_" + strCategoryToSearch);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(boxSearch));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(boxSearch))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnSearch))) {
+				try {
+					driver.findElement(boxSearch).clear();
+					driver.findElement(boxSearch).sendKeys(strProdToSearch);
+				} catch (Exception e2) {
+					driver.findElement(boxSearch).sendKeys(strProdToSearch);
+				}
+				assertTrue("ERROR HOME PAGE: Click On 'Search Button' Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnSearch)));
+
+				if (!clickOnSearchOpt(strCategoryToSearch)) {
+					throw new IOException("ERROR SEARCH: Click On '" + strCategoryToSearch + "' Option Failed!");
+				}
+			} else {
+				throw new IOException("ERROR SEARCH: Search Web Elements aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_searchOption_" + sBrowserName);
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SearchOptionFailed");
+			flagModalAlerta = true;
+			System.out.println("ERROR searchOption:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Click On Rest/Market Option from the Search
+	 * 
+	 * @return TRUE if Click On Option is Correct
+	 */
+	public Boolean clickOnSearchOpt(String strCatToSearch) {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		List<WebElement> elemSections;
+
+		try {
+			System.out.println("Try_clickOnSearchOpt");
+			WebElement Opt = getSearchOption(strCatToSearch);
+
+			if (Opt != null) {
+				if (strCatToSearch.equalsIgnoreCase("ProdNotFound")) {
+					elemSections = Opt.findElements(By.cssSelector("div"));
+				} else {
+					elemSections = Opt.findElements(By.cssSelector("li"));
+				}
+
+				int randListInternaElem = objGenerator.nextInt(elemSections.size());
+				if (randListInternaElem == 0) {
+					randListInternaElem++;
+				}
+				// System.out.println("Tam:" +elemSections.size() + "\nRand:"
+				// +randListInternaElem);
+
+				int i = 0;
+				for (WebElement e : elemSections) {
+					// System.out.println("ElemPpal:" + e.getText());
+					if (strCatToSearch.equalsIgnoreCase("Restaurant")) {
+						if (e.getText().trim().toLowerCase().contains(strCatToSearch.toLowerCase())) {
+							RappiUtility.verifyAnElement(true, e);
+							elemSections.get(i).click();
+							break;
+						} else {
+							i++;
+						}
+					} else if (strCatToSearch.equalsIgnoreCase("Market")) {
+						if (e.getText().trim().toLowerCase().contains("súper")
+								|| e.getText().trim().toLowerCase().contains("mercado")) {
+							RappiUtility.verifyAnElement(true, e);
+							elemSections.get(i).click();
+							break;
+						} else {
+							i++;
+						}
+					} else if (strCatToSearch.equalsIgnoreCase("Random")) {
+						// System.out.println("TextRandom:"
+						// +elemSections.get(randListInternaElem).getText());
+						if (elemSections.get(randListInternaElem).getText().trim().toLowerCase().contains("súper")
+								|| elemSections.get(randListInternaElem).getText().trim().toLowerCase()
+										.contains("mercado")
+								|| elemSections.get(randListInternaElem).getText().trim().toLowerCase()
+										.contains("restaurant")) {
+							randListInternaElem = objGenerator.nextInt(elemSections.size());
+							// System.out.println("RandDos:" +randListInternaElem);
+							i++;
+						} else {
+							RappiUtility.scrollToElement(elemSections.get(randListInternaElem));
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, elemSections.get(randListInternaElem));
+							elemSections.get(randListInternaElem).click();
+							break;
+						}
+					} else if (strCatToSearch.equalsIgnoreCase("ProdNotFound")) {
+						String strClassSubMarkets = e.getAttribute("class");
+						// System.out.println("Class:" + strClassSubMarkets);
+
+						if (strClassSubMarkets.equals("search-stores-menu ng-star-inserted")) {
+							List<WebElement> elemInterListMark = elemSections.get(i).findElements(By.cssSelector("li"));
+							int tamlistElemInt = elemInterListMark.size();
+							int randTamlistElemInt = objGenerator.nextInt(tamlistElemInt);
+							// System.out.println("tamTot:" + tamlistElemInt + "\nRandFound:"
+							// +randTamlistElemInt);
+
+							RappiUtility.scrollToElement(elemInterListMark.get(randTamlistElemInt));
+							RappiUtility.scrollUp();
+							RappiUtility.verifyAnElement(true, elemInterListMark.get(randTamlistElemInt));
+							elemInterListMark.get(randTamlistElemInt).click();
+
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoSearchNotFound));
+							RappiUtility.takeScreen(sTestCaseName + "/Img_MarketSelectedToAddProdNotFound");
+							break;
+						} else {
+							i++;
+						}
+					} else if (strCatToSearch.equalsIgnoreCase("Mayor")) {
+						if (e.getText().trim().toLowerCase().contains("mayor")
+								|| e.getText().trim().toLowerCase().contains("maior")) {
+							RappiUtility.verifyAnElement(true, e);
+							elemSections.get(i).click();
+							break;
+						} else {
+							i++;
+						}
+					} else if (strCatToSearch.equalsIgnoreCase("Menor")) {
+						if (e.getText().trim().toLowerCase().contains("menor")) {
+							RappiUtility.verifyAnElement(true, e);
+							elemSections.get(i).click();
+							break;
+						} else {
+							i++;
+						}
+					} else {
+						System.out.println("Elem:" + e.getText());
+						i++;
+					}
+				}
+
+				if (strCatToSearch.equalsIgnoreCase("Random") || strCatToSearch.equalsIgnoreCase("Market")) {
+					try {
+						RappiUtility.highLightElement(driver.findElement(mainNameMarkSearch), true);
+					} catch (Exception e2) {
+						if (RappiUtility.verifyAnElement(true, driver.findElement(infoSearchNotFound))) {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_Search_" + strCatToSearch + "_Empty");
+							flagModalAlerta = true;
+						}
+					}
+				}
+				return true;
+			}else {
+				throw new IOException("ERROR ELEMENTO BUSQUEDA: Restaurant or Market Not Found Elemento Null!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnSearchOpt_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will get Rest/Market Option from the Search
+	 * 
+	 * @return TRUE only if Option is Enabled
+	 */
+	public WebElement getSearchOption(String searchOpt) {
+
+		try {
+			if (RappiUtility.verifyAnElement(true, driver.findElement(sectionFiltrosSearch))) {
+
+				try {
+					System.out.println("Try_getSearchOption");
+					
+					if(flagLogged && (searchOpt.equalsIgnoreCase("Market"))) {
+						RappiUtility.highLightElement(driver.findElement(mainNameMarkSearch), true);
+					}else {
+						RappiUtility.highLightElement(driver.findElement(infoGralSearchContent), true);
+					}
+
+					List<WebElement> elemFiltrosSearch = driver.findElements(lisTiposSearch);
+					// System.out.println("tamIni:" + elemFiltrosSearch.size());
+
+					int i = 0;
+					for (WebElement e : elemFiltrosSearch) {
+						// System.out.println("TextGet:" +e.getText()+"\ni:" +i);
+						RappiUtility.verifyAnElement(false, elemFiltrosSearch.get(i));
+
+						if (searchOpt.equalsIgnoreCase("Restaurant")) {
+							if (e.getText().trim().contains(searchOpt)) {
+								return elemFiltrosSearch.get(i);
+							} else {
+								i++;
+							}
+						} else if (searchOpt.equalsIgnoreCase("Market")) {
+							if (e.getText().toLowerCase().trim().contains("súper")
+									|| e.getText().toLowerCase().trim().contains("mercado")) {
+								return elemFiltrosSearch.get(i);
+							} else {
+								i++;
+							}
+						} else if (searchOpt.equalsIgnoreCase("Random")) {
+							if (e.getText().toLowerCase().trim().contains("secciones")
+									|| e.getText().toLowerCase().trim().contains("seções")) {
+								return elemFiltrosSearch.get(i);
+							} else {
+								i++;
+							}
+						}else if(searchOpt.equalsIgnoreCase("Mayor") || searchOpt.equalsIgnoreCase("Menor")) {
+							if (e.getText().toLowerCase().trim().contains("ordenar")) {
+								return elemFiltrosSearch.get(i);
+							} else {
+								i++;
+							}
+						}
+					}
+				} catch (Exception e1) {
+					System.out.println("Catch_getSearchOption");
+					try {
+						if (RappiUtility.verifyAnElement(true, driver.findElement(infoSearchNotFound))) {
+
+							if (searchOpt.equalsIgnoreCase("ProdNotFound")) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_SearchEmpty_SelectMarkets");
+							} else {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Search_Empty");
+								if(searchOpt.equalsIgnoreCase("Mayor") || searchOpt.equalsIgnoreCase("Menor")) {
+									throw new IOException("ERROR ORDER BY: Restaurant Not Found!");
+								}
+							}
+							
+							List<WebElement> elemFiltrosSearch2 = driver.findElements(lisTiposSearch);
+							// System.out.println("tamFiltro:" + elemFiltrosSearch2.size());
+
+							int j = 0;
+							for (WebElement elemNotFound : elemFiltrosSearch2) {
+								// System.out.println("TextCatch:" + elemNotFound.getText());
+								RappiUtility.verifyAnElement(false, elemFiltrosSearch2.get(j));
+
+								if (searchOpt.equalsIgnoreCase("Market")) {
+									if (elemNotFound.getText().toLowerCase().trim().contains("súper")
+											|| elemNotFound.getText().toLowerCase().trim().contains("mercado")) {
+										return elemFiltrosSearch2.get(j);
+									} else {
+										j++;
+									}
+								}else if(searchOpt.equalsIgnoreCase("Random")) {
+									if (elemNotFound.getText().toLowerCase().trim().contains("secciones")
+											|| elemNotFound.getText().toLowerCase().trim().contains("seções")) {
+										return elemFiltrosSearch2.get(j);
+									} else {
+										j++;
+									}
+								}else if (searchOpt.equalsIgnoreCase("ProdNotFound")) {
+									if (elemNotFound.getText().trim().contains("Supermercados")
+											|| elemNotFound.getText().trim().contains("Mercados")
+											|| elemNotFound.getText().trim().contains("Súper")
+											|| elemNotFound.getText().trim().contains("Mercado/Express")
+											|| elemNotFound.getText().trim().contains("Supermercado/Express")) {
+										return elemFiltrosSearch2.get(j);
+									} else {
+										j++;
+									}
+								}
+							}
+						}
+					} catch (Exception e2) {
+						System.out.println("Product or Restaurant Not Found In 'getSearchOption'");
+						System.out.println(e2.getMessage());
+					}
+				}
+			} else {
+				throw new IOException("ERROR FILTERS: Filters in Search isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * This POM method will Click On Lista de Compras Option in Home Page
+	 */
+	public void clickOnListaCompras() {
+		wait = new WebDriverWait(driver, 1);
+		List<WebElement> elemSubSpecialsMarkets;
+
+		try {
+			List<WebElement> elemSubMenu = driver.findElements(listSubMenuHome);
+
+			int i = 0;
+			for (WebElement e : elemSubMenu) {
+				// System.out.println("TextMain:" +e.getAttribute("class"));
+				if (e.getAttribute("class").contains("special-links")) {
+					elemSubSpecialsMarkets = elemSubMenu.get(i).findElements(By.cssSelector("li"));
+
+					for (WebElement elem : elemSubSpecialsMarkets) {
+						// System.out.println("Text:" +elem.getText());
+						if (elem.getText().toLowerCase().contains("compra")) {
+
+							RappiUtility.scrollToElement(elem);
+							wait.until(ExpectedConditions.visibilityOfAllElements(elem));
+							RappiUtility.scrollUp();
+							
+							assertTrue("ERROR CLICK: Click On 'Lista de Compras' Invalid",
+									RappiUtility.clickOnElement(elem));
+							RappiUtility.takeScreen(sTestCaseName + "/Img_ListaDeCompras_" + sCountry);
+						} else {
+							i++;
+						}
+					}
+				} else {
+					i++;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Search 2 Products In Lista de Compras
+	 * 
+	 * @param strProdUno   Enter Product 1 To Search
+	 * 
+	 * @param strProdDos   Enter Product 1 To Search
+	 * 
+	 * @param intTypeSearchInLista "0":Buscar - "1":Vaciar - "2":Lupa - "3":Delete
+	 * 
+	 */
+	public void addProdToListaCompras(String strProdUno, String strProdDos, int intTypeSearchInLista) {
+
+		try {
+			System.out.println("Try_addProdToListaCompras_" + sBrowserName);
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralListaCompras))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(tituloListaCompras))) {
+
+				RappiUtility.highLightElement(driver.findElement(boxSearchListaCompra), true);
+				driver.findElement(boxSearchListaCompra).clear();
+				driver.findElement(boxSearchListaCompra).sendKeys(strProdUno);
+				assertTrue("ERROR PROD LISTA: Set Product '" + strProdUno + "' In Lista de Compras Failed!",
+						setOptSuggestInListaCompras());
+
+				RappiUtility.highLightElement(driver.findElement(boxSearchListaCompra), true);
+				driver.findElement(boxSearchListaCompra).clear();
+				driver.findElement(boxSearchListaCompra).sendKeys(strProdDos);
+				assertTrue("ERROR PROD LISTA: Set Product '" + strProdDos + "' In Lista de Compras Failed!!",
+						setOptSuggestInListaCompras());
+
+				driver.findElement(btnSearchInternoListaCompra).click();
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ListaComprasFinal");
+
+				switch (intTypeSearchInLista) {
+				case 0:
+					assertTrue("ERROR CLICK: Click On 'Search Shopping List' Button Failed",
+							RappiUtility.clickOnElement(driver.findElement(btnSearchListaCompra)));
+					System.out.println("Click Botón Buscar Lista Productos Exitoso!");
+					break;
+
+				case 1:
+					assertTrue("ERROR CLICK: Click On 'Clean Shopping List' Button Failed",
+							clickOnCleanListaCompras());
+					System.out.println("Click Botón Vaciar Lista Productos Exitoso!");
+					break;
+					
+				case 2:
+					assertTrue("ERROR CLICK: Click On 'Magnifying Glass' Button Failed",
+							clickOnLupaProductInListaCompras());
+					System.out.println("Click Botón Buscar 'Lupa' Exitoso!");
+					break;
+					
+				case 3:
+					assertTrue("ERROR CLICK: Click On 'Delete' Button Failed",
+							clickOnDeleteProductInListaCompras());
+					System.out.println("Click Botón Eliminar Lista Productos Exitoso!");
+					break;
+
+				default:
+					throw new IllegalArgumentException("Invalid Action In 'Shopping List' Type: " + intTypeSearchInLista);
+				}
+			} else {
+				throw new IOException("ERROR LISTA COMPRAS: Content in Lista de Compras isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_addProdToListaCompras_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on 'Clean Shopping List' Button To Empty Shopping List
+	 */
+	public Boolean clickOnCleanListaCompras() {
+		
+		try {
+			System.out.println("Try_clickOnCleanListaCompras");
+			if (RappiUtility.clickOnElement(driver.findElement(btnDeleteListaCompra))) {
+				if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralListaCompras))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(tituloListaCompras))) {
+					RappiUtility.takeScreen(sTestCaseName + "/Img_ListaComprasVaciada");
+				}
+				return true;
+			} else {
+				throw new IOException("ERROR LISTA COMPRA: Click On 'Clean Shopping List' Failed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnCleanListaCompras");
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will click on 'Magnifying Glass' Button for Each Product In Shopping List
+	 */
+	public Boolean clickOnLupaProductInListaCompras() {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		WebElement elemLupa;
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfAllElements(driver.findElements(infoGralProductosInListaCompra)));
+
+			List<WebElement> elemShoppingList = driver.findElements(listProductosShowInListaCompra);
+
+			String[] textProdListaCompra = new String[elemShoppingList.size()];
+			int i = 0;
+			for (WebElement elem : elemShoppingList) {
+				textProdListaCompra[i] = elem.getText();
+				// System.out.println("Text[" + i + "]:" + textProdListaCompra[i]);
+				elemLupa = elemShoppingList.get(i).findElement(btnLupaInProdListaCompra);
+
+				if (RappiUtility.verifyAnElement(true, elemShoppingList.get(i))) {
+					if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+						System.out.println("clickOnLupaProductInListaCompras_" + sBrowserName);
+						action.moveToElement(elemLupa).release().perform();
+						RappiUtility.clickOnElement(elemLupa);
+						// action.moveToElement(elemLupa).click().build().perform();
+
+						try {
+							driver.findElement(infoGralMarkSearch);
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralMarkSearch));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralMarkSearch))
+									&& RappiUtility.verifyAnElement(true, driver.findElement(mainNameMarkSearch))) {
+								RappiUtility.takeScreen(
+										sTestCaseName + "/Img_Prod_" + textProdListaCompra[i] + "_ListaCompraFound");
+							}
+						} catch (Exception e) {
+							driver.findElement(infoSearchNotFound);
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoSearchNotFound));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoSearchNotFound))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Prod_" + textProdListaCompra[i]
+										+ "_ListaCompraFound_Empty");
+							}
+						}
+					} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+						System.out.println("clickOnLupaProductInListaCompras_" + sBrowserName);
+						RappiUtility.verifyAnElement(true, elemShoppingList.get(i));
+						// action.moveToElement(elemLupa).release().perform();
+						// action.moveToElement(elemLupa).click().build().perform();
+						break;
+					}
+					i++;
+					reviewSecondProdInListaCompra(i);
+					break;
+				} else {
+					throw new IOException("ERROR PROD LISTA COMPRA: Product In 'Shopping List' isn't Displayed!");
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnLupaProductInListaCompras_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Click On Lista Compras After Review a Product
+	 */
+	public void reviewSecondProdInListaCompra(int i) {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+		WebElement elemLupa2;
+
+		try {
+			if (clickOnRappiLogo()) {
+				clickOnListaCompras();
+				wait.until(ExpectedConditions
+						.visibilityOfAllElements(driver.findElements(infoGralProductosInListaCompra)));
+
+				List<WebElement> elemShoppingList = driver.findElements(listProductosShowInListaCompra);
+				String textProdDosListaCompra = elemShoppingList.get(i).getText();
+				// System.out.println("Text[" + i + "]:" + textProdDosListaCompra);
+				elemLupa2 = elemShoppingList.get(i).findElement(btnLupaInProdListaCompra);
+
+				if (RappiUtility.verifyAnElement(true, elemShoppingList.get(i))) {
+					if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+						action.moveToElement(elemLupa2).release().perform();
+						RappiUtility.clickOnElement(elemLupa2);
+						// action.moveToElement(elemLupa2).click().build().perform();
+
+						try {
+							driver.findElement(infoGralMarkSearch);
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralMarkSearch));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralMarkSearch))
+									&& RappiUtility.verifyAnElement(true, driver.findElement(mainNameMarkSearch))) {
+								RappiUtility.takeScreen(
+										sTestCaseName + "/Img_Prod_" + textProdDosListaCompra + "_ListaCompraFound");
+							}
+						} catch (Exception e) {
+							driver.findElement(infoSearchNotFound);
+							wait.until(ExpectedConditions.visibilityOfElementLocated(infoSearchNotFound));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(infoSearchNotFound))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Prod_" + textProdDosListaCompra
+										+ "_ListaCompraFound_Empty");
+							}
+						}
+					} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+						RappiUtility.verifyAnElement(true, elemShoppingList.get(i));
+						// action.moveToElement(elemLupa2).release().perform();
+						// action.moveToElement(elemLupa2).click().build().perform();
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Click On Delete in Each Product In Lista Compras
+	 */
+	public Boolean clickOnDeleteProductInListaCompras() {
+		wait = new WebDriverWait(driver, 1);
+		action = new Actions(driver);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfAllElements(driver.findElements(infoGralProductosInListaCompra)));
+
+			List<WebElement> elemShoppingList = driver.findElements(listProductosShowInListaCompra);
+			int numElem = elemShoppingList.size();
+			// System.out.println("Num:" + numElem);
+
+			int i = 0;
+			while (i < numElem) {
+				String textProdInListaCompra = elemShoppingList.get(i).getText();
+				// System.out.println("Prod:" + textProdInListaCompra);
+
+				WebElement elemDelete = elemShoppingList.get(i).findElement(btnDeleteInProdListaCompra);
+				if (i == 0) {
+					if (RappiUtility.verifyAnElement(true, elemShoppingList.get(i))) {
+						if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+							System.out.println("clickOnDeleteProductInListaCompras_" + sBrowserName);
+							action.moveToElement(elemDelete).release().perform();
+							RappiUtility.clickOnElement(elemDelete);
+							// action.moveToElement(elemDelete).click().build().perform();
+						} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+							System.out.println("clickOnDeleteProductInListaCompras_" + sBrowserName);
+							//action.moveToElement(elemDelete).release().perform();
+							RappiUtility.highLightElement(elemShoppingList.get(i),true);
+						}
+					} else {
+						throw new IOException(
+								"ERROR PROD LISTA COMPRA: Product" + textProdInListaCompra + " isn't Displayed!");
+					}
+				} else if (i == 1) {
+					if (RappiUtility.verifyAnElement(true, elemShoppingList.get(i))) {
+						WebElement elemDelete2 = driver.findElement(btnDeleteInProdListaCompra);
+						if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+							action.moveToElement(elemDelete2).release().perform();
+							RappiUtility.clickOnElement(elemDelete2);
+							//action.moveToElement(elemDelete2).click().build().perform();
+							RappiUtility.takeScreen(sTestCaseName + "/Img_ProductsInListaCompras_Deleted_OK");
+							break;
+						} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+							//action.moveToElement(elemDelete2).release().perform();
+							RappiUtility.highLightElement(elemShoppingList.get(i),true);
+							break;
+						}
+					} else {
+						throw new IOException(
+								"ERROR PROD LISTA COMPRA: Product" + textProdInListaCompra + " isn't Displayed!");
+					}
+				}
+				i++;
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnDeleteProductInListaCompras_" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Set the Options Suggest for Lista Compras
+	 * And Set one random
+	 */
+	public Boolean setOptSuggestInListaCompras() {
+		objGenerator = new Random();
+		wait = new WebDriverWait(driver, 1);
+		int randomASuggestOpt = 0;
+		WebElement elemSelCatFund;
+
+		try {
+			//wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(listProdSuggestListaCompra));
+			List<WebElement> elemSuggetsListCompras = driver.findElements(listProdSuggestListaCompra);
+
+			int numOpcSuggests = elemSuggetsListCompras.size();
+			// System.out.println("NumOpc:" + numOpcSuggests);
+
+			if (numOpcSuggests == 0) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_SuggestListaCompras_Empty");
+				driver.findElement(boxSearchListaCompra).sendKeys(Keys.ENTER);
+				return true;
+			} else {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_OptionsSuggestListaCompras");
+				randomASuggestOpt = objGenerator.nextInt(numOpcSuggests);
+				elemSelCatFund = elemSuggetsListCompras.get(randomASuggestOpt);
+				
+				RappiUtility.scrollToElement(elemSelCatFund);
+				wait.until(ExpectedConditions.visibilityOf(elemSelCatFund));
+				RappiUtility.scrollUp();
+				
+				// System.out.println("ElemRand:" + randomASuggestOpt +"\nElem:" +elemSelCatFund.getText());
+				return RappiUtility.clickOnElement(elemSelCatFund);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Click in a Market from 
+	 * Market List Found after to Search Product
+	 */
+	public void chooseMarketToAddProdNotFound() {
+
+		assertTrue("ERROR CLICK MARKET SEL: Click in 'Market' From Markets List failed!",
+				clickOnSearchOpt("ProdNotFound"));
+	}
+	
+	/**
+	 * This POM method will Add All Information about Product 
+	 * Not Found to Save It
+	 */
+	public void addProdNotFound() {
+
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoSearchNotFound))) {
+				
+				assertTrue("ERROR CLICK ADD PROD: Click On 'Add Product Not Found' Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnAddProdNotFound)));
+				addInformationProdNotFound();
+				try {
+					driver.findElement(indicadorProdAddToBasket);
+					if (driver.findElement(indicadorProdAddToBasket).isDisplayed()){
+						RappiUtility.highLightElement(driver.findElement(indicadorProdAddToBasket), true);
+						flagModalAlerta = false;
+					}
+				} catch (Exception e2) {
+					flagModalAlerta = true;
+				}
+			} else {
+				throw new IOException("ERROR PROD NOT FOUND: Information Product Not Found isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Set the Information about the Product 
+	 * Not Found to Save It
+	 */
+	public void addInformationProdNotFound() {
+
+		try {
+			System.out.println("Try_addInformationProdNotFound");
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralAddInfoProdNotFound))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(boxProdNameToAdd))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(boxProdDescriptionToAdd))) {
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_AddInformation_ProdNotFound");
+
+				driver.findElement(boxProdNameToAdd).clear();
+				RappiUtility.highLightElement(driver.findElement(boxProdNameToAdd), true);
+				driver.findElement(boxProdNameToAdd).sendKeys("Prod Autom");
+
+				driver.findElement(boxProdDescriptionToAdd).clear();
+				RappiUtility.highLightElement(driver.findElement(boxProdDescriptionToAdd), true);
+				driver.findElement(boxProdDescriptionToAdd).sendKeys("Test " +sTestCaseName + " for Add Prod Autom");
+
+				RappiUtility.takeScreen(sTestCaseName + "/Img_FinalInformation_ProdNotFound");
+
+				assertTrue("ERROR CLICK ENTER PROD: Click On 'Add Product' in Add Information Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnAddInfoAddedProdNotFound)));
+			} else {
+				throw new Exception("ERROR ADDING PROD: Some Content in Add Product Not Found isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_addInformationProdNotFound");
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	/**
+	 * This POM method will validate all Content in RappiCreditos
+	 */
+	public void verifyBodyInRappiCreditos() {
+		wait = new WebDriverWait(driver, 1);
+		objLogin = new RappiWebLogin();
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralRappiCred));
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralRappiCred))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleRappiCred))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(descriptionRappiCred))) {
+
+				List<WebElement> elemRappiCred = driver.findElements(listRappiCred);
+				int numRapppiCred = elemRappiCred.size();
+
+				for (WebElement e : elemRappiCred) {
+					if (numRapppiCred < 1) {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/RappiCreditosList_Empty");
+						break;
+					} else {
+						wait.until(ExpectedConditions.visibilityOf(e));
+						RappiUtility.verifyAnElement(false, e);
+					}
+				}
+				RappiUtility.takeScreen(sTestCaseName + "/Img_RappiCreditos_" + sCountry);
+			} else {
+				throw new IOException("ERROR RAPPICREDITOS: Content in 'RappiCreditos' isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR BODY RAPPICREDITOS:" + e.getMessage());
+		}
+	}
+
+}
+

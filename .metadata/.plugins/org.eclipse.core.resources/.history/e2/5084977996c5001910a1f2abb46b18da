@@ -1,0 +1,163 @@
+package prueba.prueba;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+public class Prueba_Nohora {
+	
+	public static WebDriver driver;
+	public static String os = "";
+	
+	public Prueba_Nohora() {
+		os = System.getProperty("os.name").toLowerCase();
+	}
+
+	/**
+	 * This method will Init Browser, Driver & Launch URL
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		// String sDirectorioTrabajo = System.getProperty("user.dir");
+		// System.out.println("El directorio de trabajo es: " + sDirectorioTrabajo);
+
+		os = System.getProperty("os.name").toLowerCase();
+
+		driver = null;
+
+		if (os.contains("mac")) {
+			driver = new ChromeDriver();
+		} else {
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+			driver = new ChromeDriver();
+		}
+
+		driver.get("htts:// www.google.com.co");
+
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	}
+
+	/**
+	 * This method will Click On 'Registrar Usuario' Option
+	 */
+	public void enterWordToSearch() {
+		WebDriverWait wait = new WebDriverWait(driver, 1);
+		
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.name("q"))));
+		
+		if(driver.findElement(By.name("q")).isDisplayed()) {
+			driver.findElement(By.name("q")).clear();
+			driver.findElement(By.name("q")).sendKeys("pruebaz");
+		}
+	}
+	
+	/**
+	 * This method will validate if Alert Message is presented
+	 * 
+	 * @return String
+	 */
+	public String verifyAlertMessage() {
+		String text = "";
+		
+		try {
+			driver.findElement(By.xpath("//*[@class='ui-growl-item']"));
+			if(driver.findElement(By.xpath("//*[@class='ui-growl-item']")).isDisplayed()) {
+				text = driver.findElement(By.xpath("//*[@class='ui-growl-item']")).getText().toString();
+				Thread.sleep(2000);
+			}else {
+				throw new IOException("ERROR: Alert Message isn't Display!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR CATCH:" + e.getMessage());
+		}
+		return text;
+	}
+	
+	/**
+	 * This method will Click On 'Consultar' Option
+	 */
+	public void clickOnConsultar() {
+		driver.findElement(By.id("registrarUusario:loginButtonR")).click();
+	}
+	
+	/**
+	 * This method will set an Invalid Nit data
+	 * @throws InterruptedException 
+	 */
+	public void sendInvalidNit() throws InterruptedException {
+		String alertMessage = "";
+		String titleIPS = driver.findElement(By.id("registrarUusario:j_idt34_header")).getText().toString();
+		// System.out.println("title:" + titleIPS);
+
+		try {
+			if (titleIPS.equalsIgnoreCase("Información IPS")) {
+				driver.findElement(By.name("registrarUusario:j_idt37")).clear();
+				driver.findElement(By.name("registrarUusario:j_idt37")).sendKeys("123sdf543112");
+				Thread.sleep(1000);
+
+				clickOnConsultar();
+
+				alertMessage = verifyAlertMessage().toLowerCase();
+				if (!alertMessage.isEmpty() && alertMessage.contains("no registrado en el sistema")) {
+					System.out.println("Alert Message Shown Correctly!");
+				} else {
+					throw new IOException("Alert Message Doesn't Match!");
+				}
+			} else {
+				throw new IOException("'Información IPS' Title Doesn't Match!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR sendInvalidNit:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This method will set an Invalid Nit data
+	 * @throws InterruptedException 
+	 */
+	public void sendEmptyNit() throws InterruptedException {
+		String alertMessage = "";
+		String titleIPS = driver.findElement(By.id("registrarUusario:j_idt34_header")).getText().toString();
+		// System.out.println("title:" + titleIPS);
+
+		try {
+			if (titleIPS.equalsIgnoreCase("Información IPS")) {
+				driver.findElement(By.name("registrarUusario:j_idt37")).clear();
+				driver.findElement(By.name("registrarUusario:j_idt37")).sendKeys("");
+				Thread.sleep(1000);
+
+				clickOnConsultar();
+
+				alertMessage = verifyAlertMessage().toLowerCase();
+				if (!alertMessage.isEmpty() && alertMessage.contains("favor diligenciar información")) {
+					System.out.println("Alert Message Shown Correctly!");
+				} else {
+					throw new IOException("Alert Message Doesn't Match!");
+				}
+			} else {
+				throw new IOException("'Información IPS' Title Doesn't Match!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR sendEmptyNit:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This method will Click On 'LogIn With Google' Option
+	 * @throws InterruptedException 
+	 */
+	public void clickOnLoginGoogle() throws InterruptedException {
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//button//*[@class='auth0-lock-social-button-text']")).click();
+		Thread.sleep(5000);
+	}
+
+}

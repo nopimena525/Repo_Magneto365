@@ -1,0 +1,27 @@
+package prueba.prueba;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class AppTest_02 extends Prueba_Nohora{
+	
+	@BeforeClass
+	public static void initTest() throws Exception {
+		System.out.println("initTest");
+		main(null);
+	}
+
+	@Test
+	public void test_02() throws InterruptedException {
+		clickOnRegistrarUsuario();
+		sendEmptyNit();
+	}
+	
+	@AfterClass
+	public static void finalAll() throws Exception {
+		System.out.println("finalAll");
+		driver.quit();
+	}
+
+}

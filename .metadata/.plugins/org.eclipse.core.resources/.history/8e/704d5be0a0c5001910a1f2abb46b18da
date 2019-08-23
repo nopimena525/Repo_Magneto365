@@ -1,0 +1,26 @@
+package prueba.prueba;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class Test_Mati extends Prueba_Nohora {
+	
+	@BeforeClass
+	public static void initTest() throws Exception {
+		System.out.println("initTest");
+		main(null);
+	}
+
+	@Test
+	public void test() throws InterruptedException {
+		clickOnLoginGoogle();
+	}
+	
+	@AfterClass
+	public static void finalAll() throws Exception {
+		System.out.println("finalAll");
+		driver.quit();
+	}
+
+}

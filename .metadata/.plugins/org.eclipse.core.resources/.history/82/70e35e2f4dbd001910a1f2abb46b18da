@@ -1,0 +1,308 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebAddToCar extends TestBase{
+	
+	private Boolean flagOblig;
+	
+	// Object Repository for RappiWebAddToCar
+	By infoProductFull = By.xpath("//*[@class='cont-view-product']");
+	By infoGralProduct = By.xpath("//*[@class='product-toppings-content']");
+	By infoProdSelect = By.xpath("//*[@class='info-product-modal']");
+	By nameProdSelect = By.id("product-view-name");
+	By toppingList = By.xpath("//*[@class='product-toppings-list-content ng-star-inserted']");
+	By toppingProdList = By.xpath("//app-product-toppings/child::div");
+	By toppingName = By.xpath("//app-product-toppings//*[@class='topping-description']");
+	By toppingObligatorio = By.xpath("//span[@class='required ng-star-inserted']");
+	By toppingInternList = By.xpath("//*[@class='topping-content']/child::div");
+	
+	By toppingCommnet = By.xpath("//*[@class='topping-content topping-instructions ng-star-inserted']");
+	
+	By btnAddProd = By.id("button-product-add-by-store");
+	By msgeErrorBtnAdd = By.xpath("//*[@id='toast-container']//*[@class='toast-error toast ng-trigger ng-trigger-flyInOut']");
+	//By msgeErrorLogin = By
+		//	.xpath("//div[@id='toast-container']//div[@class='toast-error toast ng-trigger ng-trigger-flyInOut']");
+	
+	
+	/**
+	 * This POM method will validate main Info from product
+	 * @throws InterruptedException 
+	 */
+	public void verifyInfoProduct() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_verifyInfoProduct");
+
+			if (!flagModalAlerta) {
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralProduct));
+
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoProductFull))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(infoGralProduct))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(infoProdSelect))) {
+
+					if (RappiUtility.verifyAnElement(true, driver.findElement(nameProdSelect))) {
+						RappiUtility.takeScreen(sTestCaseName + "/Img_Prod_Selected_" + sNameProdSelected);
+					} else {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ProductName_Not_Displayed");
+					}
+				} else {
+					throw new IOException("ERROR INFO PROD: Product Information isn't Displayed!");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_verifyInfoProduct_" + sBrowserName);
+			RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/VerifyInfoProd_Rest_Failed");
+			flagModalAlerta = true;
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will validate & will Set Toppings from product
+	 * @throws InterruptedException 
+	 */
+	public void verifyAndSetToppings() throws InterruptedException {
+		// int toppingsActuales = 0;
+
+		if (!flagModalAlerta) {
+			if (!verifyToppingListAndComments()) {
+				//toppingsActuales = getToppingsNumber();
+				//assertTrue("ERROR CLICK TOPPING: Click On 'Topping' isn't Enabled!", setTopping(toppingsActuales));
+				assertTrue("ERROR CLICK TOPPING: Click On 'Topping' isn't Enabled!", setTopping());
+				RappiUtility.takeScreen(sTestCaseName + "/Img_Prod_Selected_" + sNameProdSelected + "_ConToppOblig");
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will validate Comments Section On Select Product
+	 * 
+	 * @Return TRUE only if Add Comments is Displayed
+	 */
+	public Boolean verifyComments() {
+		return RappiUtility.verifyAnElement(true, driver.findElement(toppingCommnet));
+	}
+	
+	/**
+	 * This POM method will get Toppings List
+	 * 
+	 * @return Main Toppings List only if it exists
+	 */
+	public List<WebElement> getMainToppingList() {
+		wait = new WebDriverWait(driver, 1);
+		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralProduct));
+		if (driver.findElement(toppingList).isDisplayed()) {
+			List<WebElement> elemToppingListInit = driver.findElements(toppingProdList);
+
+			return elemToppingListInit;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * This POM method will get the toppings number in the list
+	 * 
+	 * @return Int with Number of Main Toppings in the List
+	 */
+	public int getToppingsNumber() {
+		int numToppings = 0;
+
+		if (getMainToppingList() != null) {
+			List<WebElement> numElemList = getMainToppingList();
+			numToppings = numElemList.size();
+			return numToppings;
+		} else {
+			return numToppings;
+		}
+	}
+	
+	/**
+	 * This POM method will validate if Toppings List & Comments Exist
+	 * 
+	 * @return  TRUE if Add Button is Enabled Otherwise FALSE
+	 * 
+	 * @throws InterruptedException while Topping list is charged
+	 */
+	public Boolean verifyToppingListAndComments() throws InterruptedException {
+
+		Thread.sleep(600);
+
+		if (getMainToppingList() == null /*&& verifyComments()*/) {
+			// return verifyAddButtonEnabled();
+			assertTrue("ERROR ADD2CAR: 'Add Button' Without Toppings isn't Enabled!", verifyAddButtonEnabled());
+			return true;
+		} else {
+			if(verifyIfObligToppingExist()) {
+				return false;
+			}else {
+				return true;
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will validate Add Button
+	 * 
+	 * @return TRUE only if Add Button is Enabled To Click
+	 */
+	public Boolean verifyAddButtonEnabled() {
+		return driver.findElement(btnAddProd).isEnabled();
+	}
+	
+	/**
+	 * This POM method will validate which Toppings are Mandatory
+	 * 
+	 * @return TRUE only if some Topping List is Mandatory
+	 */
+	public Boolean verifyIfObligToppingExist() {
+		flagOblig = false;
+		
+		for (WebElement elemIfOglig : getMainToppingList()) {
+			// System.out.println("VerifTpp[" + i + "]:" + elemIfOglig.getText());//Muestra titulo+topps
+			// System.out.println("In VerifObliTopp NAME(" + i + "):"+ elemIfOglig.findElement(toppingInternList).getText());//muestra siempre el primer topp
+			
+			String strVerifyOblig = elemIfOglig.getText().trim().toLowerCase();
+			if (strVerifyOblig.contains("obligatorio") || strVerifyOblig.contains("obrigatório")) {
+				//System.out.println("In VerifObliTopp OBLIG:" + elemIfOglig.getText().trim().toLowerCase());//Muestra titulo+topps
+				flagOblig = true;
+				break;
+			}
+		}
+		return flagOblig;
+	}
+	
+	/**
+	 * This POM method will Select the topping in the list if it's Mandatory
+	 * 
+	 * @return True only if topping set is correct & Add Button is enabled
+	 */
+	public Boolean setTopping() {
+		int randomToppOblg = 0;
+		Boolean flagSelecOblig = false;
+		objGenerator = new Random();
+		
+		try {
+			List<WebElement> elemToppingList = getMainToppingList();
+			
+			int topping = 0;
+			for (WebElement elem : elemToppingList) {
+
+				String strObligatorio = elem.getText().trim().toLowerCase();
+				if (strObligatorio.contains("obligatorio") || strObligatorio.contains("obrigatório")) {
+					List<WebElement> toppInternosOblig = elemToppingList.get(topping).findElements(By.cssSelector("div[id^='topping-']"));
+					
+					int numToppObli = toppInternosOblig.size();
+					randomToppOblg = objGenerator.nextInt(numToppObli);
+					topping++;
+
+					// System.out.println("ToppOblgClcik["+randomToppOblg+"]:"+toppInternosOblig.get(randomToppOblg).getText());
+					if(RappiUtility.clickOnElement(toppInternosOblig.get(randomToppOblg))) {
+						flagSelecOblig = true;
+					}else {
+						flagSelecOblig = false;
+					}
+				} else {
+					topping++;
+					
+					if(verifyAddButtonEnabled()) {
+						flagSelecOblig = true;
+					}else {
+						flagSelecOblig = false;
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR setTopping:" + e.getMessage());
+			return false;
+		}
+		return flagSelecOblig;
+	}
+	
+	/**
+	 * This POM method will validate if a Message Error is Displayed
+	 * 
+	 * @return TRUE only if a Message Error is Displayed
+	 */
+	public Boolean verifyMessageErrorAddButton() {
+		String textError = "";
+
+		try {
+			if (driver.findElement(msgeErrorBtnAdd).isDisplayed()) {
+				textError = driver.findElement(msgeErrorBtnAdd).getText();
+				// System.out.println("ERROR ADD BTN: " + driver.findElement(msgeErrorBtnAdd).getText());
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Message_Error_AddProd");
+				// RappiUtility.takeScreen("ImgError_Add2Car/Message_Error_AddProd");
+				return true;
+			} else {
+				throw new IOException("ERROR: Error Message in Add Button isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(textError + e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Click on Add Product Button
+	 * 
+	 * @return TRUE only if Click On Add Product is Correct
+	 */
+	public void clickOnAddProduct() {
+		Boolean flagClickAddBtnOk = false;
+
+		if (!flagModalAlerta) {
+			if (!RappiUtility.clickOnElement(driver.findElement(btnAddProd))) {
+				if (verifyMessageErrorAddButton()) {
+					if (getToppingsNumber() > 0) {
+						// if (setTopping(getToppingsNumber())) {
+						if (setTopping()) {
+							driver.findElement(btnAddProd).click();
+							flagClickAddBtnOk = true;
+						}
+					} else {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/No_Hay_Toppings");
+						// RappiUtility.takeScreen("ImgError_Add2Car/No_Hay_Toppings");
+						flagClickAddBtnOk = false;
+					}
+				} else {
+					if (getToppingsNumber() > 0) {
+						// if (setTopping(getToppingsNumber())) {
+						if (setTopping()) {
+							driver.findElement(btnAddProd).click();
+							flagClickAddBtnOk = true;
+						}
+					} else {
+						RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Toppins_Cero");
+						// RappiUtility.takeScreen("ImgError_Add2Car/Toppins_Cero");
+						flagClickAddBtnOk = false;
+					}
+				}
+			} else {
+				flagClickAddBtnOk = true;
+			}
+			// return flagClickAddBtnOk;
+			assertTrue("ERROR ADD-TO-CAR: Click On 'Add Button' isn't Enabled!", flagClickAddBtnOk);
+		}
+	}
+
+}

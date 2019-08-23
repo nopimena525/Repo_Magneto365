@@ -1,0 +1,193 @@
+package base;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import testData.DataExcel;
+import utilitiesRappi.ExcelUtils;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class TestBase {
+
+	public static WebDriver driver;
+	public static WebDriverWait wait;
+	public static Random objGenerator;
+	public static Actions action;
+	public static String sNameProdSelected = "";
+	public static String sIdProdSelected = "";
+	public static String sPriceProdSelected = "";
+	public static String sEnvironment = "";
+	public static Boolean flagLogged;
+	public static Boolean flagModalAlerta;
+
+	public static String os = "";
+	public static ArrayList<DataExcel> datosTest;
+
+	public static DataExcel tempDatoTest;
+	public static String sTestCaseName = "";
+	public static String sBrowserName = "";
+	public static String sCountry = "";
+	public static String sTipoLogin = "";
+	public static String sUserName = "";
+	public static String sPassword = "";
+	public static String sProdToSearchInRest = "";
+	public static String sProdToSearchInMarket = "";
+	public static String sMarketWithShark = "";
+	public static String sCupon = "";
+	public static String sRestToSort = "";
+	public static String sSortBy = "";
+	public static int totalTestsCases = 0;
+
+	// TestBase class constructor: Used to initialize the Properties
+	// Object to fetch config (env) variables from config_properties file
+	public TestBase() {
+		os = System.getProperty("os.name").toLowerCase();
+
+		/*
+		 * try { //prop = new Properties();
+		 * 
+		 * if (os.contains("mac")) { FileInputStream ip = new
+		 * FileInputStream("./src/main/java/config/Config_Prop"); prop.load(ip); } else
+		 * { FileInputStream ip = new
+		 * FileInputStream(".\\src\\main\\java\\config\\Config_Prop"); prop.load(ip); }
+		 * 
+		 * } catch (FileNotFoundException e) { // e.printStackTrace();
+		 * System.out.println(e.getMessage()); } catch (IOException e) { //
+		 * e.printStackTrace(); System.out.println(e.getMessage()); }
+		 */
+	}
+	
+	/*
+	 * This method will Read the Excel Data
+	 * 
+	 */
+	public static void initReadData() throws Exception {
+		os = System.getProperty("os.name").toLowerCase();
+		datosTest = ExcelUtils.readExcelData("AgregarProducto");
+	}
+
+	/*
+	 * This method will Launch Browser & Specific URL
+	 * 
+	 */
+	public static void initialization() throws Exception {
+
+		
+		/*
+		 * System.out.println("\nTC: " + tempDatoTest.getTestCaseName());
+		 * System.out.println("\nRT: " + tempDatoTest.getRunTest());
+		 * System.out.println("\nBrow: " + tempDatoTest.getBrowser());
+		 * System.out.println("\nPais: " + tempDatoTest.getCountry());
+		 * System.out.println("\nTipo: " + tempDatoTest.getTipoLogin());
+		 * System.out.println("\nUsu: " + tempDatoTest.getUsername());
+		 * System.out.println("\nPass: " + tempDatoTest.getPassword());
+		 * System.out.println("\nProdRest: " + tempDatoTest.getProdToSearchInRest());
+		 * System.out.println("\nProdMarket: " +
+		 * tempDatoTest.getProdToSearchInMarket()); System.out.println("\nRes>>: " +
+		 * tempDatoTest.getResults());
+		 */
+		 
+
+		sTestCaseName = tempDatoTest.getTestCaseName();
+		sBrowserName = tempDatoTest.getBrowser();
+		sCountry = tempDatoTest.getCountry();
+		sTipoLogin = tempDatoTest.getTipoLogin();
+		sUserName = tempDatoTest.getUsername();
+		sPassword = tempDatoTest.getPassword();
+		sProdToSearchInRest = tempDatoTest.getProdToSearchInRest();
+		sProdToSearchInMarket = tempDatoTest.getProdToSearchInMarket();
+		sMarketWithShark = tempDatoTest.getMarketWithShark();
+		sCupon = tempDatoTest.getCupon();
+		flagLogged = false;
+		flagModalAlerta = false;
+
+		driver = launchBrowser();
+
+		driver.get(setUrl());
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		if (sCountry.equalsIgnoreCase("Staging")) {
+			sCountry = "Colombia";
+			sEnvironment = "Staging";
+		}
+	}
+	
+	/*
+	 * This method will Launch Browser
+	 * 
+	 */
+	public static WebDriver launchBrowser() throws Exception {
+			
+			if (sBrowserName.equalsIgnoreCase("Firefox")) {
+				if (os.contains("mac")) {
+					driver = new FirefoxDriver();
+					//System.setProperty("webdriver.firefox.marionette", System.getProperty("user.dir") + "/geckodriver");
+				} else {
+					System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\geckodriver.exe");
+					driver = new FirefoxDriver();
+				}
+			} else if (sBrowserName.equalsIgnoreCase("Chrome")) {
+				if (os.contains("mac")) {
+					driver = new ChromeDriver();
+					//System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/chromedriver");
+				} else {
+					System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\chromedriver.exe");
+					driver = new ChromeDriver();
+				}
+			} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+				driver = new SafariDriver();
+			} else {
+				driver = null;
+				throw new RuntimeException("ERROR BROWSER: Invalid Browser!");
+			}
+
+		return driver;
+	}
+	
+	/*
+	 * This method will Set an Specific URL
+	 * 
+	 */
+	public static String setUrl() throws Exception {
+
+		String urlToGet = "";
+
+		if (sCountry.equalsIgnoreCase("colombia")) {
+			urlToGet = "https://www.rappi.com.co";
+		} else if (sCountry.equalsIgnoreCase("argentina")) {
+			urlToGet = "https://www.rappi.com.ar";
+		} else if (sCountry.equalsIgnoreCase("brasil")) {
+			urlToGet = "https://www.rappi.com.br";
+		} else if (sCountry.equalsIgnoreCase("mexico")) {
+			urlToGet = "https://www.rappi.com.mx";
+		} else if (sCountry.equalsIgnoreCase("peru")) {
+			urlToGet = "https://www.rappi.com.pe";
+		} else if (sCountry.equalsIgnoreCase("uruguay")) {
+			urlToGet = "https://www.rappi.com.uy";
+		} else if (sCountry.equalsIgnoreCase("chile")) {
+			urlToGet = "https://www.rappi.cl";
+		} else if(sCountry.equalsIgnoreCase("staging")){
+			urlToGet = "https://staging.rappi.com";
+		} else {
+			urlToGet = "";
+			throw new RuntimeException("ERROR COUNTRY: Invalid Country!");
+		}
+
+		return urlToGet;
+	}
+	
+
+}

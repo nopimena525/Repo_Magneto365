@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="1588" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="1588"/>
+			<item value="selectMarketOrRestaurantInPromo"/>
+			<item value="btnSearchInternoListaCompra"/>
+			<item value="//*[@class=&apos;shopping-list-side-nav slide-up&apos;]"/>
+			<item value="listProdInSharks"/>
+			<item value="//app-carousel//*[@class=&apos;carousel&apos;]/child::ul/child::li"/>
+			<item value="rappicre"/>
+			<item value="rappi"/>
+			<item value="cap"/>
+			<item value="chap"/>
+			<item value="capt"/>
+			<item value="confirma"/>
+			<item value="paso"/>
+			<item value="1484"/>
+			<item value="verifyMainInfoCheckout"/>
+		</list>
+		<list key="replacehistory">
+			<item value="Username"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="294" key="DIALOG_WIDTH"/>
+		<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
+		<item value="408" key="DIALOG_HEIGHT"/>
+		<item value="370" key="DIALOG_X_ORIGIN"/>
+		<item value="196" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

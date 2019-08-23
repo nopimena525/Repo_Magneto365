@@ -1,0 +1,11 @@
+1548188836403	Rename method 'selectRes'
+1548348497037	Rename field 'restProductsToSelect'
+1548369703590	Delete element
+1548369847629	Rename type 'WordpressPruebas'
+1548374374165	Delete element
+1548375195398	Rename package 'DDT_ForRappiWeb'
+1548375223247	Delete element
+1548420507018	Convert local variable 'wbook' to field
+1548420585180	Convert local variable 'wbook' to field
+1548430367375	Delete element
+1548453791804	Convert local variable 'datosTest' to field

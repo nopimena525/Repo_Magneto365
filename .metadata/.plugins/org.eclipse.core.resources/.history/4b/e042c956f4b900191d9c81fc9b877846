@@ -1,0 +1,405 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebPromotions extends TestBase{
+	
+	// Object Repository for RappiWebPromotions
+	By mainTitlePromo = By.xpath("//app-promotions//*[starts-with(@class,'banners-title')]//h2");
+	By imageBanner = By.xpath("//*[@class='banners-slider ng-star-inserted']");
+	By contentBanner = By.xpath("//app-slider//*[@class='cont-slider slider-s']");
+	By titlePromos = By.xpath("//app-promotions//*[starts-with(@class,'banners-title')]//strong");
+	By promoList = By.cssSelector("div[class^='banners-box']");
+	By namePromoType = By.cssSelector("h4");
+	By listOptMarkRest = By.cssSelector("li");
+	By contentBodyMarketSel = By.xpath("//app-store-home//*[@class='cont-store-home']");
+	By contentMenuLatMarketSel = By.xpath("//app-store-categories//*[@class='store-categories ng-star-inserted']");
+	By contentProdMarketSel = By.xpath("//*[@class='info-product']");
+	By nameProdMarkSelectPromo = By.xpath("//app-product-data//*[@class='product-name']");
+	By btnAddProdMarket = By.xpath("//*[@class='buttons-product']/button");
+	By contentProdRestSel = By.xpath("//app-product-info//*[@class='cont-view-product']");
+	By nameProdRestSelectPromo = By.id("product-view-name");
+	By contentDetailRestSel = By.xpath("//app-by-stores-detail//*[@class='content-detail']");
+	By headerRestSelect = By.xpath("//app-store-info//*[@class='store-detail-section']");
+	By bodyRestSelect = By.xpath("//app-store-products//div[@class='products-list show-products']");
+	By infoHorarioRest = By.xpath("//*[@class='info-delivery']//*[@class='restaurant-closed']");
+	By modalAlertas = By.cssSelector("div[class^='modal-box']");
+	By btnCloseModalAlertas = By.cssSelector("button[class^='close-modal']");
+	By imgCanasta = By.xpath("//*[@class='basket-icon']");
+	
+	RappiWebAddToCar objAddToCar;
+	RappiWebRestaurants objRest;
+	RappiWebMarkets objMarket;
+	
+	/**
+	 * This POM method will validate title On Promotions
+	 */
+	public Boolean verifyTitlePromo() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(mainTitlePromo));
+			if (RappiUtility.verifyAnElement(false, driver.findElement(mainTitlePromo))) {
+				return true;
+			} else {
+				throw new IOException("ERROR MAIN TITLE PROMO: Main Title In Promotions isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
+	 * This POM method will Select a Product from Markets Since Promotions
+	 * 
+	 * @param strTipoPromo "0":Restaurant - "1":Market
+	 */
+	public void selectMarketOrRestaurantInPromo(int intTipoPromo) {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		action = new Actions(driver);
+		List<WebElement> elemPromoMark = new ArrayList<WebElement>();
+		String text = "";
+		String strTipoPromo = "";
+
+		try {
+			if (intTipoPromo == 0) {
+				strTipoPromo = "Restaurant";
+			} else if (intTipoPromo == 1) {
+				strTipoPromo = "Market";
+			} else {
+				strTipoPromo = "";
+				throw new RuntimeException("Invalid Category To Search: " + categoryToSearch);
+			}
+
+			System.out.println("Try_select" + strTipoPromo + "_InPromo");
+			Thread.sleep(5000);
+
+			if (!verifyTitlePromo()) {
+				throw new IOException("ERROR TITLE PROMO: Main Title isn't Displayed!");
+			}
+
+			String strNumPromos = driver.findElement(titlePromos).getText().replaceAll("[^\\d]", "");
+			int intTotalPromos = Integer.parseInt(strNumPromos);
+
+			List<WebElement> elemPromoList = driver.findElements(promoList);
+			int numPromos = elemPromoList.size();
+
+			System.out.println("TotalPromos: " + intTotalPromos + "\nList Promos: " + numPromos);
+			if (intTotalPromos == 0) {
+				RappiUtility.highLightElement(driver.findElement(titlePromos), false);
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/PromotionsSection_Empty");
+				flagModalAlerta = true;
+				throw new IOException("ERROR PROMO: There aren't Promotions To Choose!");
+			} else {
+
+				int i = 0;
+				for (WebElement webElement : elemPromoList) {
+					try {
+						webElement.findElement(namePromoType);
+
+						if (strTipoPromo.equalsIgnoreCase("Market")) {
+							if ((elemPromoList.get(i).findElement(namePromoType).getText().toLowerCase()
+									.contains("súper"))
+									|| (elemPromoList.get(i).findElement(namePromoType).getText().toLowerCase()
+											.contains("mercado"))) {
+								text = elemPromoList.get(i).findElement(namePromoType).getText().toLowerCase();
+								System.out.println("Title Promo:" + text);
+
+								RappiUtility.scrollToElement(elemPromoList.get(i).findElement(namePromoType));
+								RappiUtility.scrollUp();
+								RappiUtility.highLightElement(elemPromoList.get(i).findElement(namePromoType), true);
+
+								elemPromoMark = elemPromoList.get(i).findElements(listOptMarkRest);
+								break;
+							} else {
+								i++;
+							}
+						} else if (strTipoPromo.equalsIgnoreCase("Restaurant")) {
+							if ((elemPromoList.get(i).findElement(namePromoType).getText().toLowerCase()
+									.contains("restaurant"))) {
+								text = elemPromoList.get(i).findElement(namePromoType).getText().toLowerCase();
+								System.out.println("Title Promo:" + text);
+
+								RappiUtility.scrollToElement(elemPromoList.get(i).findElement(namePromoType));
+								RappiUtility.scrollUp();
+								RappiUtility.highLightElement(elemPromoList.get(i).findElement(namePromoType), true);
+
+								elemPromoMark = elemPromoList.get(i).findElements(listOptMarkRest);
+								break;
+							} else {
+								i++;
+							}
+						}
+					} catch (Exception e1) {
+						i++;
+					}
+				}
+
+				RappiUtility.scrollToElement(driver.findElement(titlePromos));
+				RappiUtility.scrollUp();
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ActualPromotions");
+
+				// System.out.println("Tam: " + elemPromoMark.size());
+				if ((elemPromoMark.size() == 0) && (text.isEmpty())) {
+					RappiUtility
+							.takeScreen("Img_Error_" + sTestCaseName + "/Promotions" + strTipoPromo + "Section_Empty");
+					flagModalAlerta = true;
+					throw new IOException("ERROR PROMO " + strTipoPromo + ": There isn't " + strTipoPromo
+							+ " Section In Promotions!");
+				} else {
+					int numPromosMark = elemPromoMark.size();
+					int randomPromo = objGenerator.nextInt(numPromosMark);
+					System.out.println("NumProdPromos:" + numPromosMark + "\nRand:" + randomPromo);
+
+					RappiUtility.scrollToElement(elemPromoMark.get(randomPromo));
+					RappiUtility.scrollUp();
+					String strNameStoreInMarket = elemPromoMark.get(randomPromo).findElement(By.cssSelector("a"))
+							.getAttribute("href");
+					System.out.println("name:" + strNameStoreInMarket);
+
+					if (RappiUtility.verifyAnElement(true, elemPromoMark.get(randomPromo))
+							&& (!strNameStoreInMarket.isEmpty())) {
+						elemPromoMark.get(randomPromo).click();
+					} else {
+						throw new IOException("ERROR PROMO: Click On " + strTipoPromo + " Promo Failed!");
+					}
+
+					if (strTipoPromo.equalsIgnoreCase("Market")) {
+						try {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(contentBodyMarketSel));
+							if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+									&& RappiUtility.verifyAnElement(true,
+											driver.findElement(contentMenuLatMarketSel))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Market_FromPromotions");
+							} else {
+								throw new IOException(
+										"ERROR MARKET BODY: Main Content in Market Body isn't Displayed!");
+							}
+						} catch (Exception e2) {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(contentProdMarketSel));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(contentProdMarketSel))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Product_FromPromotions");
+							} else {
+								throw new IOException(
+										"ERROR PROD MARKET: Main Content in Product Selected from Market isn't Displayed!");
+							}
+						}
+					} else if (strTipoPromo.equalsIgnoreCase("Restaurant")) {
+						try {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(contentProdRestSel));
+							if (RappiUtility.verifyAnElement(true, driver.findElement(contentProdRestSel))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Product_FromPromotions");
+							} else {
+								throw new IOException(
+										"ERROR PROD RESTAURANT: Main Content in Product Selected from Restaurant isn't Displayed!");
+							}
+						} catch (Exception e3) {
+							wait.until(ExpectedConditions.visibilityOfElementLocated(contentDetailRestSel));
+							if (RappiUtility.verifyAnElement(false, driver.findElement(contentDetailRestSel))
+									&& RappiUtility.verifyAnElement(true, driver.findElement(headerRestSelect))
+									&& RappiUtility.verifyAnElement(false, driver.findElement(bodyRestSelect))) {
+								RappiUtility.takeScreen(sTestCaseName + "/Img_Restaurant_FromPromotions");
+							} else {
+								throw new IOException(
+										"ERROR RESTAURANT BODY: Main Content in Restaurant Body isn't Displayed!");
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_select" + strTipoPromo + "InPromo_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Add a Product from Market Promotions to Basket
+	 * @throws Exception 
+	 */
+	public void addProdMarketInPromoToBasket() throws Exception {
+		objAddToCar = new RappiWebAddToCar();
+		objMarket = new RappiWebMarkets();
+
+		if (!flagModalAlerta) {
+			try {
+				System.out.println("Try_addProdMarketInPromoToBasket");
+				if (RappiUtility.verifyAnElement(true, driver.findElement(contentProdMarketSel))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(nameProdMarkSelectPromo))) {
+					sNameProdSelected = driver.findElement(nameProdMarkSelectPromo).getText().trim();
+					System.out.println("ProdMarket:" + sNameProdSelected);
+
+					RappiUtility.scrollToElement(driver.findElement(btnAddProdMarket));
+					RappiUtility.scrollUp();
+
+					assertTrue("ERROR CLICK ADD PROD: Click On 'Add Product' From Market Failed!",
+							RappiUtility.clickOnElement(driver.findElement(btnAddProdMarket)));
+
+					try {
+						RappiUtility.verifyAnElement(true, driver.findElement(imgCanasta));
+					} catch (Exception e2) {
+						if (RappiUtility.verifyAnElement(true, driver.findElement(modalAlertas))) {
+							RappiUtility.clickOnElement(driver.findElement(btnCloseModalAlertas));
+						}
+					}
+				} else {
+					RappiUtility.takeScreen("ImgError_" + sTestCaseName + "/Product_Name_Not_Displayed");
+					throw new Exception("ERROR PROD SELECTED: Content from Product Selected isn't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println("Catch_addProdMarketInPromoToBasket");
+				if (RappiUtility.verifyAnElement(false, driver.findElement(contentBodyMarketSel))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+
+					if (objMarket.chooseAProdInCategoryFromMarket()) {
+						try {
+							System.out.println("Try_addProdMarketInPromoToBasket");
+							// driver.findElement(contentMenuLatMarketSel);
+							if (RappiUtility.verifyAnElement(true,
+									driver.findElement(imgCanasta))) {
+								if (RappiUtility.verifyAnElement(false, driver.findElement(contentMenuLatMarketSel))) {
+									Thread.sleep(100);
+								} else {
+									if (driver.findElement(contentProdMarketSel).isDisplayed()) {
+										sNameProdSelected = driver.findElement(nameProdMarkSelectPromo).getText().trim();
+										System.out.println("ProdMarketCatch:" + sNameProdSelected);
+
+										RappiUtility.scrollToElement(driver.findElement(btnAddProdMarket));
+										RappiUtility.scrollUp();
+
+										assertTrue("ERROR CLICK ADD PROD: Click On 'Add Product' From Market Failed!",
+												RappiUtility.clickOnElement(driver.findElement(btnAddProdMarket)));
+									}
+								}
+							}
+						} catch (Exception e2) {
+							System.out.println("Cath_addProdMarketInPromoToBasket");
+							if (RappiUtility.verifyAnElement(true, driver.findElement(contentProdMarketSel))
+									&& RappiUtility.verifyAnElement(true,
+											driver.findElement(nameProdMarkSelectPromo))) {
+								sNameProdSelected = driver.findElement(nameProdMarkSelectPromo).getText().trim();
+								System.out.println("ProdMarket:" + sNameProdSelected);
+
+								RappiUtility.scrollToElement(driver.findElement(btnAddProdMarket));
+								RappiUtility.scrollUp();
+
+								assertTrue("ERROR CLICK ADD PROD: Click On 'Add Product' From Market Failed!",
+										RappiUtility.clickOnElement(driver.findElement(btnAddProdMarket)));
+
+							} else if (RappiUtility.verifyAnElement(true, driver.findElement(modalAlertas))) {
+								RappiUtility.clickOnElement(driver.findElement(btnCloseModalAlertas));
+							}
+						}
+					} else {
+						throw new Exception(
+								"ERROR CLICK ADD PROD: Click On 'Add Product' From Market Category Failed!");
+					}
+				} else {
+					throw new Exception("ERROR MARKET SELECTED: Content In Market Selected isn't Displayed!");
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Add a Product from Restaurant Promotions to Basket
+	 * @throws Exception 
+	 */
+	public void addProdRestInPromoToBasket() throws Exception {
+		objRest = new RappiWebRestaurants();
+		objAddToCar = new RappiWebAddToCar();
+
+		if (!flagModalAlerta) {
+			try {
+				System.out.println("Try_addProdRestInPromoToBasket");
+				if (RappiUtility.verifyAnElement(false, driver.findElement(contentProdRestSel))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(nameProdRestSelectPromo))) {
+					sNameProdSelected = driver.findElement(nameProdRestSelectPromo).getText().trim();
+					System.out.println("ProdRest:" + sNameProdSelected);
+
+					objAddToCar.verifyInfoProduct();
+					objAddToCar.verifyAndSetToppings();
+					objAddToCar.clickOnAddProduct();
+				} else {
+					RappiUtility.takeScreen("ImgError_" + sTestCaseName + "/Product_Name_Not_Displayed");
+					throw new Exception("ERROR PROD SELECTED: Content from Product Selected isn't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println("Catch_addProdRestInPromoToBasket");
+				if (RappiUtility.verifyAnElement(false, driver.findElement(headerRestSelect))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(bodyRestSelect))) {
+					if (driver.findElement(infoHorarioRest).isDisplayed()) {
+						RappiUtility.highLightElement(driver.findElement(infoHorarioRest), false);
+						RappiUtility.takeScreen("ImgError_" + sTestCaseName + "/RestFromPromotions_Closed");
+						throw new Exception("ERROR HOME RESTAURANT: Restaurant Selected isn't Enabled!");
+					} else {
+						if (objRest.chooseACategoryFromRest()) {
+							objAddToCar.verifyInfoProduct();
+							objAddToCar.verifyAndSetToppings();
+							objAddToCar.clickOnAddProduct();
+						}
+					}
+				} else {
+					RappiUtility.takeScreen("ImgError_" + sTestCaseName + "/Product_Name_Not_Displayed");
+					throw new Exception("ERROR REST SELECTED: Content In Restaurant Selected isn't Displayed!");
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Select TC Colpatria Since Promotions
+	 */
+	public void selectColpatriaInPromo() {
+
+		try {
+			System.out.println("Try_selectColpatriaInPromo_" + sBrowserName);
+			if (RappiUtility.verifyAnElement(true, driver.findElement(imageBanner))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(contentBanner))) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_BannerColpatriaPromotions");
+				if (RappiUtility.clickOnElement(driver.findElement(contentBanner))) {
+
+					String mainWindow = driver.getWindowHandle();
+					System.out.println("Main:" + mainWindow);
+					// To handle all new opened window.
+					ArrayList<String> newWindow = new ArrayList<String>(driver.getWindowHandles());
+					newWindow.remove(mainWindow);
+					// change focus to new window
+				    driver.switchTo().window(newWindow.get(0));
+				    Thread.sleep(400);
+				    // String urlColpatria = driver.getCurrentUrl();
+					// System.out.println("url:" + urlColpatria);
+					RappiUtility.takeScreen(sTestCaseName + "/Img_HomePageColpatriaPromotions");
+				} else {
+					throw new IOException("ERROR PROMO: Click On 'Colpatria' isn't Enabled!");
+				}
+			} else {
+				throw new IOException("ERROR PROMO: Banner Colpatria isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_selectColpatriaInPromo_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+
+}

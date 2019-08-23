@@ -1,0 +1,1091 @@
+package pages;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import base.TestBase;
+import utilitiesRappi.RappiUtility;
+
+/**
+ * @author Nohora Meneses
+ *
+ */
+public class RappiWebLogin extends TestBase {
+
+	// Object Repository for RappiWebLogin
+	By infoGralContentLogin = By.id("content-login");
+	By mainFlagCountry = By.xpath("//img[@alt='Country flag']");
+	By txtHeadWelcome = By.id("header-login");
+	By bodyLogin = By.id("body-login");
+	By footerFlasgCountries = By.xpath("//*[@class='countries-login']");
+	// Btn Login With Facebook
+	By btnLoginFacebook = By.id("facebook-sign");
+	// Btn Login With Celular
+	By btnLoginCelular = By.id("account-kit-sign");
+	// Btn Login With Email
+	By btnLoginEmail = By.xpath("//*[@id='body-login']//*[@class='new-account text-center']/p/a");
+
+	By flagsCountry = By.xpath("//*[@class='countries-login']/child::ul/child::li");
+	By headCountryHomePage = By.xpath("//app-country//*[@class='cont-country hidden-mobile']");
+	By namePaisHomePage = By.xpath("//app-country//*[@class='active-country ng-star-inserted']");
+	By logoRappi = By.id("logo-header");
+	By btnIniciarSesion = By.xpath("//app-user-drop-down//*[@class='dropdown-user']");
+	By cities = By.xpath("//*[@class='cont-country cities hidden-mobile']//*[@class='active-country ng-star-inserted']");
+	By canastaPpal = By.xpath("//button[@class='basket-icon']");
+	
+	// Objects for Set Login
+	By msgeErrorLogin = By.xpath("//*[@id='toast-container']//*[@class='toast-title ng-star-inserted']");
+	By userCorreo = By.id("input-emails");
+	By userPassword = By.xpath("//input[@type='password']");
+	By submitEmail = By.xpath("//button[@type='submit']");
+	By btnProfileEnabled = By.xpath("//*[@class='dropwdown-user-logged hidden-tablet ng-star-inserted']");
+
+	By infoGralBarraLatUserAcc = By.xpath("//*[@class='nav-tabs']");
+	By imgUserAcc = By.xpath("//*[@class='user-pic-char']");
+	By mainDataUserAcc = By.xpath("//*[@class='profile-picture ng-star-inserted']//p");
+	By listOptEditInUserAcc = By.xpath("//*[@class='tabs shadow']/child::li");
+	By infoGralContentUserAcc = By.xpath("//*[@class='cont-tabs shadow']//*[@class='tab']");
+	By mainTitleUserAcc = By.xpath("//app-profile//strong");
+	By boxEditName = By.id("profile-first-name");
+	By boxEditLastName = By.id("profile-last-name");
+	By btnUpdateDataUserAcc = By.xpath("//*[@class='button-no-radius update-btn']");
+	By messageAlertaUpdate = By.id("toast-container");
+
+	By infoGralCreditCardOption = By.xpath("//app-manage-cards//*[@class='manage-cards']");
+	By titleCreditCardOption = By.xpath("//app-manage-cards//*[@class='manage-cards']//strong");
+	By msjeCreditCardLoads = By.xpath("//app-card-list//*[@class='text-loading ng-star-inserted']");
+	By listCreditCards = By.xpath("//*[@class='card-list']/child::div/child::fieldset");
+	By btnAddCreditCard = By.xpath("//*[@class='card-list']//*[@type='button']");
+	By btnAddCreditCardNew = By.xpath("//*[@class='text-loading ng-star-inserted']//a");
+	// By btnDeleteCredCard = By.xpath("//app-card-item//*[@class='iconf-delete
+	// ng-star-inserted']");
+	By btnDeleteCredCard = By.cssSelector("i[class^='iconf-delete']");
+	By infoGralModalDeleteCredCard = By.xpath("//*[@class='confirmation-dialog ']");
+	By btnYesDeleteCredCard = By.xpath("//*[@class='btn-confirmation shadow']");
+	By btnNoDeleteCredCard = By.xpath("//*[@id='confirmation-dialog']//button[2]");
+	By infoGralModalCredCard = By.xpath("//*[@class='step-one-card padding-cards ng-star-inserted']");
+	By titleModalCreditCard = By.xpath("//*[@class='title-modal-credit-card']");
+	By boxNameCreditCard = By.id("tdc-first-name");
+	By boxLastNameCredCard = By.id("tdc-last-name");
+	By boxNumCreditCard = By.cssSelector("iframe[id^='spreedly-number-frame-']");
+	By boxExpirationYearCredCard = By.id("tdc-year");
+	By boxExpirationMonthCredCard = By.id("tdc-month");
+	By boxCVCCrediCard = By.cssSelector("iframe[id^='spreedly-cvv-frame-']");
+	By linkBeneficiosCredCard = By.xpath("//*[@id='credit-card']//*[@class='info-custom-card ng-star-inserted']//a");
+	By headHomeBeneficiosCredCard = By.id("header");
+	By bodyHomeBeneficiosCredCard = By.xpath("//*[@id='page']//*[@class='main-content']");
+	By btnVerifyCreditCard = By.xpath("//*[@class='btn-modal']//*[@type='submit']");
+	By infoGralModalCredCardError = By.xpath("//app-card-modal-content//*[@class='info-step-three text-center']");
+	By btnCloseErrorAddCredCard = By.xpath("//*[@class='info-step-three text-center']//button");
+	
+	By infoGralLastOrdersOption = By.xpath("//app-order-history//*[@class='order-history']");
+	By titleLastOrdersOption = By.xpath("//app-order-history//*[@class='order-history']//h2");
+	By listLastOrders = By.xpath("//*[@class='cont-order-history']/child::div");
+	By imgOrderSelLastOrder = By.cssSelector("div[id^='carousel-']");
+	By bodyOrderSelLastOrder = By.cssSelector("div[class^='order-detail']");
+	By btnPrintVoucherLastOrder = By.cssSelector("button[class^='voucher']");
+	
+	By infoGralReferidosOption = By.xpath("//app-referred//*[@class='referred-codes ng-star-inserted']");
+	By titleReferidosOption = By.xpath("//*[@class='tabs-selection ng-star-inserted']");
+	By infoGralContentReferidos = By.xpath("//*[@class='container-tab ng-star-inserted']");
+	By imgReferidosOption = By.cssSelector("img[alt^='Imagen Referido']");
+	By infoShareReferidosOption = By.cssSelector("div[class^='share-content']");
+	By codReferidoToShare = By.cssSelector("div[class^='refer-code-text']");
+	By listRedesSocialesReferidosOption = By.xpath("//*[@class='share-code-container ng-star-inserted']/child::ul/child::li");
+	By infoTermCondicReferidosOption = By.xpath("//*[@class='container-tab ng-star-inserted']//*[@class='terms ng-star-inserted']");
+	
+	By imgNumThree = By.xpath("//*[@id='paymentMethods']//*[@class='number']");
+	By titleMetodoPago = By.xpath("//*[@id='paymentMethods']//*[@class='title']");
+	By btnHacerPedido = By.xpath("//*[@class='summary-prices']//button");
+	
+	RappiWebHomePage objHomePage;
+	RappiWebLoginFacebook objLoginFace;
+	
+	/**
+	 * Initializing the Page Objects Method RappiWebLogin
+	 */
+//	public RappiWebLogin(WebDriver driver) {
+//		this.driver = driver;
+//	}
+
+	/**
+	 * This POM method will validate All Content in Login
+	 * 
+	 * @return TRUE only if All Content is Displayed
+	 */
+	public Boolean verifyContentInLogin() {
+		wait = new WebDriverWait(driver, 1);
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentLogin));
+		try {
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralContentLogin))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(txtHeadWelcome))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(bodyLogin))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(footerFlasgCountries))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(mainFlagCountry))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnLoginFacebook))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnLoginCelular))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(btnLoginEmail)) && verifyFlagsInLogin()) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_PreLogin");
+				return true;
+			} else {
+				throw new IOException("ERROR BODY LOGIN: Some Element In Login isn'Displayed!");
+			}
+		} catch (Exception e) {
+			RappiUtility.takeScreen("Img_Error_PreLogin/Img_PreLogin");
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will validate all country links in Login
+	 * 
+	 * @return TRUE only if all countries links are Displayed
+	 */
+	public Boolean verifyFlagsInLogin() {
+
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+
+			wait.until(ExpectedConditions.visibilityOfAllElements(driver.findElements(flagsCountry)));
+			List<WebElement> elemFlagsShow = driver.findElements(flagsCountry);
+			int numFlags = elemFlagsShow.size();
+
+			String[] textFlagsList = new String[numFlags];
+			int i = 0;
+			for (WebElement e : elemFlagsShow) {
+				textFlagsList[i] = e.getText();
+				if (textFlagsList[i].isEmpty()) {
+					throw new IOException("ERROR FLAG LOGIN: Flag in Login isn'Displayed!");
+				} else {
+					// System.out.println("Flag[" + i +"]:" + e.getText());
+					RappiUtility.verifyAnElement(false, elemFlagsShow.get(i));
+					i++;
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	// Click on Login E-mail Button
+	public void clickOnLoginEmail() {
+		RappiUtility.highLightElement(driver.findElement(btnLoginEmail), true);
+		driver.findElement(btnLoginEmail).click();
+	}
+
+	/**
+	 * This POM method will click on Login Facebook Button
+	 * 
+	 * @return TRUE if login with Facebook is correct
+	 */
+	public Boolean clickOnLoginFacebook(String mainWindowHandle) {
+		String newWindow = "";
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnLoginFacebook))) {
+				Thread.sleep(3000);
+				// Get the window handles of all open windows
+				Set<String> winHandles = driver.getWindowHandles();
+				// System.out.println("Num Windows:" + winHandles.size());
+
+				// for (String string : winHandles) {
+				// System.out.println("Pagina: " + string);
+				// String newpag = driver.getTitle();
+				// System.out.println("titulo: " + newpag);
+				// }
+
+				if (winHandles.size() > 1) {
+					for (String handle : winHandles) {
+						if (!handle.equals(mainWindowHandle)) {
+							driver.switchTo().window(handle);
+							newWindow = driver.getTitle();
+							System.out.println("New window: " + newWindow);
+							if (newWindow.toLowerCase().contains("facebook")) {
+								break;
+							} else {
+								throw new IOException("ERROR FACEBOOK WINDOW: None Window contains 'Facebook'!");
+							}
+						}
+					}
+					return true;
+				} else {
+					throw new IOException("ERROR WINDOWS NUMBER: Windows Number Invalid < 1!");
+				}
+			} else {
+				throw new IOException("ERROR BTN FACEBOOK: Click On Button 'Facebook Login' Failed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will click on Login Phone Button
+	 * 
+	 * @return TRUE if login with Phone is correct
+	 */
+	public Boolean clickOnLoginPhone() {
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(btnLoginCelular))) {
+				return true;
+			} else {
+				throw new IOException("ERROR: Element 'Celular Btn' to Click isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will click on Email Button
+	 * 
+	 * @return TRUE if login with E-mail is correct
+	 */
+	public Boolean clickOnLogin() {
+
+		try {
+			if (RappiUtility.clickOnElement(driver.findElement(submitEmail))) {
+				try {
+					driver.findElement(btnProfileEnabled);
+					flagLogged = true;
+					return true;
+				} catch (NoSuchElementException e) {
+					// if (driver.findElement(msgeErrorLogin).isDisplayed()) {
+					// String msgeError = driver.findElement(msgeErrorLogin).getText();
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/MessageErrorLogin_Email");
+					throw new Exception("ERROR: Invalid Credentials!");
+					// }
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return false;
+	}
+
+	// Set User in user text box
+	// String Parameter User E-mail
+	public void setCorreoEmail(String strUsername) {
+		driver.findElement(userCorreo).clear();
+		RappiUtility.highLightElement(driver.findElement(userCorreo), true);
+		driver.findElement(userCorreo).sendKeys(strUsername);
+	}
+
+	// Set Password in password text box
+	// String Parameter User Password
+	public void setPasswordEmail(String strPassword) {
+		driver.findElement(userPassword).clear();
+		RappiUtility.highLightElement(driver.findElement(userPassword), true);
+		driver.findElement(userPassword).sendKeys(strPassword);
+	}
+
+	/**
+	 * This POM method will validate if a Message Error is Displayed
+	 * 
+	 * @return TRUE only if a Message Error is Displayed
+	 */
+	public Boolean loginWithEmail(String strUsername, String strPassword) {
+
+		try {
+			System.out.println("Try_loginWithEmail");
+			// Click On Email Submit Button Login
+			clickOnLoginEmail();
+			// Fill user name
+			setCorreoEmail(strUsername);
+			// Fill password
+			setPasswordEmail(strPassword);
+			// Validate Email Button Submit
+
+			// RappiUtility.verifyAnElement(false, driver.findElement(submitEmail))
+			if (driver.findElement(submitEmail).isEnabled()) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_SetUserData_Email");
+				return clickOnLogin();
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/SubmitBtnDisabled_Email");
+				throw new IOException("ERROR: Click in 'Login Btn' isn't Enabled!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_loginWithEmail" + sBrowserName);
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * This POM method will Change Country Without User Logged
+	 */
+	public void changeCountryWithoutLogged() {
+		objGenerator = new Random();
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_changeCountryWithoutLogged");
+			wait.until(ExpectedConditions.visibilityOfAllElements(driver.findElements(flagsCountry)));
+			List<WebElement> elemFlagsShow = driver.findElements(flagsCountry);
+			int numFlags = elemFlagsShow.size();
+			int randFlagSel = objGenerator.nextInt(numFlags);
+
+			String strCountryTemp = elemFlagsShow.get(randFlagSel).getText().trim();
+
+			RappiUtility.scrollToElement(elemFlagsShow.get(randFlagSel));
+
+			if (RappiUtility.verifyAnElement(true, elemFlagsShow.get(randFlagSel))) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_FlagCountrySeleted_" + strCountryTemp);
+
+				RappiUtility.clickOnElement(elemFlagsShow.get(randFlagSel));
+				//Thread.sleep(1500);
+
+				try {
+					wait.until(ExpectedConditions.elementToBeClickable(namePaisHomePage));
+
+					if (RappiUtility.verifyAnElement(false, driver.findElement(logoRappi))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(cities))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(btnIniciarSesion))
+							&& RappiUtility.verifyAnElement(false, driver.findElement(canastaPpal))
+							/* && verifySearchOptionInHomePage() */
+							&& RappiUtility.verifyAnElement(true, driver.findElement(headCountryHomePage))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(namePaisHomePage))) {
+
+						String strNewCountryName = driver.findElement(namePaisHomePage).getText().trim();
+						if (strCountryTemp.contentEquals(strNewCountryName)) {
+							System.out.println("Pais cambiado exitosamente!");
+							RappiUtility.takeScreen(sTestCaseName + "/Img_HomePageWithoutLogin_" + strCountryTemp);
+							//RappiUtility.takeScreen(sTestCaseName + "/Img_CountrySelected_" + strCountry);
+						} else {
+							throw new IOException("ERROR COUNTRY NAME: Countries Names doesn't Match!");
+						}
+					} else {
+						throw new IOException("ERROR HEADER: Header in Home Page isn't Displayed!");
+					}
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+			} else {
+				throw new IOException("ERROR FLAG WITHOUT LOGIN: Flag Selected Without Login isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Try_changeCountryWithoutLogged_" + sBrowserName);
+			System.out.println("ERROR changeCountryWithoutLogged:" + e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will be exposed in test case to login in the application
+	 * 
+	 * @param tipoLogin   Facebook - Celular - Email
+	 * 
+	 * @param strCorreo   Will choose "correo" from Config File
+	 * 
+	 * @param strPassword Will choose "password" from Config File
+	 * 
+	 * @return TRUE only if Button Submit Login is Enabled
+	 */
+	public Boolean loginWith(String tipoLogin, String strUsername, String strPassword) {
+		objLoginFace = new RappiWebLoginFacebook();
+
+		switch (tipoLogin) {
+
+		case "Facebook":
+			// System.out.println("Case 0-Facebook");
+			try {
+				return objLoginFace.loginWithFacebook(strUsername, strPassword);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			break;
+
+		case "Celular":
+			System.out.println("Case 1-Celular");
+			try {
+				clickOnLoginPhone();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			break;
+
+		case "Email":
+			// System.out.println("Case 2-Email");
+			try {
+				return loginWithEmail(strUsername, strPassword);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			break;
+
+		default:
+			throw new IllegalArgumentException("Invalid Login Type: " + tipoLogin);
+		}
+
+		return null;
+	}
+
+	/**
+	 * This POM method will click on Iniciar Sesion Button
+	 */
+	public void autenticacion() {
+
+		try {
+			System.out.println("Try_autenticacion_" + sBrowserName);
+			if (verifyContentInLogin() && loginWith(sTipoLogin, sUserName, sPassword)) {
+				System.out.println("Login Correct");
+			} else {
+				throw new IOException("ERROR LOGIN: Login with '" + sTipoLogin + "' failed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_autenticacion_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * This POM method will Edit Name & Last Name From User Account
+	 */
+	public void editUserAccount(String strNameToEdit, String strLastNameToEdit) {
+		wait = new WebDriverWait(driver, 1);
+		objHomePage = new RappiWebHomePage();
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentUserAcc));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralBarraLatUserAcc))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(infoGralContentUserAcc))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(imgUserAcc))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(boxEditName))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(boxEditLastName))) {
+
+				RappiUtility.scrollToElement(driver.findElement(mainTitleUserAcc));
+				RappiUtility.verifyAnElement(true, driver.findElement(mainTitleUserAcc));
+				RappiUtility.scrollUp();
+				RappiUtility.takeScreen(sTestCaseName + "/Img_UserToEdit");
+
+				String strNameTemp = driver.findElement(boxEditName).getText();
+				String strLastNameTemp = driver.findElement(boxEditLastName).getText();
+				// System.out.println("Name: " + strNameTemp + "\nApe: " + strLastNameTemp);
+
+				driver.findElement(boxEditName).sendKeys(strNameTemp.concat(strNameToEdit));
+				driver.findElement(boxEditLastName).sendKeys(strLastNameTemp.concat(strLastNameToEdit));
+				RappiUtility.takeScreen(sTestCaseName + "/Img_UserDataEntered");
+
+				if (RappiUtility.clickOnElement(driver.findElement(btnUpdateDataUserAcc))) {
+					wait.until(ExpectedConditions.visibilityOfElementLocated(messageAlertaUpdate));
+
+					if (RappiUtility.verifyAnElement(true, driver.findElement(messageAlertaUpdate))) {
+
+						String textMessage = driver.findElement(messageAlertaUpdate).getText();
+						// System.out.println("Text: " + textMessage);
+						if (textMessage.toLowerCase().contains("datos actualizados")) {
+							String strMainDataUser = driver.findElement(mainDataUserAcc).getText();
+							// System.out.println("Data: " + strMainDataUser);
+							if (strMainDataUser.contains(strNameToEdit)
+									&& strMainDataUser.contains(strLastNameToEdit)) {
+								RappiUtility.verifyAnElement(true, driver.findElement(mainDataUserAcc));
+								RappiUtility.verifyAnElement(true, driver.findElement(boxEditName));
+								RappiUtility.verifyAnElement(true, driver.findElement(boxEditLastName));
+								RappiUtility.takeScreen(sTestCaseName + "/Img_UserUpdated");
+
+								objHomePage.clickOnProfile();
+								rollbackEditUserAccount("Automation  ", "CO ");
+
+							} else {
+								throw new IOException("ERROR USER DATA: Information User Data Update Doesn't Match!");
+							}
+						} else if (textMessage.toLowerCase().contains("algo salió mal")) {
+							RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/UserUpdate_Failed");
+							throw new IOException("ERROR USER UPDATE: User Update Failed!");
+						}
+					} else {
+						throw new IOException(
+								"ERROR MESSAGE UPDATE: Message About 'Update Data User' isn't Displayed!");
+					}
+				} else {
+					throw new IOException("ERROR USER UPDATE: Click On 'Update Data User' Button Failed!");
+				}
+			} else {
+				throw new IOException("ERROR USER ACCOUNT: Main Content In User Account isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Rollback Name & Last Name Edited From User Account
+	 */
+	public void rollbackEditUserAccount(String strNameToEdit, String strLastNameToEdit) {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentUserAcc));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(boxEditName))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(boxEditLastName))) {
+
+				RappiUtility.scrollToElement(driver.findElement(mainTitleUserAcc));
+				RappiUtility.verifyAnElement(true, driver.findElement(mainTitleUserAcc));
+				RappiUtility.scrollUp();
+
+				driver.findElement(boxEditName).clear();
+				driver.findElement(boxEditName).sendKeys(strNameToEdit);
+				driver.findElement(boxEditLastName).clear();
+				driver.findElement(boxEditLastName).sendKeys(strLastNameToEdit);
+
+				if (RappiUtility.clickOnElement(driver.findElement(btnUpdateDataUserAcc))) {
+
+					wait.until(ExpectedConditions.visibilityOfElementLocated(messageAlertaUpdate));
+					if (RappiUtility.verifyAnElement(true, driver.findElement(messageAlertaUpdate))) {
+						// System.out.println("Data: " + driver.findElement(mainDataUserAcc).getText());
+
+						RappiUtility.verifyAnElement(false, driver.findElement(mainDataUserAcc));
+						RappiUtility.verifyAnElement(true, driver.findElement(boxEditName));
+						RappiUtility.verifyAnElement(true, driver.findElement(boxEditLastName));
+						RappiUtility.takeScreen(sTestCaseName + "/Img_RollbackUserEdited");
+					} else {
+						throw new IOException(
+								"ERROR MESSAGE UPDATE: Message About 'Update Data User' isn't Displayed!");
+					}
+				} else {
+					throw new IOException("ERROR UPDATE USER: Click On 'Update Data User' Button Failed!");
+				}
+			} else {
+				throw new IOException("ERROR USER EDIT: Boxes to Edit User Account aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Add All Information about a Credit Card
+	 * 
+	 * @param sNameCreditCard Set "Name" for Credit Card
+	 * 
+	 * @param sLastNameCreditCard Set "Last Name" for Credit Card
+	 * 
+	 * @param sNumCreditCard Set "Credit Card Number" for Credit Card
+	 * 
+	 * @param sYearExpCreditCard Set "Expiration Year" for Credit Card
+	 * 
+	 * @param sMonthExpCreditCard Set "Expiration Month" for Credit Card
+	 * 
+	 * @param sCvcCreditCard Set "CVC" for Credit Card
+	 */
+	public void setAndAddCreditCard(String sNameCreditCard, String sLastNameCreditCard,
+			String sNumCreditCard, String sYearExpCreditCard, String sMonthExpCreditCard, String sCvcCreditCard) {
+		wait = new WebDriverWait(driver, 1);
+
+		if (!flagModalAlerta) {
+
+			try {
+				System.out.println("Try_setAndAddCreditCard");
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralModalCredCard));
+
+				if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalCredCard))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(titleModalCreditCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxNameCreditCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxLastNameCredCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxNumCreditCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxExpirationYearCredCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxExpirationMonthCredCard))
+						&& RappiUtility.verifyAnElement(false, driver.findElement(boxCVCCrediCard))) {
+
+					RappiUtility.takeScreen(sTestCaseName + "/Img_AddInformation_CreditCard");
+
+					RappiUtility.highLightElement(driver.findElement(boxNameCreditCard), true);
+					driver.findElement(boxNameCreditCard).sendKeys(sNameCreditCard);
+
+					RappiUtility.highLightElement(driver.findElement(boxLastNameCredCard), true);
+					driver.findElement(boxLastNameCredCard).sendKeys(sLastNameCreditCard);
+
+					RappiUtility.highLightElement(driver.findElement(boxNumCreditCard), true);
+					driver.findElement(boxNumCreditCard).sendKeys(sNumCreditCard);
+
+					RappiUtility.highLightElement(driver.findElement(boxExpirationYearCredCard), true);
+					driver.findElement(boxExpirationYearCredCard).sendKeys(sYearExpCreditCard);
+
+					RappiUtility.highLightElement(driver.findElement(boxExpirationMonthCredCard), true);
+					driver.findElement(boxExpirationMonthCredCard).sendKeys(sMonthExpCreditCard);
+
+					RappiUtility.highLightElement(driver.findElement(boxCVCCrediCard), true);
+					driver.findElement(boxCVCCrediCard).sendKeys(sCvcCreditCard);
+
+					RappiUtility.takeScreen(sTestCaseName + "/Img_FinalInformation_CreditCard");
+
+					RappiUtility.scrollToElement(driver.findElement(btnVerifyCreditCard));
+					System.out.println("setAndAddCreditCard");
+					
+					driver.findElement(btnVerifyCreditCard).click();
+					Thread.sleep(3000);
+					/*assertTrue("ERROR CLICK VERIFICAR: Click On 'Verificar' Button Failed!",
+							RappiUtility.clickOnElement(driver.findElement(btnVerifyCreditCard)));*/
+
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralModalCredCardError));
+						assertTrue("ERROR VERIFICAR: 'Content Error' isn't Displayed!",
+								RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalCredCardError)));
+						System.out.println("Aparecio Modal Error Credit Card");
+						RappiUtility.takeScreen(sTestCaseName + "/Img_ContentError_AddCreditCard");
+						RappiUtility.clickOnElement(driver.findElement(btnCloseErrorAddCredCard));
+						
+					} catch (Exception e) {
+						//wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralCreditCardOption));
+						//assertTrue("ERROR ADD CREDIT-CARD: Information 'Credit Card Added' isn't Displayed!",
+								//RappiUtility.verifyAnElement(true, driver.findElement(infoGralCreditCardOption)));
+						
+						if(RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalCredCard))) {
+							System.out.println("Modal 'Add Credit Card' is Displayed\nAdd Credit Card Failed");
+							RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/Modal_AddCreditCard_Appears");
+						}else {
+							if(driver.findElement(btnHacerPedido).isEnabled()) {
+								System.out.println("'Hacer Pedido' Button Enabled\nCredit Card Added");
+								RappiUtility.takeScreen(sTestCaseName + "/Img_CreditCard_Added");
+							}
+						}
+//						if (RappiUtility.verifyAnElement(false, driver.findElement(imgNumThree))
+//								&& RappiUtility.verifyAnElement(false, driver.findElement(titleMetodoPago))
+//								&& driver.findElement(btnHacerPedido).isEnabled()) {
+//							System.out.println("'Hacer Pedido' Button Enabled\nCredit Card Added");
+//							RappiUtility.takeScreen(sTestCaseName + "/Img_CreditCard_Added");
+//						} else {
+//							assertTrue("ERROR ADD CREDIT CARD: Modal Add Credit Card In Checkout is Displayed!",
+//									RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalCredCard)));
+//							System.out.println("Modal 'Add Credit Card' is Displayed\nAdd Credit Card Failed");
+//							RappiUtility.takeScreen(sTestCaseName + "/Img_Error_Modal_AddCreditCard_Appears");
+//						}
+					}
+				} else {
+					throw new Exception("ERROR ADDING CREDIT-CARD: Some Content in Add Credit Card isn't Displayed!");
+				}
+			} catch (Exception e) {
+				System.out.println("Catch_setAndAddCreditCard_" + sBrowserName);
+				System.out.println("ERROR SET & ADD CREDITCARD:" + e.getMessage());
+			}
+
+		}
+	}
+	
+	/**
+	 * This POM method will Do Click On Credit Card Beneficios
+	 */
+	public void clickOnBeneficiosCreditCard() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_clickOnBeneficiosCreditCard");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralModalCredCard));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalCredCard))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleModalCreditCard))
+					&& RappiUtility.verifyAnElement(false, driver.findElement(linkBeneficiosCredCard))) {
+
+//				String currentWindow = driver.getWindowHandle();
+				String parent = driver.getWindowHandle();
+				System.out.println("Parent Window is:" + parent);
+
+				if (RappiUtility.clickOnElement(driver.findElement(linkBeneficiosCredCard))) {
+
+					Set<String> allWindows = driver.getWindowHandles();
+					int count = allWindows.size();
+					System.out.println("Total windows:" + count);
+					
+					for (String child : allWindows) {
+						
+						if(!parent.equalsIgnoreCase(child)) {
+							
+							driver.switchTo().window(child);
+							System.out.println("Switch new tab");
+							Thread.sleep(3000);
+							driver.close();
+						}
+					}
+					
+					driver.switchTo().window(parent);
+					System.out.println("Parent windows title is:" + driver.getTitle());
+//					String mainWindow = driver.getWindowHandle();
+//					System.out.println("Current Window:" + mainWindow);
+					// To handle all new opened window.
+					// ArrayList<String> newWindow = new ArrayList<String>(driver.getWindowHandles());
+//					Set<String> newWindow = driver.getWindowHandles(); //comente esta linea 1
+//					ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+//					System.out.println("New Window:" + newWindow); //comente esta linea 2
+					//newWindow.remove(mainWindow); //comente esta linea 2
+//					System.out.println("Zise:" + newWindow.size());
+
+//					System.out.println("New Window:" + tabs);
+//					System.out.println("Zise:" + tabs.size());
+//					driver.switchTo().window((String) tabs.get(1));
+//					System.out.println("Switch new tab");
+//					Thread.sleep(3000);
+//					System.out.println("wait");
+//					driver.close();
+//					System.out.println("Close new tab");
+//					driver.switchTo().window((String) tabs.get(0));
+
+//					if (!newWindow.isEmpty()) {
+//						for (String windowId : newWindow) {
+//							// change focus to new window
+//							driver.switchTo().window(windowId);
+//							String title = driver.getTitle();
+//							System.out.println("New Title:" + title);
+//							if (!title.isEmpty()) {
+//								wait.until(ExpectedConditions.visibilityOfElementLocated(headHomeBeneficiosCredCard));
+//								wait.until(ExpectedConditions.visibilityOfElementLocated(bodyHomeBeneficiosCredCard));
+//								if (RappiUtility.verifyAnElement(false, driver.findElement(headHomeBeneficiosCredCard))
+//										&& RappiUtility.verifyAnElement(true,
+//												driver.findElement(bodyHomeBeneficiosCredCard))) {
+//									RappiUtility.takeScreen(sTestCaseName + "/Img_HomePageBeneficiosCreditCard");
+//									
+//									Thread.sleep(3000);
+//									System.out.println("wait");
+//									driver.close();
+//									
+//									//driver.switchTo().window(currentWindow);
+//								} else {
+//									RappiUtility
+//											.takeScreen("Img_Error_" + sTestCaseName + "/BeneficiosCreditCard_Empty");
+//									System.out.println("change focus to old window_2");
+//									driver.switchTo().window(currentWindow);
+//									System.out.println("old window_2");
+//									throw new IOException(
+//											"ERROR BENEFICIOS PAGE: Main Home Page 'Beneficios Credit Card' isn't Displayed!");
+//								}
+//							} else {
+//								System.out.println("New title empty -> change to old window");
+//								driver.switchTo().window(currentWindow);
+//							}
+//						}
+//					}
+				} else {
+					throw new IOException("ERROR BENEFICIOS CREDIT-CARD: Click On 'Beneficios Credit Card' Failed!");
+				}
+			} else {
+				throw new Exception("ERROR ADDING CREDIT-CARD: Some Content in Add Credit Card isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnBeneficiosCreditCard_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Do Click On Credit Card Since User Account
+	 */
+	public void clickOnCreditCardFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentUserAcc));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(listOptEditInUserAcc))) {
+				List<WebElement> elemOptUserAcc = driver.findElements(listOptEditInUserAcc);
+
+				for (WebElement e : elemOptUserAcc) {
+					if (e.getText().contains("Tarjeta") || e.getText().contains("Cartões")) {
+						RappiUtility.verifyAnElement(true, e);
+						RappiUtility.takeScreen(sTestCaseName + "/Img_OptionCreditCard");
+						
+						assertTrue("ERROR CLICK: Click On 'Credit Card' Option Failed!",
+								RappiUtility.clickOnElement(e));
+						break;
+					}
+				}
+			} else {
+				throw new IOException("ERROR LIST USER ACCOUNT: Options in User Account aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR clickOnCreditCardFromUserAccount:" + e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will click on Add Credit Card Button Since User Account
+	 */
+	public void addACreditCardFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_addACreditCardFromUserAccount");
+			wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(titleCreditCardOption));
+			RappiUtility.scrollToElement(driver.findElement(titleCreditCardOption));
+			RappiUtility.scrollUp();
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralCreditCardOption))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleCreditCardOption))) {
+
+				RappiUtility.highLightElement(driver.findElement(btnAddCreditCardNew), true);
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ContentInCreditCard");
+				assertTrue("ERROR CLICK ADD CREDIT-CARD: Click On 'Agregar Tarjeta de Credito' Button Failed!",
+						RappiUtility.clickOnElement(driver.findElement(btnAddCreditCardNew)));
+
+				// Old Checkout
+//					RappiUtility.highLightElement(driver.findElement(btnAddCreditCard), true);
+//					RappiUtility.takeScreen(sTestCaseName + "/Img_ContentInCreditCard");
+//					assertTrue("ERROR CLICK ADD CREDIT-CARD: Click On 'Agregar Tarjeta de Credito' Button Failed!",
+//							RappiUtility.clickOnElement(driver.findElement(btnAddCreditCard)));
+
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/InformationInCreditCar_Empty");
+				throw new IOException("CREDIT-CARD: Main information in Credit Card isn't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_addACreditCardFromUserAccount_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Delete a Credit Card From User Account
+	 */
+	public void deleteCreditCardFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+		action = new Actions(driver);
+		WebElement elemCredCardSelected;
+
+		try {
+			driver.findElements(listCreditCards);
+			wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listCreditCards));
+			RappiUtility.scrollToElement(driver.findElement(titleCreditCardOption));
+			RappiUtility.scrollUp();
+
+			if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralCreditCardOption))
+					&& RappiUtility.verifyAnElement(true, driver.findElement(titleCreditCardOption))) {
+				RappiUtility.takeScreen(sTestCaseName + "/Img_ContentInCreditCard");
+
+				List<WebElement> elemCredCards = driver.findElements(listCreditCards);
+				int numCredCard = elemCredCards.size();
+
+				int randNumTarjCred = objGenerator.nextInt(numCredCard);
+				elemCredCardSelected = elemCredCards.get(randNumTarjCred);
+
+				RappiUtility.highLightElement(elemCredCardSelected, true);
+				WebElement elemBtnDeleteCredCard = elemCredCardSelected.findElement(btnDeleteCredCard);
+
+				if (sBrowserName.equalsIgnoreCase("Chrome") || sBrowserName.equalsIgnoreCase("Firefox")) {
+					System.out.println("deleteCreditCardFromUserAccount");
+					action.moveToElement(elemBtnDeleteCredCard).release().perform();
+					action.moveToElement(elemBtnDeleteCredCard).click().build().perform();
+
+					try {
+						wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralModalDeleteCredCard));
+						if (RappiUtility.verifyAnElement(true, driver.findElement(infoGralModalDeleteCredCard))
+								&& RappiUtility.verifyAnElement(true, driver.findElement(btnYesDeleteCredCard))
+								&& RappiUtility.verifyAnElement(true, driver.findElement(btnNoDeleteCredCard))) {
+							RappiUtility.takeScreen(sTestCaseName + "/Img_ModalDeleteCreditCard");
+						} else {
+							RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ModalDeleteCreditCard_Failed");
+							throw new IOException("ERROR MODAL CREDIT-CARD: Modal Delete Credit Card isn't Displayed!");
+						}
+					} catch (Exception e2) {
+						System.out.println("ERROR TC: " + e2.getMessage());
+					}
+				} else if (sBrowserName.equalsIgnoreCase("Safari")) {
+					System.out.println("deleteCreditCardFromUserAccount");
+					RappiUtility.highLightElement(elemCredCardSelected, true);
+				}
+			} else {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/InformationInCreditCar_Empty");
+				throw new IOException("CREDIT-CARD: Main information in Credit Card isn't Displayed!");
+			}
+		} catch (Exception e1) {
+			driver.findElement(msjeCreditCardLoads);
+			if (driver.findElement(msjeCreditCardLoads).getText().contains("ninguna")
+					|| driver.findElement(msjeCreditCardLoads).getText().contains("não")) {
+				RappiUtility.highLightElement(driver.findElement(msjeCreditCardLoads), true);
+				RappiUtility.takeScreen(sTestCaseName + "/Img_CreditCardsNumber_Empty");
+				System.out.println("Total Credit Cards Invalid < 1!");
+			}
+		}
+	}
+	
+	/**
+	 * This POM method will Do Click On Last Orders Since User Account
+	 */
+	public void clickOnLastOrdersFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			System.out.println("Try_clickOnLastOrdersFromUserAccount");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentUserAcc));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(listOptEditInUserAcc))) {
+				List<WebElement> elemOptUserAcc = driver.findElements(listOptEditInUserAcc);
+
+				for (WebElement e : elemOptUserAcc) {
+					if (e.getText().contains("Últimas") || e.getText().contains("Últimos")) {
+						RappiUtility.scrollToElement(e);
+						RappiUtility.scrollUp();
+						wait.until(ExpectedConditions.visibilityOf(e));
+						
+						assertTrue("ERROR CLICK: Click On 'Last Orders' Option Failed!",
+								RappiUtility.clickOnElement(e));
+						break;
+					}
+				}
+				
+				wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralLastOrdersOption));
+				if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralLastOrdersOption))
+						&& RappiUtility.verifyAnElement(true, driver.findElement(titleLastOrdersOption))) {
+					/*List<WebElement> elemLastOrdersList = driver.findElements(listLastOrders);
+					for (WebElement webElement : elemLastOrdersList) {
+						RappiUtility.verifyAnElement(false, webElement);
+					}*/
+					RappiUtility.scrollToElement(driver.findElement(titleLastOrdersOption));
+					RappiUtility.scrollUp();
+					RappiUtility.takeScreen(sTestCaseName + "/Img_ContentOptionLastOrders");
+				} else {
+					throw new IOException("ERROR LAST ORDERS: Main information in 'Last Orders' isn't Displayed!");
+				}
+			} else {
+				throw new IOException("ERROR LIST USER ACCOUNT: Options in User Account aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_clickOnLastOrdersFromUserAccount_" + sBrowserName);
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * This POM method will Select a Order (Random) From List In User Account
+	 */
+	public void chooseAndPrintALastOrderFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+		objGenerator = new Random();
+
+		try {
+			System.out.println("Try_chooseAndPrintALastOrderFromUserAccount");
+
+			wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(listLastOrders));
+			List<WebElement> elemLastOrdersList = driver.findElements(listLastOrders);
+			int numLastOrders = elemLastOrdersList.size();
+
+			if (numLastOrders <= 1) {
+				RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/LastOrders_Empty");
+				throw new IOException("ERROR #LAST ORDERS: Last Orders Number Invalid < 1!");
+			} else {
+				int randLastOrder = objGenerator.nextInt(numLastOrders);
+				if (randLastOrder == 0) {
+					randLastOrder++;
+				}
+				// System.out.println("Num:" + numLastOrders + "\nNum2:" + randLastOrder);
+
+				WebElement elemSelLastOrder = elemLastOrdersList.get(randLastOrder);
+				RappiUtility.scrollToElement(elemSelLastOrder);
+				RappiUtility.scrollUp();
+
+				String textLastOrderSel = elemSelLastOrder.getText().toString();
+				// System.out.println("Text:" + textLastOrderSel);
+				if (textLastOrderSel.equalsIgnoreCase("Não há ordem")
+						|| textLastOrderSel.contains("No tienes ningún pedido")) {
+					RappiUtility.highLightElement(elemSelLastOrder, false);
+					RappiUtility.takeScreen(sTestCaseName + "/Img_PrintLastOrder_Empty");
+				} else {
+					if (RappiUtility.verifyAnElement(true, elemSelLastOrder)
+							&& RappiUtility.verifyAnElement(true, elemSelLastOrder.findElement(imgOrderSelLastOrder))
+							&& RappiUtility.verifyAnElement(true,
+									elemSelLastOrder.findElement(bodyOrderSelLastOrder))) {
+
+						String text = elemSelLastOrder.findElement(By.cssSelector("div[class^='order-product']"))
+								.getText();
+						// System.out.println("Text:" + text);
+						assertTrue("ERROR CLICK PRINT: Click in 'Print Last Order' Failed!",
+								RappiUtility.clickOnElement(elemSelLastOrder.findElement(btnPrintVoucherLastOrder)));
+
+						RappiUtility.takeScreen(sTestCaseName + "/Img_PrintLastOrder_" + text);
+					} else {
+						throw new IOException("ERROR LAST ORDERS: Last Order Selected isn't Displayed!");
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Catch_chooseAndPrintALastOrderFromUserAccount");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * This POM method will Click On 'Referidos' Since User Account Ann Validate all Content
+	 * in this option
+	 */
+	public void clickOnReferidosFromUserAccount() {
+		wait = new WebDriverWait(driver, 1);
+
+		try {
+			wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralContentUserAcc));
+
+			if (RappiUtility.verifyAnElement(true, driver.findElement(listOptEditInUserAcc))) {
+				List<WebElement> elemOptUserAcc = driver.findElements(listOptEditInUserAcc);
+
+				int i = 0;
+				for (WebElement e : elemOptUserAcc) {
+					if (e.getText().contains("Referidos") || e.getText().contains("Indicação")) {
+						RappiUtility.scrollToElement(e);
+						RappiUtility.scrollUp();
+						RappiUtility.verifyAnElement(false, e);
+						
+						assertTrue("ERROR CLICK: Click On 'Referidos' Option Failed!",
+								RappiUtility.clickOnElement(elemOptUserAcc.get(i)));
+						break;
+					} else {
+						i++;
+					}
+				}
+				
+				try {
+					wait.until(ExpectedConditions.visibilityOfElementLocated(infoGralReferidosOption));
+					if (RappiUtility.verifyAnElement(false, driver.findElement(infoGralReferidosOption))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(titleReferidosOption))
+							&& RappiUtility.verifyAnElement(true, driver.findElement(infoGralContentReferidos))) {
+						
+						RappiUtility.scrollToElement(driver.findElement(titleReferidosOption));
+						RappiUtility.scrollUp();
+						
+						if(RappiUtility.verifyAnElement(false, driver.findElement(imgReferidosOption))
+								&& RappiUtility.verifyAnElement(true, driver.findElement(infoShareReferidosOption))
+								&& RappiUtility.verifyAnElement(true, driver.findElement(codReferidoToShare))
+								&& RappiUtility.verifyAnElement(true, driver.findElement(infoTermCondicReferidosOption))) {
+							List<WebElement> elemRedesReferidos = driver.findElements(listRedesSocialesReferidosOption);
+							
+							for (WebElement webElement : elemRedesReferidos) {
+								RappiUtility.verifyAnElement(false, webElement);
+							}
+							RappiUtility.takeScreen(sTestCaseName + "/Img_ContentOptionReferidos");
+						}else {
+							throw new IOException("ERROR CONTENT REFERIDOS: Content in 'Referidos' isn't Displayed!");
+						}
+					} else {
+						throw new IOException("ERROR REFERIDOS: Main information in 'Referidos' isn't Displayed!");
+					}
+				} catch (Exception e1) {
+					RappiUtility.takeScreen("Img_Error_" + sTestCaseName + "/ContentInReferidos_Failed");
+					System.out.println(e1.getMessage());
+				}
+			} else {
+				throw new IOException("ERROR LIST USER ACCOUNT: Options in User Account aren't Displayed!");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+}
